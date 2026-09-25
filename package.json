@@ -1,8 +1,8 @@
 {
-  "name": "billiards-club",
+  "name": "black-gold-game-server",
   "version": "1.0.0",
   "private": true,
-  "description": "零依赖双人台球大厅与实时房间后端",
+  "description": "零依赖1v1游戏大厅，支持台球与中国象棋实时对战",
   "scripts": {
     "start": "node server.js"
   },
