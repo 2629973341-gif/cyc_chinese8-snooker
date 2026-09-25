@@ -1,8 +1,8 @@
 {
   "name": "black-gold-game-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "零依赖1v1游戏大厅，支持台球与中国象棋实时对战",
+  "description": "零依赖 1v1 游戏大厅，支持台球、中国象棋、五子棋与围棋实时对战",
   "scripts": {
     "start": "node server.js"
   },
