@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>墨线五子棋</title>
+<style>
+:root{--ink:#17263d;--muted:#708099;--line:#dfe5ef;--paper:#f5f7fb;--wood:#d6a35b;--wood-dark:#9a6a32;--blue:#4169c7;--red:#ed6363}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,"Microsoft YaHei",sans-serif}.app{max-width:1160px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{display:flex;align-items:center;gap:13px}.mark{width:42px;height:42px;border-radius:11px;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:21px;font-weight:900}.eyebrow{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:2px}.title{font-size:24px;font-weight:850}.subtitle{color:var(--muted);font-size:13px}.layout{display:grid;grid-template-columns:minmax(520px,760px) 260px;gap:24px;margin-top:24px}.board-shell{padding:16px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 42px #2c416218}.board{display:block;width:100%;height:auto;border-radius:5px;background:var(--wood);cursor:pointer}.side{border-left:1px solid var(--line);padding-left:21px}.section{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}.section h2{font-size:12px;letter-spacing:1.5px;margin:0 0 14px}.row{display:flex;align-items:center;justify-content:space-between;color:var(--muted);margin:11px 0;font-size:13px}select,button{font:inherit;color:var(--ink);background:#fff;border:1px solid #d1d9e7;border-radius:6px;padding:8px 10px;cursor:pointer}button.primary{width:100%;background:var(--blue);border-color:var(--blue);color:#fff;font-weight:800}button.secondary{width:100%;margin-top:9px}.turn{display:flex;align-items:center;gap:9px;font-weight:800;margin-bottom:13px}.stone{width:13px;height:13px;border-radius:50%;background:#182333;box-shadow:inset 2px 2px 3px #fff6}.stone.white{background:#fff;border:1px solid #c5cedb;box-shadow:none}.status{min-height:40px;color:var(--muted);font-size:12px;line-height:1.7}.rules{font-size:12px;color:var(--muted);line-height:1.8}.history{max-height:130px;overflow:auto;color:var(--muted);font-size:12px;background:#f0f3f8;border-radius:7px;padding:8px}.history p{margin:3px 0}.win{position:fixed;inset:0;display:grid;place-items:center;background:#17263d66;opacity:0;pointer-events:none;transition:opacity .2s}.win.show{opacity:1;pointer-events:auto}.win-card{padding:28px 42px;background:#fff;border-radius:12px;text-align:center;box-shadow:0 18px 60px #17263d44}.win-card h2{margin:0 0 6px;font-size:26px}.win-card p{margin:0 0 18px;color:var(--muted)}.win-card button{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:800}@media(max-width:850px){.app{padding:15px}.top{align-items:start;gap:8px;flex-direction:column}.layout{display:block}.side{border:0;padding:20px 0}.board-shell{padding:7px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><div class="brand"><div class="mark">五</div><div><div class="eyebrow">CLASSIC BOARD / 01</div><div class="title">墨线五子棋</div></div></div><div class="subtitle">十五路棋盘 · 黑白轮流 · 连成五子即可获胜</div></header>
+  <div class="layout">
+    <section class="board-shell"><canvas id="board" class="board" width="760" height="760"></canvas></section>
+    <aside class="side">
+      <div class="section"><h2>对局设置</h2><div class="row"><span>游戏模式</span><select id="mode"><option value="ai" selected>玩家 vs AI</option><option value="local">本地双人</option></select></div><div class="row"><span>AI 难度</span><select id="level"><option value="easy">入门</option><option value="normal" selected>标准</option><option value="hard">认真</option></select></div><button id="restart" class="primary">重新开始</button><button id="undo" class="secondary">悔棋</button></div>
+      <div class="section"><h2>当前回合</h2><div id="turn" class="turn"></div><div id="status" class="status">点击棋盘交叉点落子。</div></div>
+      <div class="section"><h2>落子记录</h2><div id="history" class="history"></div></div>
+      <div class="rules">黑方先手。玩家使用黑子，AI 使用白子。棋盘上任意横、竖或斜线连续五子即可获胜。</div>
+    </aside>
+  </div>
+</main>
+<div id="win" class="win"><div class="win-card"><h2 id="winTitle">黑方获胜</h2><p id="winText">五子连成一线</p><button id="winRestart">再来一局</button></div></div>
+<script>
+"use strict";
+const canvas=document.querySelector("#board"),ctx=canvas.getContext("2d"),SIZE=760,N=15,MARGIN=38,CELL=(SIZE-MARGIN*2)/(N-1);
+const ui={mode:document.querySelector("#mode"),level:document.querySelector("#level"),turn:document.querySelector("#turn"),status:document.querySelector("#status"),history:document.querySelector("#history"),restart:document.querySelector("#restart"),undo:document.querySelector("#undo"),win:document.querySelector("#win"),winTitle:document.querySelector("#winTitle"),winText:document.querySelector("#winText"),winRestart:document.querySelector("#winRestart")};
+const State=Object.freeze({PLAYING:"PLAYING",AI_THINKING:"AI_THINKING",GAME_OVER:"GAME_OVER"});
+let game;
+const inside=(r,c)=>r>=0&&r<N&&c>=0&&c<N;
+class GomokuGame{
+  constructor(){}
+  reset(){this.board=Array.from({length:N},()=>Array(N).fill(0));this.turn=1;this.state=State.PLAYING;this.history=[];this.last=null;this.winner=0;this.messages=[];hideWin();say("黑方先手，请落子") ;updateUI();draw()}
+  play(row,col){
+    if(this.state!==State.PLAYING||this.board[row][col]!==0)return false;
+    this.place(row,col,this.turn);if(this.checkWin(row,col,this.turn)){this.end(this.turn);return true}
+    if(this.isDraw()){this.end(3);return true}
+    if(ui.mode.value==="ai"){this.turn=2;this.state=State.AI_THINKING;updateUI();setTimeout(()=>this.aiMove(),280)}else{this.turn=this.turn===1?2:1;updateUI()}
+    return true;
+  }
+  place(row,col,side){this.board[row][col]=side;this.last={row,col,side};this.history.push({row,col,side});say(`${side===1?"黑方":"白方"}：${String.fromCharCode(65+col)}${row+1}`);draw()}
+  aiMove(){if(this.state!==State.AI_THINKING)return;const move=this.findMove();this.place(move.row,move.col,2);if(this.checkWin(move.row,move.col,2)){this.end(2);return}if(this.isDraw()){this.end(3);return}this.turn=1;this.state=State.PLAYING;updateUI()}
+  findMove(){
+    const candidates=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(this.board[r][c]===0&&this.nearStone(r,c))candidates.push({row:r,col:c});
+    if(!candidates.length)return{row:7,col:7};let best=candidates[0],bestScore=-Infinity;
+    for(const p of candidates){const attack=this.scorePoint(p.row,p.col,2),defense=this.scorePoint(p.row,p.col,1),center=14-Math.abs(7-p.row)-Math.abs(7-p.col),score=attack*1.12+defense*1.06+center*.8+(Math.random()*(ui.level.value==="hard"?.2:ui.level.value==="normal"?.8:2));if(score>bestScore){bestScore=score;best=p}}
+    return best;
+  }
+  nearStone(r,c){for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++)if((dr||dc)&&inside(r+dr,c+dc)&&this.board[r+dr][c+dc])return true;return false}
+  scorePoint(r,c,side){let total=0;for(const [dr,dc] of [[1,0],[0,1],[1,1],[1,-1]]){const line=this.countDirection(r,c,dr,dc,side)+this.countDirection(r,c,-dr,-dc,side)+1;total+=line>=5?100000:line===4?9000:line===3?800:line===2?80:5}return total}
+  countDirection(r,c,dr,dc,side){let n=0,rr=r+dr,cc=c+dc;while(inside(rr,cc)&&this.board[rr][cc]===side){n++;rr+=dr;cc+=dc}return n}
+  checkWin(r,c,side){return [[1,0],[0,1],[1,1],[1,-1]].some(([dr,dc])=>1+this.countDirection(r,c,dr,dc,side)+this.countDirection(r,c,-dr,-dc,side)>=5)}
+  isDraw(){return this.history.length===N*N}
+  undo(){if(this.state===State.GAME_OVER)return;let count=ui.mode.value==="ai"?Math.min(2,this.history.length):1;while(count--){const move=this.history.pop();if(!move)break;this.board[move.row][move.col]=0}this.last=this.history[this.history.length-1]||null;this.turn=1;this.state=State.PLAYING;this.messages=[];for(const move of this.history)say(`${move.side===1?"黑方":"白方"}：${String.fromCharCode(65+move.col)}${move.row+1}`);say("已悔棋，请黑方落子");updateUI();draw()}
+  end(side){this.winner=side;this.state=State.GAME_OVER;const title=side===3?"和棋":side===1?"黑方获胜":"白方获胜";ui.status.textContent=side===3?"棋盘已填满":`${title}，五子连成一线`;showWin(title,side===3?"所有交叉点均已落子":"五子连成一线")}
+}
+function pointFromEvent(e){const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)*SIZE/rect.width,y=(e.clientY-rect.top)*SIZE/rect.height;return{row:Math.round((y-MARGIN)/CELL),col:Math.round((x-MARGIN)/CELL),x,y}}
+function draw(){ctx.clearRect(0,0,SIZE,SIZE);const grad=ctx.createLinearGradient(0,0,SIZE,SIZE);grad.addColorStop(0,"#e3b56e");grad.addColorStop(1,"#ca9148");ctx.fillStyle=grad;ctx.fillRect(0,0,SIZE,SIZE);ctx.strokeStyle="#9a672e";ctx.lineWidth=2;for(let i=0;i<N;i++){const p=MARGIN+i*CELL;ctx.beginPath();ctx.moveTo(MARGIN,p);ctx.lineTo(SIZE-MARGIN,p);ctx.stroke();ctx.beginPath();ctx.moveTo(p,MARGIN);ctx.lineTo(p,SIZE-MARGIN);ctx.stroke()}for(const [r,c] of [[3,3],[3,11],[7,7],[11,3],[11,11]]){ctx.fillStyle="#61451f";ctx.beginPath();ctx.arc(MARGIN+c*CELL,MARGIN+r*CELL,5,0,Math.PI*2);ctx.fill()}for(let r=0;r<N;r++)for(let c=0;c<N;c++){const side=game.board[r][c];if(!side)continue;const x=MARGIN+c*CELL,y=MARGIN+r*CELL;const g=ctx.createRadialGradient(x-5,y-6,2,x,y,18);g.addColorStop(0,side===1?"#667485":"#fff");g.addColorStop(1,side===1?"#101722":"#cbd3de");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,18,0,Math.PI*2);ctx.fill();ctx.strokeStyle=side===1?"#0a111b":"#aeb8c7";ctx.lineWidth=1.5;ctx.stroke()}if(game.last){const x=MARGIN+game.last.col*CELL,y=MARGIN+game.last.row*CELL;ctx.strokeStyle="#ef5555";ctx.lineWidth=3;ctx.strokeRect(x-22,y-22,44,44)}}
+function updateUI(){const side=game.turn===1?"黑方":"白方";ui.turn.innerHTML=`<span class="stone ${game.turn===2?"white":""}"></span>${side} ${game.state===State.AI_THINKING?"· AI 思考中":"· 等待落子"}`;ui.status.textContent=game.state===State.AI_THINKING?"AI 正在计算落点…":game.state===State.GAME_OVER?"本局结束":"点击棋盘交叉点落子";draw()}
+function say(text){game.messages.push(text);ui.history.innerHTML=game.messages.slice(-12).map(x=>`<p>${x}</p>`).join("");ui.history.scrollTop=ui.history.scrollHeight}
+function showWin(title,text){ui.winTitle.textContent=title;ui.winText.textContent=text;ui.win.classList.add("show")}
+function hideWin(){ui.win.classList.remove("show")}
+canvas.addEventListener("click",e=>{const p=pointFromEvent(e);if(inside(p.row,p.col))game.play(p.row,p.col)});ui.restart.onclick=()=>{hideWin();game.reset()};ui.winRestart.onclick=()=>{hideWin();game.reset()};ui.undo.onclick=()=>game.undo();ui.mode.onchange=()=>{hideWin();game.reset()};ui.level.onchange=()=>{if(ui.mode.value==="ai")say("AI 难度已调整")};game=new GomokuGame();game.reset();draw();
+</script>
+</body>
+</html>

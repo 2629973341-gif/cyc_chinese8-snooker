@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>黑金中八 · 台球</title>
+<style>
+:root{--ink:#e9ede8;--muted:#91a09a;--gold:#d2a85a;--panel:#15201d;--line:#31413b;--felt:#146348}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#0b1210;color:var(--ink);font-family:Inter,system-ui,"Microsoft YaHei",sans-serif}.app{max-width:1380px;margin:auto;padding:22px}.top{display:flex;align-items:end;justify-content:space-between;padding:0 3px 17px;border-bottom:1px solid #25332e}.brand{display:flex;align-items:center;gap:13px}.mark{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:#111;border:2px solid var(--gold);font:bold 20px Georgia;color:var(--gold)}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:800}.top h1{margin:1px 0 0;font:700 24px Georgia,"STSong",serif}.subtitle{font-size:12px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(650px,1fr) 284px;gap:22px;margin-top:21px}.table-card{position:relative;padding:13px;background:#111a17;border:1px solid #293a34;border-radius:15px;box-shadow:0 25px 55px #0008}.canvas{display:block;width:100%;aspect-ratio:12/7;border-radius:8px;background:#18201d;touch-action:none}.toast{position:absolute;left:50%;top:29px;transform:translateX(-50%);background:#07100de8;border:1px solid #52645d;border-radius:20px;padding:8px 15px;font-size:12px;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1}.side{border-left:1px solid #293831;padding-left:21px}.panel{border-bottom:1px solid #293831;padding-bottom:18px;margin-bottom:18px}.panel h2{margin:0 0 13px;font-size:11px;letter-spacing:1.6px;color:var(--gold)}.players{display:grid;gap:7px}.player{display:flex;align-items:center;justify-content:space-between;padding:11px;border:1px solid #2c3b36;background:var(--panel);border-radius:8px;color:var(--muted)}.player.active{border-color:var(--gold);color:#fff}.player b{font-size:13px}.badge{font-size:10px;padding:3px 7px;border-radius:10px;background:#273630}.status{padding:11px;border-radius:8px;background:#111b18;color:#cbd4d0;font-size:12px;line-height:1.65}.power{height:12px;background:#25332e;border-radius:7px;overflow:hidden;margin:9px 0}.power i{display:block;width:0;height:100%;background:linear-gradient(90deg,#58b77d,#e7b34f,#e85d4c);transition:width .04s}.power-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}.buttons button{border:1px solid #3a4c45;background:#17231f;color:#dce4e0;border-radius:6px;padding:9px;cursor:pointer}.buttons button:hover{border-color:var(--gold)}.buttons .primary{grid-column:1/-1;background:#b68b43;border-color:#b68b43;color:#101512;font-weight:800}.log{height:174px;overflow:auto;padding:8px 10px;border-radius:7px;background:#101815;color:var(--muted);font-size:11px}.log p{margin:4px 0}.help{font-size:11px;line-height:1.7;color:var(--muted)}@media(max-width:900px){.app{padding:12px}.layout{display:block}.side{border:0;padding:20px 0 0}.top{align-items:start;gap:10px;flex-direction:column}.table-card{padding:6px}.panel.players-panel,.panel.power-panel{display:inline-block;width:49%;vertical-align:top;padding-right:8px}}
+</style><style>.app{max-width:1520px}.layout{grid-template-columns:minmax(700px,1fr) 284px}.canvas{aspect-ratio:7/4}</style>
+<style>
+.network-room{position:fixed;z-index:20;left:50%;top:8px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid #53675d;border-radius:22px;background:#07100def;box-shadow:0 8px 24px #0008;font-size:11px;white-space:nowrap}.network-room b{color:var(--gold)}.network-room button{padding:4px 8px;border:1px solid #5d3d38;background:#2b1917;color:#ffaaa0;border-radius:12px;cursor:pointer}
+/* 手机横屏：球台和控制面板同屏，右侧面板独立滚动，画布始终保持 1400:800。 */
+@media (orientation:landscape) and (max-height:700px),(orientation:landscape) and (max-width:1000px){
+  html{width:100%;height:100%;overflow:hidden}body{width:100%;height:100dvh;overflow:hidden;overscroll-behavior:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  .app{width:100%;height:100%;max-width:none;margin:0;padding:4px}
+  .top{display:none}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:6px;height:100%;margin:0;min-height:0}
+  .table-card{height:100%;min-width:0;min-height:0;padding:3px;border-radius:8px;display:grid;place-items:center;overflow:hidden}
+  .canvas{display:block;width:auto;height:auto;max-width:100%;max-height:100%;aspect-ratio:7/4;border-radius:5px}
+  .side{height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-left:1px solid #293831;padding:4px 5px 18px 8px;scrollbar-width:thin}
+  .panel,.panel.players-panel,.panel.power-panel{display:block;width:auto;margin:0 0 7px;padding:0 0 7px}
+  .panel h2{margin:0 0 5px;font-size:9px;letter-spacing:1.1px}
+  .players{grid-template-columns:1fr 1fr;gap:4px}
+  .player{padding:6px;border-radius:5px}.player b{font-size:10px}.badge{font-size:9px;padding:2px 5px}
+  .status{padding:6px;font-size:10px;line-height:1.35}
+  .power{height:9px;margin:5px 0}.power-label{font-size:9px}
+  .buttons{gap:4px}.buttons button{padding:6px 3px;font-size:10px}
+  #spinControl{width:96px!important;height:96px!important}
+  .spin-panel>div>div{font-size:9px!important;margin-top:0!important}
+  .log{height:70px;padding:4px 6px;font-size:9px}.log p{margin:2px 0}
+  .help{display:none}
+}
+@media (orientation:landscape) and (max-width:740px){
+  .layout{grid-template-columns:minmax(0,1fr) 190px}
+  #spinControl{width:82px!important;height:82px!important}
+}
+</style></head>
+<body><main class="app"><header class="top"><div class="brand"><div class="mark">8</div><div><div class="eyebrow">CHINESE 8-BALL / 01</div><h1>黑金中八</h1></div></div><div class="subtitle">本地双人 · 全场自由球 · 标准中八判罚</div></header><div class="layout"><section class="table-card"><canvas id="table" class="canvas" width="1200" height="700"></canvas><div id="toast" class="toast"></div></section><aside class="side"><section class="panel players-panel"><h2>球员与球权</h2><div class="players"><div id="p1" class="player active"><b>PLAYER 1</b><span id="g1" class="badge">未分色</span></div><div id="p2" class="player"><b>PLAYER 2</b><span id="g2" class="badge">未分色</span></div></div></section><section class="panel power-panel"><h2>击球状态</h2><div id="status" class="status">移动鼠标瞄准；按下后向球杆后方拖动，松开击球。</div><div class="power"><i id="powerFill"></i></div><div class="power-label"><span>轻推</span><span id="powerText">0%</span><span>强击</span></div></section><section class="panel"><h2>对局操作</h2><div class="buttons"><button id="confirmBall" disabled>确认自由球</button><button id="toggleGuide">辅助线：开</button><button id="restart" class="primary">重新摆球</button></div></section><section class="panel"><h2>本局事件</h2><div id="log" class="log"></div></section><p class="help">移动鼠标确定击球方向；按下时方向会锁定，向后拖动控制力度，因此越过白球也不会反转。犯规后，对手可拖动白球到任意合法位置。</p></aside></div></main>
+<script>
+"use strict";
+const canvas=document.querySelector("#table"),ctx=canvas.getContext("2d");canvas.width=1400;canvas.height=800;
+const GameState=Object.freeze({INIT_RACK:"INIT_RACK",INIT_TABLE:"INIT_TABLE",AIMING:"AIMING",POWER_CHARGING:"POWER_CHARGING",ROLLING:"ROLLING",RULE_EVALUATION:"RULE_EVALUATION",BALL_IN_HAND:"BALL_IN_HAND",BALL_IN_HAND_D_ZONE:"BALL_IN_HAND_D_ZONE",GAME_OVER:"GAME_OVER"});
+const BallState=Object.freeze({ACTIVE:"ACTIVE",SINKING:"SINKING",POCKETED:"POCKETED"});
+const VIEW={width:1400,height:800};
+/* 台面物理区严格为 1200×600，即 2:1。中八球半径 15，斯诺克球半径 10.5。 */
+const TABLE={left:100,right:1300,top:100,bottom:700,width:1200,height:600,ballR:15,snookerBallR:10.5};
+const POCKETS=[{x:95,y:95,r:29,type:"corner"},{x:700,y:93,r:23,type:"side"},{x:1305,y:95,r:29,type:"corner"},{x:95,y:705,r:29,type:"corner"},{x:700,y:707,r:23,type:"side"},{x:1305,y:705,r:29,type:"corner"}];
+/* 唯一参与反弹的六段库边内沿。袋口和梯形斜端均不属于碰撞体。 */
+const CUSHION_SEGMENTS=[[128,100,678,100],[722,100,1272,100],[128,700,678,700],[722,700,1272,700],[100,128,100,672],[1300,128,1300,672]];
+/* 斯诺克袋角使用凸圆弧鼻口。角度采用 Canvas 坐标系，碰撞只发生在列出的有效弧段。 */
+const JAW_ARCS=[
+  {cx:128,cy:90,r:10,a0:Math.PI/2,a1:Math.PI},{cx:678,cy:90,r:10,a0:0,a1:Math.PI/2},
+  {cx:722,cy:90,r:10,a0:Math.PI/2,a1:Math.PI},{cx:1272,cy:90,r:10,a0:0,a1:Math.PI/2},
+  {cx:128,cy:710,r:10,a0:Math.PI,a1:Math.PI*1.5},{cx:678,cy:710,r:10,a0:Math.PI*1.5,a1:Math.PI*2},
+  {cx:722,cy:710,r:10,a0:Math.PI,a1:Math.PI*1.5},{cx:1272,cy:710,r:10,a0:Math.PI*1.5,a1:Math.PI*2},
+  {cx:90,cy:128,r:10,a0:Math.PI*1.5,a1:Math.PI*2},{cx:90,cy:672,r:10,a0:0,a1:Math.PI/2},
+  {cx:1310,cy:128,r:10,a0:Math.PI,a1:Math.PI*1.5},{cx:1310,cy:672,r:10,a0:Math.PI/2,a1:Math.PI}
+];
+const ui={p1:document.querySelector("#p1"),p2:document.querySelector("#p2"),g1:document.querySelector("#g1"),g2:document.querySelector("#g2"),status:document.querySelector("#status"),powerFill:document.querySelector("#powerFill"),powerText:document.querySelector("#powerText"),confirm:document.querySelector("#confirmBall"),guide:document.querySelector("#toggleGuide"),restart:document.querySelector("#restart"),log:document.querySelector("#log"),toast:document.querySelector("#toast")};
+const modeRow=document.createElement("label");modeRow.style.cssText="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#91a09a;font-size:12px";modeRow.innerHTML='<span>游戏模式</span><select id="gameMode" style="background:#17231f;color:#fff;border:1px solid #3a4c45;border-radius:6px;padding:6px"><option value="EIGHT">中式八球</option><option value="SNOOKER">斯诺克</option></select>';document.querySelector(".players-panel").insertBefore(modeRow,document.querySelector(".players"));const modeSelect=modeRow.querySelector("select");
+const spinPanel=document.createElement("section");spinPanel.className="panel spin-panel";spinPanel.innerHTML='<h2>母球击打位置</h2><div style="display:grid;place-items:center"><canvas id="spinControl" width="150" height="150" style="width:150px;height:150px;max-width:100%;touch-action:none;cursor:crosshair"></canvas><div style="font-size:10px;color:#91a09a;margin-top:3px">拖动击点 · 双击归中</div></div>';document.querySelector(".power-panel").insertAdjacentElement("afterend",spinPanel);const spinCanvas=spinPanel.querySelector("#spinControl"),spinCtx=spinCanvas.getContext("2d");
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),len=(x,y)=>Math.hypot(x,y),groupOf=id=>id>=1&&id<=7?"SOLID":id>=9&&id<=15?"STRIPE":id===8?"EIGHT":"CUE",groupName=g=>g==="SOLID"?"全色":g==="STRIPE"?"花色":"未分色";
+function darken(hex,factor){const n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;return`rgb(${Math.round(r*factor)},${Math.round(g*factor)},${Math.round(b*factor)})`}
+
+class Ball{
+  constructor(id,x,y,options={}){this.id=id;this.x=x;this.y=y;this.vx=0;this.vy=0;this.radius=options.radius||TABLE.ballR;this.mass=1;this.rollingFriction=options.rollingFriction??.84;this.spinX=0;this.spinY=0;this.state=BallState.ACTIVE;this.sink=0;this.pocket=null;this.kind=options.kind||null;this.value=options.value||0;this.displayColor=options.color||null;this.spot=options.spot||null}
+  get speed(){return Math.hypot(this.vx,this.vy)}
+  update(dt){if(this.state===BallState.SINKING){this.sink+=dt*4;if(this.sink>=1)this.state=BallState.POCKETED;return}if(this.state!==BallState.ACTIVE)return;this.x+=this.vx*dt;this.y+=this.vy*dt;/* 指数滚动阻尼按真实时间计算，不受帧率或 CCD 子步数量影响。v(t)=v0·e^(-kt)。 */const drag=Math.exp(-this.rollingFriction*dt);this.vx*=drag;this.vy*=drag;const spinDecay=Math.exp(-1.15*dt);this.spinX*=spinDecay;this.spinY*=spinDecay;/* 低于 5px/s 时直接静止，去掉末段几乎不可见的缓慢爬行。 */if(this.speed<5){this.vx=0;this.vy=0}}
+}
+
+class PhysicsEngine{
+  constructor(game){this.game=game;this.restitution=.94;this.railRestitution=game.mode==="SNOOKER"?.86:.82}
+  step(frameDt){
+    const active=this.game.balls.filter(b=>b.state===BallState.ACTIVE),maxSpeed=Math.max(0,...active.map(b=>b.speed)),minRadius=Math.min(TABLE.ballR,...active.map(b=>b.radius));
+    /* CCD 防穿模：根据本帧最快球的位移动态增加子步，使每个子步位移不超过球半径的 1/3。 */
+    const subSteps=clamp(Math.ceil(maxSpeed*frameDt/(minRadius/3)),2,32),dt=frameDt/subSteps;
+    for(let s=0;s<subSteps;s++){for(const b of this.game.balls)b.update(dt);/* 落袋优先级高于球球与库边碰撞，进入黑洞后本子步立刻退出刚体系统。 */for(const b of active)this.checkPocket(b);for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++)this.resolveBallCollision(active[i],active[j]);for(const b of active)if(b.state===BallState.ACTIVE)this.resolveRails(b)}
+  }
+  resolveBallCollision(a,b){
+    if(a.state!==BallState.ACTIVE||b.state!==BallState.ACTIVE)return;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),min=a.radius+b.radius;if(d>=min)return;if(d<.001){dx=.001;dy=0;d=.001}
+    const nx=dx/d,ny=dy/d,overlap=min-d,totalInv=1/a.mass+1/b.mass;
+    a.x-=nx*overlap*(1/a.mass)/totalInv;b.x+=nx*overlap*(1/b.mass)/totalInv;a.y-=ny*overlap*(1/a.mass)/totalInv;b.y+=ny*overlap*(1/b.mass)/totalInv;
+    /* 将相对速度投影到碰撞法向。切向分量保持不变，法向分量按恢复系数反向；冲量公式同时满足动量守恒。 */
+    const rvx=b.vx-a.vx,rvy=b.vy-a.vy,normalSpeed=rvx*nx+rvy*ny;if(normalSpeed>=0)return;const impulse=-(1+this.restitution)*normalSpeed/totalInv,ix=impulse*nx,iy=impulse*ny;a.vx-=ix/a.mass;a.vy-=iy/a.mass;b.vx+=ix/b.mass;b.vy+=iy/b.mass;
+    const cue=a.id===0?a:b.id===0?b:null,object=cue===a?b:cue===b?a:null;if(cue&&object&&!this.game.shot.firstContact){this.game.shot.firstContact=object.id;const forwardX=cue===a?nx:-nx,forwardY=cue===a?ny:-ny,tangentX=-forwardY,tangentY=forwardX,impact=Math.max(0,-normalSpeed),topSpin=-cue.spinY;/* 高杆保留沿碰撞法向的跟进速度，低杆产生反向拉杆；左右塞沿切向改变母球分离角。 */cue.vx+=forwardX*topSpin*impact*.34+tangentX*cue.spinX*impact*.22;cue.vy+=forwardY*topSpin*impact*.34+tangentY*cue.spinX*impact*.22;cue.spinX*=.72;cue.spinY*=.68}
+  }
+  sinkBall(ball,pocket){ball.state=BallState.SINKING;ball.vx=ball.vy=0;ball.pocket=pocket;this.game.shot.pocketed.push(ball.id);if(ball.id===0)this.game.shot.cueScratch=true;return true}
+  checkPocket(ball){if(ball.state!==BallState.ACTIVE)return false;for(const p of POCKETS){/* 球心进入袋口圆周时，约有一半球面进入黑洞，此时才正式落袋。 */const captureRadius=p.r;if(Math.hypot(ball.x-p.x,ball.y-p.y)<=captureRadius)return this.sinkBall(ball,p)}
+    /* 球球碰撞可能在一个子步内把球挤过袋口。只要它是从六个库边缺口越出台面，就直接落袋，绝不在黑色袋口上反弹。 */
+    const outsideX=ball.x<TABLE.left||ball.x>TABLE.right,outsideY=ball.y<TABLE.top||ball.y>TABLE.bottom;
+    const throughTopBottom=outsideY&&(ball.x<128||(ball.x>678&&ball.x<722)||ball.x>1272);
+    const throughLeftRight=outsideX&&(ball.y<128||ball.y>672);
+    if(throughTopBottom||throughLeftRight){let nearest=POCKETS[0],distance=Infinity;for(const p of POCKETS){const d=Math.hypot(ball.x-p.x,ball.y-p.y);if(d<distance){distance=d;nearest=p}}return this.sinkBall(ball,nearest)}return false}
+  resolveRails(ball){
+    /* 袋口黑圆本身没有任何碰撞体；但袋口两侧实际存在的直库边不能失效，否则擦袋球会越过木框。 */
+    let hit=false;for(const segment of CUSHION_SEGMENTS)hit=this.resolveSegment(ball,...segment)||hit;if(this.game.mode==="SNOOKER")for(const jaw of JAW_ARCS)hit=this.resolveJaw(ball,jaw)||hit;
+    if(hit&&this.game.shot.firstContact)this.game.shot.railAfterContact=true;
+  }
+  resolveSegment(ball,x1,y1,x2,y2){
+    const sx=x2-x1,sy=y2-y1,l2=sx*sx+sy*sy,t=((ball.x-x1)*sx+(ball.y-y1)*sy)/l2;if(t<0||t>1)return false;
+    /* 库边是单向碰撞面：法线永远朝向台面内部。即使互撞修正把球心挤到了库边外侧，也会被可靠拉回，而不会因距离已经大于半径而漏检。 */
+    let nx=0,ny=0;if(Math.abs(sx)>Math.abs(sy))ny=y1<400?1:-1;else nx=x1<700?1:-1;
+    const signed=(ball.x-x1)*nx+(ball.y-y1)*ny;if(signed>=ball.radius)return false;
+    ball.x+=(ball.radius-signed)*nx;ball.y+=(ball.radius-signed)*ny;const vn=ball.vx*nx+ball.vy*ny;if(vn<0){ball.vx-=(1+this.railRestitution)*vn*nx;ball.vy-=(1+this.railRestitution)*vn*ny;if(ball.id===0&&Math.abs(ball.spinX)>.01){const length=Math.sqrt(l2),tx=sx/length,ty=sy/length,swerve=ball.spinX*Math.abs(vn)*.16;ball.vx+=tx*swerve;ball.vy+=ty*swerve;ball.spinX*=.62}}return true}
+  resolveJaw(ball,jaw){
+    let dx=ball.x-jaw.cx,dy=ball.y-jaw.cy,d=Math.hypot(dx,dy);if(d<.001){dx=1;dy=0;d=1}
+    let angle=Math.atan2(dy,dx);if(angle<0)angle+=Math.PI*2;const onArc=angle>=jaw.a0-.001&&angle<=jaw.a1+.001,target=jaw.r+ball.radius;if(!onArc||d>=target)return false;
+    /* 球-圆弧碰撞：圆心连线即接触法向。沿法向消除穿透，再仅反转法向速度，切向速度保持不变。 */
+    const nx=dx/d,ny=dy/d;ball.x=jaw.cx+nx*target;ball.y=jaw.cy+ny*target;const vn=ball.vx*nx+ball.vy*ny;if(vn<0){ball.vx-=(1+this.railRestitution)*vn*nx;ball.vy-=(1+this.railRestitution)*vn*ny;if(ball.id===0&&Math.abs(ball.spinX)>.01){const tx=-ny,ty=nx,swerve=ball.spinX*Math.abs(vn)*.16;ball.vx+=tx*swerve;ball.vy+=ty*swerve;ball.spinX*=.62}}return true
+  }
+}
+
+class RuleController{
+  constructor(game){this.game=game;this.playerGroups=[null,null];this.currentTurn=0}
+  beginShot(){const group=this.playerGroups[this.currentTurn];this.game.shot={firstContact:null,pocketed:[],cueScratch:false,railAfterContact:false,groupBefore:group,canShootEightBefore:!!group&&this.remaining(group)===0}}
+  remaining(group){return this.game.balls.filter(b=>b.state!==BallState.POCKETED&&b.state!==BallState.SINKING&&groupOf(b.id)===group).length}
+  evaluate(){
+    const s=this.game.shot,turn=this.currentTurn,opponent=1-turn,group=this.playerGroups[turn],fouls=[];
+    if(s.cueScratch)fouls.push("母球落袋");if(!s.firstContact)fouls.push("空杆");
+    if(s.firstContact){const first=groupOf(s.firstContact);if(!group&&first==="EIGHT")fouls.push("未分色先碰黑8");else if(group){const legal=s.canShootEightBefore?first==="EIGHT":first===group;if(!legal)fouls.push("首碰球不合法")}}
+    if(!s.pocketed.length&&!s.railAfterContact)fouls.push("碰球后无球碰库或落袋");
+    const eightDown=s.pocketed.includes(8);if(eightDown){const legal=!fouls.length&&s.canShootEightBefore&&!s.cueScratch;this.game.winner=legal?turn:opponent;this.game.gameState=GameState.GAME_OVER;this.game.addLog(`${legal?"合法":"违规"}打进黑8，PLAYER ${this.game.winner+1} 获胜`);this.game.updateUI();notify(`PLAYER ${this.game.winner+1} 获胜`);return}
+    if(!group&&!fouls.length){const firstObject=s.pocketed.find(id=>groupOf(id)==="SOLID"||groupOf(id)==="STRIPE");if(firstObject){const assigned=groupOf(firstObject);this.playerGroups[turn]=assigned;this.playerGroups[opponent]=assigned==="SOLID"?"STRIPE":"SOLID";this.game.addLog(`完成分色：PLAYER ${turn+1} 为${groupName(assigned)}`)}}
+    if(fouls.length){this.game.addLog(`犯规：${fouls.join("、")}`);this.currentTurn=opponent;this.game.prepareBallInHand();return}
+    const own=this.playerGroups[turn],madeOwn=s.pocketed.some(id=>groupOf(id)===own);if(!madeOwn)this.currentTurn=opponent;else this.game.addLog(`PLAYER ${turn+1} 合法进球，继续击球`);this.game.gameState=GameState.AIMING;this.game.updateUI();
+  }
+}
+
+class SnookerRuleController{
+  constructor(game){this.game=game;this.currentTurn=0;this.scores=[0,0];this.currentLegalTarget="RED";this.clearanceValue=2;this.freeBallAvailable=false;this.nominatedFreeBallId=null}
+  get expect(){return this.currentLegalTarget}
+  ball(id){return this.game.balls.find(b=>b.id===id)}
+  redsRemaining(){return this.game.balls.some(b=>b.kind==="RED"&&b.state===BallState.ACTIVE)}
+  isNormalLegal(ball,target=this.currentLegalTarget,value=this.clearanceValue){if(!ball||ball.id===0)return false;if(target==="RED")return ball.kind==="RED";if(target==="COLOR")return ball.kind==="COLOR";return ball.kind==="COLOR"&&ball.value===value}
+  beginShot(){this.game.shot={firstContact:null,pocketed:[],cueScratch:false,railAfterContact:false,legalTarget:this.currentLegalTarget,clearanceValue:this.clearanceValue,freeBallId:this.nominatedFreeBallId};this.freeBallAvailable=false;this.nominatedFreeBallId=null}
+  legalFirst(ball,shot){return !!ball&&((shot.freeBallId&&ball.id===shot.freeBallId)||this.isNormalLegal(ball,shot.legalTarget,shot.clearanceValue))}
+  spotIsFree(x,y,ball){return this.game.balls.every(other=>other===ball||other.state!==BallState.ACTIVE||Math.hypot(other.x-x,other.y-y)>=other.radius+ball.radius+.5)}
+  colorSpots(){return this.game.balls.filter(ball=>ball.kind==="COLOR"&&ball.spot).sort((a,b)=>b.value-a.value).map(ball=>({value:ball.value,x:ball.spot.x,y:ball.spot.y}))}
+  searchSpotLine(anchor,ball,direction){const min=TABLE.left+ball.radius,max=TABLE.right-ball.radius;for(let offset=.5;;offset+=.5){const x=anchor.x+direction*offset;if(x<min||x>max)return null;if(this.spotIsFree(x,anchor.y,ball))return{x,y:anchor.y}}}
+  respot(ball){
+    if(!ball)return;ball.state=BallState.ACTIVE;ball.sink=0;ball.vx=ball.vy=0;
+    let destination=null;if(ball.spot&&this.spotIsFree(ball.spot.x,ball.spot.y,ball))destination=ball.spot;
+    /* 专属点被占时，依次检查黑、粉、蓝、咖啡、绿、黄的空置点。 */
+    if(!destination)for(const candidate of this.colorSpots())if(this.spotIsFree(candidate.x,candidate.y,ball)){destination=candidate;break}
+    /* 所有彩球点均被占：画布中 +X 是黑球一侧顶岸，按 0.5px 从专属点向顶岸寻找最近的不接触位置。 */
+    const anchor=ball.spot||{x:1170,y:400};if(!destination)destination=this.searchSpotLine(anchor,ball,1);
+    /* 黑球或粉球向顶岸没有完整球位时，改向发球区一侧倒推；末尾分支是极端拥堵时的安全兜底。 */
+    if(!destination&&(ball.value===7||ball.value===6))destination=this.searchSpotLine(anchor,ball,-1);if(!destination)destination=this.searchSpotLine(anchor,ball,-1);
+    if(!destination)throw Error("台面没有可用的彩球复位位置");ball.x=destination.x;ball.y=destination.y
+  }
+  shouldRespot(ball,shot,isFoul){if(ball.id===shot.freeBallId)return true;if(ball.kind!=="COLOR")return false;return isFoul||shot.legalTarget!=="CLEARANCE"}
+  respotPotted(objects,shot,isFoul){const queue=objects.filter(ball=>this.shouldRespot(ball,shot,isFoul)).sort((a,b)=>(b.value||0)-(a.value||0));for(const ball of queue)this.respot(ball)}
+  targetPenaltyValue(shot){return shot.legalTarget==="CLEARANCE"?shot.clearanceValue:shot.legalTarget==="RED"?1:4}
+  foulValue(shot,potted){const first=this.ball(shot.firstContact);return Math.max(4,this.targetPenaltyValue(shot),first?.value||0,...potted.map(b=>b.value||0))}
+  pottedIsLegal(ball,shot){return (shot.freeBallId&&ball.id===shot.freeBallId)||this.isNormalLegal(ball,shot.legalTarget,shot.clearanceValue)}
+  evaluate(){
+    const s=this.game.shot,turn=this.currentTurn,opponent=1-turn,potted=s.pocketed.map(id=>this.ball(id)).filter(Boolean),objects=potted.filter(b=>b.id!==0),first=this.ball(s.firstContact);let foul=s.cueScratch||!first||!this.legalFirst(first,s);
+    if(objects.some(ball=>!this.pottedIsLegal(ball,s)))foul=true;if((s.legalTarget==="COLOR"||s.legalTarget==="CLEARANCE")&&objects.length>1)foul=true;
+    if(foul){
+      const points=this.foulValue(s,objects);this.scores[opponent]+=points;this.respotPotted(objects,s,true);this.currentTurn=opponent;
+      if(this.redsRemaining())this.currentLegalTarget="RED";else if(s.legalTarget!=="CLEARANCE"){this.currentLegalTarget="CLEARANCE";this.clearanceValue=2}
+      this.game.addLog(`犯规，PLAYER ${opponent+1} 获得 ${points} 分`);
+      if(s.cueScratch)this.game.prepareBallInHand();else{this.game.gameState=GameState.AIMING;this.armFreeBall();this.game.updateUI()}return
+    }
+    let scored=0,continueTurn=objects.length>0;
+    if(s.legalTarget==="RED")scored=objects.reduce((sum)=>sum+1,0);
+    else if(s.legalTarget==="COLOR"){const scoring=objects[0];if(scoring)scored=s.freeBallId&&scoring.id===s.freeBallId?Math.max(2,scoring.value):scoring.value}
+    else if(objects.length)scored=s.clearanceValue;
+    /* 统一复位状态机：常规阶段彩球强制复位；清彩合法球不复位；自由球替代球始终复位。 */
+    this.respotPotted(objects,s,false);
+    this.scores[turn]+=scored;if(scored)this.game.addLog(`PLAYER ${turn+1} 得 ${scored} 分，总分 ${this.scores[turn]}`);
+    if(continueTurn){
+      if(s.legalTarget==="RED")this.currentLegalTarget="COLOR";
+      else if(s.legalTarget==="COLOR"){if(this.redsRemaining())this.currentLegalTarget="RED";else{this.currentLegalTarget="CLEARANCE";this.clearanceValue=2}}
+      else if(this.clearanceValue===7){this.finishGame();return}else this.clearanceValue++
+    }else{
+      this.currentTurn=opponent;if(this.redsRemaining())this.currentLegalTarget="RED";else if(s.legalTarget==="COLOR"){this.currentLegalTarget="CLEARANCE";this.clearanceValue=2}
+    }
+    this.game.gameState=GameState.AIMING;this.game.updateUI()
+  }
+  legalBalls(){return this.game.balls.filter(ball=>ball.state===BallState.ACTIVE&&this.isNormalLegal(ball))}
+  rayBlocked(cue,angle,maxDistance,target){const dx=Math.cos(angle),dy=Math.sin(angle);return this.game.balls.some(ball=>{if(ball===cue||ball===target||ball.state!==BallState.ACTIVE||this.isNormalLegal(ball))return false;const rx=ball.x-cue.x,ry=ball.y-cue.y,projection=rx*dx+ry*dy;if(projection<=0||projection>=maxDistance)return false;const perpendicular=Math.abs(rx*dy-ry*dx);return perpendicular<cue.radius+ball.radius-.25})}
+  isSnookered(){
+    const cue=this.game.cue,targets=this.legalBalls();if(!cue||cue.state!==BallState.ACTIVE||!targets.length)return false;
+    for(const target of targets){const dx=target.x-cue.x,dy=target.y-cue.y,d=Math.hypot(dx,dy),combined=cue.radius+target.radius;if(d<=combined)return false;const center=Math.atan2(dy,dx),edge=Math.asin(clamp(combined/d,-1,1)),contact=Math.sqrt(Math.max(0,d*d-combined*combined));if(!this.rayBlocked(cue,center-edge,contact,target)||!this.rayBlocked(cue,center+edge,contact,target))return false}
+    return true
+  }
+  armFreeBall(){this.freeBallAvailable=this.isSnookered();this.nominatedFreeBallId=null;if(this.freeBallAvailable)this.game.addLog("犯规后形成斯诺克：可点击任意非目标球指定自由球")}
+  nominateFreeBall(ball){if(!this.freeBallAvailable||!ball||ball.id===0||ball.state!==BallState.ACTIVE||this.isNormalLegal(ball))return false;this.nominatedFreeBallId=ball.id;this.game.addLog(`已指定 ${ball.value||1} 分球为自由球`);this.game.updateUI();return true}
+  finishGame(){this.game.winner=this.scores[0]===this.scores[1]?null:this.scores[0]>this.scores[1]?0:1;this.game.gameState=GameState.GAME_OVER;this.game.addLog(this.game.winner===null?"斯诺克平局":`PLAYER ${this.game.winner+1} 赢得斯诺克比赛`);this.game.updateUI();notify(this.game.winner===null?"平局":`PLAYER ${this.game.winner+1} 获胜`)}
+}
+
+class BilliardsGame{
+  constructor(){this.guide=true;this.logs=[];this.reset()}
+  reset(){this.mode=modeSelect.value;this.gameState=this.mode==="SNOOKER"?GameState.INIT_TABLE:GameState.INIT_RACK;this.balls=[];this.logs=[];this.winner=null;this.aim={x:1,y:0};this.lockedAim={x:1,y:0};this.cueSpin={x:0,y:0};this.chargeStart=null;this.power=0;this.draggingCue=false;this.pendingFreeBallCheck=false;this.shot={firstContact:null,pocketed:[],cueScratch:false,railAfterContact:false};this.rule=this.mode==="SNOOKER"?new SnookerRuleController(this):new RuleController(this);this.physics=new PhysicsEngine(this);if(this.mode==="SNOOKER")this.rackSnooker();else this.rackEight();this.addLog(this.mode==="SNOOKER"?"斯诺克新局开始：请先在 D 形区摆放母球":"新对局开始，PLAYER 1 开球");this.gameState=this.mode==="SNOOKER"?GameState.BALL_IN_HAND_D_ZONE:GameState.AIMING;drawSpinControl(this.cueSpin);this.updateUI()}
+  rackEight(){this.balls.push(new Ball(0,400,400));const ids=[1,9,2,10,3,11,4,12,5,13,6,14,7,15],rack=[];for(let row=0;row<5;row++)for(let j=0;j<=row;j++)rack.push({x:970+row*26.1,y:400+(j-row/2)*30.2});const eightIndex=4;this.balls.push(new Ball(8,rack[eightIndex].x,rack[eightIndex].y));let k=0;for(let i=0;i<rack.length;i++)if(i!==eightIndex){const id=ids[k++],p=rack[i];this.balls.push(new Ball(id,p.x,p.y))}}
+  rackSnooker(){
+    const radius=TABLE.snookerBallR;this.balls.push(new Ball(0,300,400,{radius}));
+    /* 15 颗红球使用唯一 ID，规则层只依赖 kind/value，不依赖显示编号。 */
+    const diameter=radius*2+.35,stepX=Math.sqrt(3)*diameter/2;let id=101;for(let row=0;row<5;row++)for(let j=0;j<=row;j++)this.balls.push(new Ball(id++,943+row*stepX,400+(j-row/2)*diameter,{radius,kind:"RED",value:1,color:"#b51f2e"}));
+    const colors=[
+      {id:202,x:350,y:520,value:2,color:"#dfbd22"},
+      {id:203,x:350,y:280,value:3,color:"#258546"},
+      {id:204,x:350,y:400,value:4,color:"#784126"},
+      {id:205,x:700,y:400,value:5,color:"#2866b4"},
+      {id:206,x:920,y:400,value:6,color:"#e590aa"},
+      {id:207,x:1170,y:400,value:7,color:"#111111"}
+    ];
+    for(const c of colors)this.balls.push(new Ball(c.id,c.x,c.y,{radius,kind:"COLOR",value:c.value,color:c.color,spot:{x:c.x,y:c.y}}))
+  }
+  get cue(){return this.balls.find(b=>b.id===0)}
+  shoot(fromNetwork=false){if(this.gameState!==GameState.POWER_CHARGING)return;if(roomClient&&!fromNetwork){roomClient.submitShot({aim:{...this.aim},power:this.power,spin:{...this.cueSpin},cue:{x:this.cue.x,y:this.cue.y},freeBallId:this.mode==="SNOOKER"?this.rule.nominatedFreeBallId:null});return}/* 最小力度从 6% 降到 1.5%，基础冲量也同步降低。 */this.power=Math.max(.015,this.power);this.rule.beginShot();const impulse=70+this.power*1300,selectedSpin={...this.cueSpin};this.cue.vx=this.aim.x*impulse;this.cue.vy=this.aim.y*impulse;this.cue.spinX=selectedSpin.x;this.cue.spinY=selectedSpin.y;this.gameState=GameState.ROLLING;const spinName=Math.hypot(selectedSpin.x,selectedSpin.y)<.08?"中心击球":selectedSpin.y<-.25?"高杆":selectedSpin.y>.25?"低杆":"侧旋";/* 本杆使用已锁定的 selectedSpin；控制器归中只影响下一杆。 */this.cueSpin={x:0,y:0};drawSpinControl(this.cueSpin);this.addLog(`PLAYER ${this.rule.currentTurn+1} 出杆，力度 ${Math.round(this.power*100)}%，${spinName}`);this.power=0;this.updateUI()}
+  update(dt){if(this.gameState===GameState.ROLLING){this.physics.step(dt);const moving=this.balls.some(b=>b.state===BallState.ACTIVE&&b.speed>=5),sinking=this.balls.some(b=>b.state===BallState.SINKING);if(!moving&&!sinking){for(const b of this.balls){b.vx=b.vy=0}this.gameState=GameState.RULE_EVALUATION;setTimeout(()=>{if(this.gameState===GameState.RULE_EVALUATION){this.rule.evaluate();if(roomClient?.authoritativeShot)roomClient.publishState()}},260)}}this.updatePowerUI()}
+  isBallInHand(){return this.gameState===GameState.BALL_IN_HAND||this.gameState===GameState.BALL_IN_HAND_D_ZONE}
+  prepareBallInHand(){let cue=this.cue;cue.state=BallState.ACTIVE;cue.x=this.mode==="SNOOKER"?300:400;cue.y=400;cue.vx=cue.vy=cue.spinX=cue.spinY=0;this.draggingCue=false;this.pendingFreeBallCheck=this.mode==="SNOOKER";this.gameState=this.mode==="SNOOKER"?GameState.BALL_IN_HAND_D_ZONE:GameState.BALL_IN_HAND;this.addLog(this.mode==="SNOOKER"?`PLAYER ${this.rule.currentTurn+1} 请在 D 形区摆放母球`:`PLAYER ${this.rule.currentTurn+1} 获得全场自由球`);this.updateUI()}
+  validCuePosition(x,y){const radius=this.cue.radius;if(x<TABLE.left+radius||x>TABLE.right-radius||y<TABLE.top+radius||y>TABLE.bottom-radius)return false;if(this.mode==="SNOOKER"&&this.gameState===GameState.BALL_IN_HAND_D_ZONE&&(x>350||Math.hypot(x-350,y-400)>120-radius))return false;return this.balls.every(b=>b.id===0||b.state!==BallState.ACTIVE||Math.hypot(b.x-x,b.y-y)>=radius+b.radius+.5)}
+  addLog(text){this.logs.push(text);ui.log.innerHTML=this.logs.slice(-30).map(x=>`<p>${x}</p>`).join("");ui.log.scrollTop=ui.log.scrollHeight}
+  updatePowerUI(){ui.powerFill.style.width=`${this.power*100}%`;ui.powerText.textContent=`${Math.round(this.power*100)}%`}
+  updateUI(){const t=this.rule.currentTurn;ui.p1.classList.toggle("active",t===0);ui.p2.classList.toggle("active",t===1);if(this.mode==="SNOOKER"){ui.g1.textContent=`${this.rule.scores[0]} 分`;ui.g2.textContent=`${this.rule.scores[1]} 分`}else{ui.g1.textContent=groupName(this.rule.playerGroups[0]);ui.g2.textContent=groupName(this.rule.playerGroups[1])}ui.confirm.disabled=!this.isBallInHand();const result=this.winner===null?"平局":`PLAYER ${this.winner+1} 获胜`,target=this.mode==="SNOOKER"?(this.rule.currentLegalTarget==="RED"?"红球":this.rule.currentLegalTarget==="COLOR"?"任意彩球":this.rule.clearanceValue+" 分球"):"";const free=this.mode==="SNOOKER"&&this.rule.freeBallAvailable?(this.rule.nominatedFreeBallId?"；自由球已指定":"；请点击非目标球指定自由球"):"";const labels={[GameState.AIMING]:this.mode==="SNOOKER"?`斯诺克：当前目标 ${target}${free}`:"移动指针瞄准；按下后向球杆后方拖动。",[GameState.POWER_CHARGING]:"方向已锁定，后拉越远力度越大，松开击球。",[GameState.ROLLING]:"球正在运动，输入已锁定。",[GameState.RULE_EVALUATION]:"正在结算本杆规则……",[GameState.BALL_IN_HAND]:"拖动白球摆放，确认后继续。",[GameState.BALL_IN_HAND_D_ZONE]:"拖动白球放入开球区 D 形区，确认后继续。",[GameState.GAME_OVER]:result};ui.status.textContent=labels[this.gameState]||"准备中";if(roomClient)roomClient.refreshControlLock()}
+}
+
+class Renderer{
+  constructor(game){this.game=game}
+  draw(){ctx.clearRect(0,0,VIEW.width,VIEW.height);this.drawTable();for(const b of this.game.balls)if(b.state!==BallState.POCKETED)this.drawBall(b);if((this.game.gameState===GameState.AIMING||this.game.gameState===GameState.POWER_CHARGING)&&this.game.guide)this.drawGuide();if(this.game.gameState===GameState.AIMING||this.game.gameState===GameState.POWER_CHARGING)this.drawCue()}
+  drawTable(){ctx.fillStyle="#241914";roundRect(20,20,1360,760,50);ctx.fill();ctx.fillStyle="#694329";roundRect(45,45,1310,710,36);ctx.fill();const felt=ctx.createRadialGradient(700,400,60,700,400,720);felt.addColorStop(0,"#1b7656");felt.addColorStop(1,"#0d513b");ctx.fillStyle=felt;ctx.fillRect(TABLE.left,TABLE.top,TABLE.width,TABLE.height);
+    this.drawCushions();for(const pocket of POCKETS)this.drawPocket(pocket);if(this.game.mode==="SNOOKER")this.drawSnookerMarks();
+    ctx.fillStyle="#d3ad68";for(let x=220;x<=1180;x+=120){ctx.beginPath();ctx.arc(x,57,3,0,7);ctx.fill();ctx.beginPath();ctx.arc(x,743,3,0,7);ctx.fill()}for(let y=220;y<=580;y+=120){ctx.beginPath();ctx.arc(57,y,3,0,7);ctx.fill();ctx.beginPath();ctx.arc(1343,y,3,0,7);ctx.fill()}}
+  drawCushions(){const g=ctx.createLinearGradient(0,70,0,116);g.addColorStop(0,"#0a4934");g.addColorStop(.58,"#197657");g.addColorStop(1,"#0b513a");ctx.fillStyle=g;ctx.strokeStyle="#063d2c";ctx.lineWidth=2;
+    const poly=points=>{ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fill();ctx.stroke()};
+    /* 袋口向木框外移后，六段梯形外长边同步移动，仍与袋口最外点严格共线。 */
+    poly([[116,70],[688,70],[678,100],[128,100]]);poly([[712,70],[1284,70],[1272,100],[722,100]]);
+    poly([[128,700],[678,700],[688,730],[116,730]]);poly([[722,700],[1272,700],[1284,730],[712,730]]);
+    poly([[70,116],[100,128],[100,672],[70,684]]);poly([[1300,128],[1330,116],[1330,684],[1300,672]]);
+  }
+  drawPocket(pocket){ctx.fillStyle="#000";ctx.beginPath();ctx.arc(pocket.x,pocket.y,pocket.r,0,Math.PI*2);ctx.fill()}
+  drawSnookerMarks(){ctx.save();ctx.strokeStyle="#d7e8da66";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(350,TABLE.top);ctx.lineTo(350,TABLE.bottom);ctx.stroke();ctx.beginPath();ctx.arc(350,400,120,Math.PI/2,Math.PI*1.5);ctx.stroke();ctx.fillStyle="#e5eee755";for(const [x,y] of [[350,520],[350,280],[350,400],[700,400],[920,400],[1170,400]]){ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fill()}ctx.strokeStyle="#22805f";ctx.lineWidth=7;ctx.lineCap="round";for(const jaw of JAW_ARCS){ctx.beginPath();ctx.arc(jaw.cx,jaw.cy,jaw.r,jaw.a0,jaw.a1);ctx.stroke()}ctx.restore()}
+  drawBall(b){const scale=b.state===BallState.SINKING?1-clamp(b.sink,0,.9):1,r=b.radius*scale;if(r<=1)return;const colors=["#f4f2e9","#e5c126","#245fbc","#d83d35","#71418f","#e57625","#25864c","#772e2d","#111","#e5c126","#245fbc","#d83d35","#71418f","#e57625","#25864c","#772e2d"];ctx.save();ctx.translate(b.x,b.y);ctx.shadowColor="#0009";ctx.shadowBlur=5;ctx.shadowOffsetY=3;
+    if(this.game.mode==="SNOOKER"){const color=b.id===0?"#f4f2e9":b.displayColor,grad=ctx.createRadialGradient(-5,-6,1,0,0,r);grad.addColorStop(0,"#fff");grad.addColorStop(.2,color);grad.addColorStop(1,darken(color,.36));ctx.fillStyle=grad;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.shadowColor="transparent";ctx.strokeStyle="#0008";ctx.lineWidth=1;ctx.stroke();ctx.fillStyle="#fff8";ctx.beginPath();ctx.arc(-r*.34,-r*.38,r*.16,0,Math.PI*2);ctx.fill();if(this.game.rule.nominatedFreeBallId===b.id){ctx.strokeStyle="#ffd45a";ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,r+5,0,Math.PI*2);ctx.stroke()}ctx.restore();return}
+    if(b.id>=9){ctx.fillStyle="#f4f1e8";ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.save();ctx.beginPath();ctx.arc(0,0,r-.5,0,Math.PI*2);ctx.clip();const band=ctx.createLinearGradient(0,-r*.55,0,r*.55);band.addColorStop(0,darken(colors[b.id],.7));band.addColorStop(.45,colors[b.id]);band.addColorStop(1,darken(colors[b.id],.55));ctx.fillStyle=band;ctx.fillRect(-r,-r*.48,r*2,r*.96);ctx.restore()}else{const grad=ctx.createRadialGradient(-5,-6,1,0,0,r);grad.addColorStop(0,"#fff");grad.addColorStop(.2,colors[b.id]);grad.addColorStop(1,darken(colors[b.id],.36));ctx.fillStyle=grad;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill()}
+    ctx.shadowColor="transparent";ctx.strokeStyle="#0006";ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();if(b.id>0){ctx.fillStyle="#faf9f4";ctx.beginPath();ctx.arc(0,0,r*.46,0,Math.PI*2);ctx.fill();ctx.fillStyle="#141414";ctx.font=`bold ${r*.62}px Arial`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(b.id,0,.5)}ctx.fillStyle="#fff8";ctx.beginPath();ctx.arc(-r*.34,-r*.38,r*.16,0,Math.PI*2);ctx.fill();ctx.restore()}
+  drawGuide(){const cue=this.game.cue;if(cue.state!==BallState.ACTIVE)return;const hit=raycast(cue.x,cue.y,this.game.aim.x,this.game.aim.y,this.game.balls,this.game.mode==="SNOOKER");ctx.save();ctx.setLineDash([10,8]);ctx.strokeStyle="#f7ead0aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cue.x,cue.y);ctx.lineTo(hit.x,hit.y);ctx.stroke();if(hit.type==="RAIL"){const dot=this.game.aim.x*hit.nx+this.game.aim.y*hit.ny,rx=this.game.aim.x-2*dot*hit.nx,ry=this.game.aim.y-2*dot*hit.ny;ctx.beginPath();ctx.moveTo(hit.x,hit.y);ctx.lineTo(hit.x+rx*150,hit.y+ry*150);ctx.stroke()}ctx.restore()}
+  drawCue(){const c=this.game.cue,back=30+this.game.power*115,dx=this.game.aim.x,dy=this.game.aim.y;ctx.save();ctx.lineCap="round";ctx.strokeStyle="#f2dfb6";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(c.x-dx*back,c.y-dy*back);ctx.lineTo(c.x-dx*(back+155),c.y-dy*(back+155));ctx.stroke();ctx.strokeStyle="#b87938";ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(c.x-dx*(back+150),c.y-dy*(back+150));ctx.lineTo(c.x-dx*(back+315),c.y-dy*(back+315));ctx.stroke();ctx.strokeStyle="#2a1710";ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(c.x-dx*(back+300),c.y-dy*(back+300));ctx.lineTo(c.x-dx*(back+330),c.y-dy*(back+330));ctx.stroke();ctx.restore()}
+}
+
+function raycast(ox,oy,dx,dy,balls,useJaws=false){let best={t:2200,type:"NONE"},cue=balls.find(b=>b.id===0),cueRadius=cue?.radius||TABLE.ballR;for(const b of balls){if(b.id===0||b.state!==BallState.ACTIVE)continue;const rx=ox-b.x,ry=oy-b.y,R=cueRadius+b.radius,B=2*(rx*dx+ry*dy),C=rx*rx+ry*ry-R*R,disc=B*B-4*C;if(disc>=0){const t=(-B-Math.sqrt(disc))/2;if(t>0&&t<best.t)best={t,type:"BALL"}}}
+  const accept=(t,nx,ny,min,max,horizontal)=>{if(t<=0||t>=best.t)return;const along=horizontal?ox+dx*t:oy+dy*t;if(along>=min&&along<=max)best={t,nx,ny,type:"RAIL"}};
+  if(Math.abs(dy)>.0001){accept((TABLE.top+cueRadius-oy)/dy,0,1,128,678,true);accept((TABLE.top+cueRadius-oy)/dy,0,1,722,1272,true);accept((TABLE.bottom-cueRadius-oy)/dy,0,-1,128,678,true);accept((TABLE.bottom-cueRadius-oy)/dy,0,-1,722,1272,true)}
+  if(Math.abs(dx)>.0001){accept((TABLE.left+cueRadius-ox)/dx,1,0,128,672,false);accept((TABLE.right-cueRadius-ox)/dx,-1,0,128,672,false)}
+  if(useJaws)for(const jaw of JAW_ARCS){const rx=ox-jaw.cx,ry=oy-jaw.cy,R=jaw.r+cueRadius,B=2*(rx*dx+ry*dy),C=rx*rx+ry*ry-R*R,disc=B*B-4*C;if(disc<0)continue;const t=(-B-Math.sqrt(disc))/2;if(t<=0||t>=best.t)continue;const hx=ox+dx*t,hy=oy+dy*t,nx=(hx-jaw.cx)/R,ny=(hy-jaw.cy)/R;let angle=Math.atan2(hy-jaw.cy,hx-jaw.cx);if(angle<0)angle+=Math.PI*2;if(angle>=jaw.a0&&angle<=jaw.a1)best={t,nx,ny,type:"RAIL"}}
+  return{x:ox+dx*best.t,y:oy+dy*best.t,...best}}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}function notify(text){ui.toast.textContent=text;ui.toast.classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>ui.toast.classList.remove("show"),1900)}
+function pointerPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*VIEW.width/r.width,y:(e.clientY-r.top)*VIEW.height/r.height}}
+function drawSpinControl(spin={x:0,y:0}){const c=75,r=49;spinCtx.clearRect(0,0,150,150);spinCtx.fillStyle="#91a09a";spinCtx.font='11px "Microsoft YaHei",sans-serif';spinCtx.textAlign="center";spinCtx.fillText("高杆",c,12);spinCtx.fillText("低杆",c,146);spinCtx.fillText("左塞",18,79);spinCtx.fillText("右塞",132,79);const gradient=spinCtx.createRadialGradient(58,55,4,c,c,r);gradient.addColorStop(0,"#fff");gradient.addColorStop(.72,"#e9ecea");gradient.addColorStop(1,"#aeb6b2");spinCtx.fillStyle=gradient;spinCtx.shadowColor="#0009";spinCtx.shadowBlur=8;spinCtx.beginPath();spinCtx.arc(c,c,r,0,Math.PI*2);spinCtx.fill();spinCtx.shadowColor="transparent";spinCtx.strokeStyle="#7f8d87";spinCtx.lineWidth=1.5;spinCtx.stroke();spinCtx.strokeStyle="#7a898344";spinCtx.setLineDash([3,4]);spinCtx.beginPath();spinCtx.moveTo(c-r+5,c);spinCtx.lineTo(c+r-5,c);spinCtx.moveTo(c,c-r+5);spinCtx.lineTo(c,c+r-5);spinCtx.stroke();spinCtx.setLineDash([]);const x=c+spin.x*(r-8),y=c+spin.y*(r-8);spinCtx.fillStyle="#dc3f38";spinCtx.shadowColor="#0008";spinCtx.shadowBlur=4;spinCtx.beginPath();spinCtx.arc(x,y,6,0,Math.PI*2);spinCtx.fill();spinCtx.shadowColor="transparent";spinCtx.strokeStyle="#7b1715";spinCtx.stroke()}
+function setSpinFromPointer(e){const rect=spinCanvas.getBoundingClientRect(),px=(e.clientX-rect.left)*150/rect.width,py=(e.clientY-rect.top)*150/rect.height,c=75,limit=41;let x=(px-c)/limit,y=(py-c)/limit,m=Math.hypot(x,y);if(m>1){x/=m;y/=m}game.cueSpin={x,y};drawSpinControl(game.cueSpin)}
+async function roomApi(url,options={}){const response=await fetch(url,{...options,headers:{"Content-Type":"application/json",...(options.headers||{})}}),payload=await response.json().catch(()=>({}));if(!response.ok)throw Error(payload.error||"网络请求失败");return payload}
+class RoomClient{
+  constructor(roomId){this.roomId=roomId;this.room=null;this.me=null;this.myIndex=-1;this.events=null;this.awaitingShot=false;this.authoritativeShot=false;this.bar=null}
+  async init(){try{const result=await roomApi(`/api/rooms/${this.roomId}`);this.room=result.room;this.me=result.me;if(this.room.status!=="STARTED")throw Error("房间尚未开始");this.myIndex=this.room.host.id===this.me.id?0:1;modeSelect.value=this.room.mode;modeSelect.disabled=true;game.reset();ui.p1.querySelector("b").textContent=this.room.host.username;ui.p2.querySelector("b").textContent=this.room.guest.username;if(this.room.game.snapshot)this.applySnapshot(this.room.game.snapshot);if(this.room.game.rolling&&this.room.game.lastAction)this.playShot(this.room.game.lastAction,this.room.game.activeShooter);this.renderBar();this.events=new EventSource("/api/events");this.events.onmessage=event=>this.handle(JSON.parse(event.data));this.events.onerror=()=>this.setBarText("正在重连…")}catch(error){alert(error.message);location.href="/lobby.html"}}
+  canAct(){return this.room?.status==="STARTED"&&!this.room.game.rolling&&!this.awaitingShot&&this.myIndex===this.room.game.currentTurn&&this.myIndex===game.rule.currentTurn&&game.gameState!==GameState.ROLLING&&game.gameState!==GameState.RULE_EVALUATION&&game.gameState!==GameState.GAME_OVER}
+  async submitShot(action){if(!this.canAct()){game.gameState=GameState.AIMING;game.updateUI();notify("等待对手回合");return}this.awaitingShot=true;game.gameState=GameState.RULE_EVALUATION;game.updateUI();try{await roomApi(`/api/rooms/${this.roomId}/action`,{method:"POST",body:JSON.stringify({type:"SHOT",...action})})}catch(error){this.awaitingShot=false;game.gameState=GameState.AIMING;game.updateUI();this.refreshControlLock();notify(error.message)}}
+  playShot(action,senderId){this.awaitingShot=false;this.room.game.rolling=true;this.authoritativeShot=senderId===this.me.id;game.aim={...action.aim};game.power=action.power;game.cueSpin={...action.spin};game.cue.x=action.cue.x;game.cue.y=action.cue.y;if(game.mode==="SNOOKER")game.rule.nominatedFreeBallId=action.freeBallId;game.gameState=GameState.POWER_CHARGING;game.shoot(true);this.renderBar()}
+  handle(message){if(message.roomId&&message.roomId!==this.roomId)return;if(message.type==="ROOM_ACTION"&&message.action?.type==="SHOT")this.playShot(message.action,message.senderId);else if(message.type==="ROOM_STATE"){this.room.game.rolling=false;this.applySnapshot(message.snapshot);this.authoritativeShot=false;this.renderBar()}else if(message.type==="ROOM_CLOSED"){alert(message.reason||"房间已关闭");location.href="/lobby.html"}}
+  snapshot(){return{mode:game.mode,gameState:game.gameState,winner:game.winner,currentTurn:game.rule.currentTurn,balls:game.balls.map(ball=>({id:ball.id,x:ball.x,y:ball.y,vx:ball.vx,vy:ball.vy,state:ball.state,sink:ball.sink,spinX:ball.spinX,spinY:ball.spinY})),rule:game.mode==="SNOOKER"?{scores:[...game.rule.scores],currentLegalTarget:game.rule.currentLegalTarget,clearanceValue:game.rule.clearanceValue,freeBallAvailable:game.rule.freeBallAvailable,nominatedFreeBallId:game.rule.nominatedFreeBallId}:{playerGroups:[...game.rule.playerGroups]}}}
+  applySnapshot(snapshot){if(!snapshot||snapshot.mode!==game.mode)return;for(const state of snapshot.balls||[]){const ball=game.balls.find(item=>item.id===state.id);if(ball)Object.assign(ball,state)}game.winner=snapshot.winner??null;game.rule.currentTurn=snapshot.currentTurn;if(this.room)this.room.game.currentTurn=snapshot.currentTurn;if(game.mode==="SNOOKER"){Object.assign(game.rule,snapshot.rule||{});if(snapshot.rule?.scores)game.rule.scores=[...snapshot.rule.scores]}else if(snapshot.rule?.playerGroups)game.rule.playerGroups=[...snapshot.rule.playerGroups];game.gameState=snapshot.gameState||GameState.AIMING;game.updateUI()}
+  async publishState(){this.authoritativeShot=false;try{await roomApi(`/api/rooms/${this.roomId}/action`,{method:"POST",body:JSON.stringify({type:"STATE",snapshot:this.snapshot()})})}catch(error){notify(`同步失败：${error.message}`)}}
+  renderBar(){if(!this.bar){this.bar=document.createElement("div");this.bar.className="network-room";document.body.appendChild(this.bar)}const turn=this.room.game.currentTurn===0?this.room.host.username:this.room.guest.username;this.bar.innerHTML=`<span>房间 <b>${this.roomId.slice(-6).toUpperCase()}</b></span><span>${this.room.mode==="SNOOKER"?"斯诺克":"中式八球"}</span><span id="netTurn">${game.gameState===GameState.ROLLING?"击球中":`轮到 ${turn}`}</span><button>退出房间</button>`;this.bar.querySelector("button").onclick=()=>this.exit();this.refreshControlLock()}
+  refreshControlLock(){if(!this.room)return;const myTurn=this.myIndex===this.room.game.currentTurn&&this.myIndex===game.rule.currentTurn,interactive=this.canAct();canvas.style.cursor=interactive?"crosshair":"not-allowed";spinCanvas.style.pointerEvents=interactive?"auto":"none";spinPanel.style.opacity=interactive?"1":".48";if(!myTurn&&!this.room.game.rolling&&game.gameState!==GameState.GAME_OVER){const opponent=this.room.game.currentTurn===0?this.room.host.username:this.room.guest.username;ui.status.textContent=`等待 ${opponent} 击球，你当前只能观看`;ui.confirm.disabled=true}}
+  setBarText(text){const el=this.bar?.querySelector("#netTurn");if(el)el.textContent=text}
+  async exit(){if(!confirm("确定退出房间？进行中的对局将结束。"))return;try{await roomApi(`/api/rooms/${this.roomId}/exit`,{method:"POST"})}finally{location.href="/lobby.html"}}
+}
+let roomClient=null,game=new BilliardsGame(),renderer=new Renderer(game),last=performance.now();
+let spinDragging=false;spinCanvas.addEventListener("pointerdown",e=>{if(roomClient&&!roomClient.canAct())return notify("等待对手回合");spinDragging=true;spinCanvas.setPointerCapture(e.pointerId);setSpinFromPointer(e)});spinCanvas.addEventListener("pointermove",e=>{if(spinDragging&&(!roomClient||roomClient.canAct()))setSpinFromPointer(e)});spinCanvas.addEventListener("pointerup",()=>spinDragging=false);spinCanvas.addEventListener("pointercancel",()=>spinDragging=false);spinCanvas.addEventListener("dblclick",()=>{if(roomClient&&!roomClient.canAct())return notify("等待对手回合");game.cueSpin={x:0,y:0};drawSpinControl(game.cueSpin)});
+canvas.addEventListener("pointermove",e=>{if(roomClient&&!roomClient.canAct())return;const p=pointerPos(e),cue=game.cue;if(game.isBallInHand()&&game.draggingCue){if(game.validCuePosition(p.x,p.y)){cue.x=p.x;cue.y=p.y}}else if(game.gameState===GameState.AIMING){const dx=p.x-cue.x,dy=p.y-cue.y,d=Math.hypot(dx,dy);if(d>1){game.aim.x=dx/d;game.aim.y=dy/d}}else if(game.gameState===GameState.POWER_CHARGING&&game.chargeStart){/* 蓄力时方向已锁定；鼠标越过白球也只会改变拉杆距离，不会让方向翻转。 */const mx=p.x-game.chargeStart.x,my=p.y-game.chargeStart.y,pull=-(mx*game.lockedAim.x+my*game.lockedAim.y);game.power=clamp(pull/190,0,1)}});
+canvas.addEventListener("pointerdown",e=>{canvas.setPointerCapture(e.pointerId);if(roomClient&&!roomClient.canAct()){notify("等待对手回合");return}const p=pointerPos(e),cue=game.cue;if(game.isBallInHand()&&Math.hypot(p.x-cue.x,p.y-cue.y)<35){game.draggingCue=true;return}if(game.gameState===GameState.AIMING){if(game.mode==="SNOOKER"&&game.rule.freeBallAvailable){const selected=game.balls.find(ball=>ball.id!==0&&ball.state===BallState.ACTIVE&&Math.hypot(p.x-ball.x,p.y-ball.y)<=ball.radius+8);if(selected&&game.rule.nominateFreeBall(selected)){notify("自由球已指定");return}}const dx=p.x-cue.x,dy=p.y-cue.y,d=Math.hypot(dx,dy);if(d>1){game.aim.x=dx/d;game.aim.y=dy/d}game.lockedAim={...game.aim};game.chargeStart=p;game.power=0;game.gameState=GameState.POWER_CHARGING;game.updateUI()}});
+canvas.addEventListener("pointerup",e=>{if(roomClient&&!roomClient.canAct()){game.draggingCue=false;return}if(game.isBallInHand()){game.draggingCue=false;return}if(game.gameState===GameState.POWER_CHARGING){game.aim={...game.lockedAim};game.chargeStart=null;game.shoot()}});
+ui.confirm.onclick=()=>{if(roomClient&&!roomClient.canAct())return notify("等待对手回合");if(game.isBallInHand()&&game.validCuePosition(game.cue.x,game.cue.y)){game.gameState=GameState.AIMING;if(game.mode==="SNOOKER"&&game.pendingFreeBallCheck){game.pendingFreeBallCheck=false;game.rule.armFreeBall()}game.updateUI()}};ui.guide.onclick=()=>{game.guide=!game.guide;ui.guide.textContent=`辅助线：${game.guide?"开":"关"}`};ui.restart.onclick=()=>{if(roomClient)return notify("联机房间不能单独重新摆球");game.reset()};modeSelect.onchange=()=>{if(!modeSelect.disabled)game.reset()};
+function frame(now){const dt=Math.min(.025,(now-last)/1000);last=now;game.update(dt);renderer.draw();requestAnimationFrame(frame)}requestAnimationFrame(frame);
+const roomId=new URLSearchParams(location.search).get("room");if(roomId){roomClient=new RoomClient(roomId);roomClient.init()}
+</script></body></html>

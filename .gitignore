@@ -1,0 +1,12 @@
+# 运行时账号、好友、房间及对局数据，禁止提交到仓库
+data/db.json
+data/db.json.*
+
+# Node / 编辑器 / 系统临时文件
+node_modules/
+npm-debug.log*
+.env
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
