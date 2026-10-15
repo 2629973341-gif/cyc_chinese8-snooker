@@ -25,6 +25,7 @@ function shuffleChessPieces(pieces){const result=pieces.slice();for(let i=result
 function createBlindChessBoard(){const pool=shuffleChessPieces(CHESS_INITIAL.flat().filter(piece=>piece&&chessType(piece)!=="j"));return CHESS_INITIAL.map(row=>row.map(piece=>{if(!piece||chessType(piece)==="j")return piece;return{side:chessSide(piece),cover:piece,actual:pool.pop(),revealed:false}}))}
 function clearLine(board,fx,fy,tx,ty){let count=0;if(fx===tx)for(let y=Math.min(fy,ty)+1;y<Math.max(fy,ty);y++)if(board[y][fx])count++;else{}else if(fy===ty)for(let x=Math.min(fx,tx)+1;x<Math.max(fx,tx);x++)if(board[fy][x])count++;else{}else return-1;return count}
 /* 中国象棋基础着法。这里只判断棋子的运动规则；“不能送将”由 chessMoveLegal 的模拟盘面二次判断。 */
+/* 暗子在首次落子翻开前不检查目标阵营与明暗，可以吃全场任意普通棋子；己方将/帅仍不可被己方暗子吃。 */
 function chessPseudoLegal(board,fx,fy,tx,ty){if(!insideChess(fx,fy)||!insideChess(tx,ty)||(fx===tx&&fy===ty))return false;const piece=board[fy][fx],target=board[ty][tx],concealed=!!(piece&&typeof piece==="object"&&!piece.revealed);if(!piece||target&&chessSide(target)===chessSide(piece)&&(!concealed||chessType(target)==="j"))return false;const side=chessSide(piece),type=chessType(piece),dx=tx-fx,dy=ty-fy,ax=Math.abs(dx),ay=Math.abs(dy);
   if(type==="c")return(fx===tx||fy===ty)&&clearLine(board,fx,fy,tx,ty)===0;
   if(type==="m"){if(!((ax===1&&ay===2)||(ax===2&&ay===1)))return false;const legX=fx+(ax===2?Math.sign(dx):0),legY=fy+(ay===2?Math.sign(dy):0);return!board[legY][legX]}
