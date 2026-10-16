@@ -6,7 +6,7 @@
 
 泉州规则参考：[厦门与泉州麻将规则整理](https://kzpn200.blogspot.com/2015/10/blog-post_14.html)。运行验证：`node --test tests/*.test.cjs`。更新部署时需一并提交 `mahjong-engine.js`、`mahjong.html`、`server.js` 与 `lobby.html`；按原有流程拉取代码后执行 `sudo systemctl restart billiards`，无需新增依赖或修改端口。
 
-麻将牌桌使用 Canvas 绘制蓝色台呢、四向牌列、万筒条实际牌面及中央弃牌区。底部手牌与牌桌一起适配窗口/全屏：点一次拿起，再点一次、向上拖出或按空格出牌，也可点击画面右下的「出牌」；吃碰杠胡在可响应时显示按钮。拿牌采用阻尼弹簧，摸牌滑入、出牌抛落并轻弹，音效可在顶部开关；本次牌桌更新需同时上传 `mahjong.html` 和 `game-audio.js`。浏览器回归使用本机 Chrome/Edge，设置 `MAHJONG_BROWSER_TEST=1` 后运行 `node --test tests/mahjong-ui.test.cjs`；未开启时默认跳过浏览器测试。
+麻将牌桌使用 Canvas 绘制蓝色台呢、四向牌列、传统万筒条牌面及六张一排的中央弃牌区。春夏秋冬、梅兰竹菊各有独立牌面，各家已补花牌逐张公开摆放；新增花牌会从玩家处飞入花牌列并播放补花音效。底部手牌与牌桌一起适配窗口/全屏：点一次拿起，再点一次、向上拖出或按空格出牌，也可点击画面右下的「出牌」；吃碰杠胡在可响应时显示按钮。拿牌采用阻尼弹簧，摸牌滑入、出牌抛落并轻弹，音效可在顶部开关；本次牌桌更新需同时上传 `mahjong.html` 和 `game-audio.js`。浏览器回归使用本机 Chrome/Edge，设置 `MAHJONG_BROWSER_TEST=1` 后运行 `node --test tests/mahjong-ui.test.cjs`；未开启时默认跳过浏览器测试。
 
 中国象棋、五子棋和围棋均由服务端权威校验回合与走法。五子棋为 15 路自由连珠；围棋为 19 路中国规则基础版，支持提子、自杀禁手、全局同形禁入、停一手与白贴 6.5 目结算。
 

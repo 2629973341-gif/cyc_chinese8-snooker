@@ -28,8 +28,10 @@ let sounds=localStorage.getItem("mahjongSounds")!=="0",reduced=matchMedia("(pref
 const colors={red:"#b42c2f",green:"#17704b",blue:"#245a8d",ink:"#202a31"};
 const seatRelative=seat=>(seat-(state?.seat||0)+4)%4;
 const seatOrigin=seat=>[{x:700,y:735},{x:1210,y:365},{x:700,y:60},{x:190,y:365}][seatRelative(seat)];
-const riverOrigin=seat=>[{x:700,y:478,a:0},{x:850,y:365,a:-Math.PI/2},{x:700,y:260,a:Math.PI},{x:550,y:365,a:Math.PI/2}][seatRelative(seat)];
-function riverPoint(seat,index){const o=riverOrigin(seat),x=(index%8-3.5)*35,y=Math.floor(index/8)*48+23;return{x:o.x+x*Math.cos(o.a)-y*Math.sin(o.a),y:o.y+x*Math.sin(o.a)+y*Math.cos(o.a),a:o.a};}
+// 四块牌河绕中台呈顺时针螺旋：每排6张，换排朝本人方向扩展，四个角不相交。
+const riverOrigin=seat=>[{x:738,y:448,a:0},{x:788,y:326,a:-Math.PI/2},{x:662,y:272,a:Math.PI},{x:612,y:394,a:Math.PI/2}][seatRelative(seat)];
+function riverPoint(seat,index){const o=riverOrigin(seat),x=(index%6-2.5)*38,y=Math.floor(index/6)*52+26;return{x:o.x+x*Math.cos(o.a)-y*Math.sin(o.a),y:o.y+x*Math.sin(o.a)+y*Math.cos(o.a),a:o.a};}
+function flowerPoint(seat,index){const r=seatRelative(seat),base=[{x:270,y:650},{x:1082,y:565},{x:1038,y:163},{x:318,y:155}][r],a=[0,-Math.PI/2,Math.PI,Math.PI/2][r],step=r===0?33:29;return{x:base.x+index*step*Math.cos(a),y:base.y+index*step*Math.sin(a),a};}
 function sound(name,k=1){if(!sounds)return;window.gameAudio?.mahjong?.(name,k);}
 function toast(text){$("#notice").textContent=text;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("#notice").textContent="",2700);}
 async function api(url,options={}){const res=await fetch(url,{...options,headers:{"Content-Type":"application/json",...options.headers}}),data=await res.json();if(!res.ok){if(res.status===401)location.href="/lobby.html";throw Error(data.error||"连接失败");}return data;}
@@ -37,8 +39,22 @@ function playerName(seat){return seat===0?room.host.username:seat===2&&room.play
 function canDiscard(){return state?.status==="PLAYING"&&!room?.game.finished&&!room?.game.restartRequest&&state.phase==="DISCARD"&&state.turn===state.seat;}
 function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.stroke();}}
 function text(value,x,y,size=18,color="#dae4f3",align="center",font="system-ui"){ctx.fillStyle=color;ctx.font="600 "+size+"px "+font;ctx.textAlign=align;ctx.textBaseline="middle";ctx.fillText(value,x,y);}
-function pip(x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#fff9";ctx.lineWidth=r*.16;ctx.beginPath();ctx.arc(x,y,r*.5,0,Math.PI*2);ctx.stroke();}
+function pip(x,y,r,color){ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=Math.max(.8,r*.13);ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,r*.72,0,Math.PI*2);ctx.stroke();for(let i=0;i<6;i++){const a=i*Math.PI/3;ctx.fillStyle=color;ctx.beginPath();ctx.arc(Math.cos(a)*r*.4,Math.sin(a)*r*.4,r*.2,0,Math.PI*2);ctx.fill();}ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,r*.18,0,Math.PI*2);ctx.fill();ctx.restore();}
 function bamboo(x,y,length,color){ctx.strokeStyle=color;ctx.lineWidth=4;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x,y-length/2);ctx.lineTo(x,y+length/2);ctx.stroke();ctx.lineWidth=2;for(const d of [-.4,0,.4]){ctx.beginPath();ctx.moveTo(x-3,y+length*d);ctx.lineTo(x+3,y+length*d);ctx.stroke();}}
+function bird(){ctx.save();ctx.strokeStyle=colors.green;ctx.fillStyle=colors.green;ctx.lineWidth=1.6;for(let i=0;i<7;i++){const x=-17+i*5;ctx.beginPath();ctx.moveTo(2,4);ctx.quadraticCurveTo(x*1.1,17,x,28);ctx.stroke();ctx.beginPath();ctx.ellipse(x,23,2,5,-x*.025,0,Math.PI*2);ctx.stroke();}ctx.beginPath();ctx.ellipse(-1,-5,8,13,-.4,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f4f3dd";ctx.beginPath();ctx.ellipse(-4,-3,4,8,-.6,0,Math.PI*2);ctx.fill();ctx.fillStyle=colors.green;ctx.beginPath();ctx.arc(5,-22,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle=colors.green;ctx.beginPath();ctx.moveTo(3,-18);ctx.quadraticCurveTo(9,-7,5,1);ctx.stroke();ctx.fillStyle=colors.red;ctx.beginPath();ctx.moveTo(10,-23);ctx.lineTo(18,-21);ctx.lineTo(10,-19);ctx.fill();ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(6,-23,1.1,0,Math.PI*2);ctx.fill();ctx.restore();}
+function flowerArtwork(tile){
+ const n=tile-34,season=n<4,color=season?colors.red:colors.green;
+ text(names[tile],-15,-23,17,color,"center",'"STKaiti","KaiTi",serif');text(String(n%4+1),16,-24,10,color);
+ ctx.save();ctx.translate(1,8);ctx.strokeStyle=colors.green;ctx.lineWidth=1.4;
+ const leaf=(x,y,a)=>{ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.fillStyle=colors.green;ctx.beginPath();ctx.ellipse(0,0,2,8,0,0,Math.PI*2);ctx.fill();ctx.restore();};
+ const blossom=(x,y,r,c,petals=5)=>{for(let k=0;k<petals;k++){const a=k*Math.PI*2/petals;ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x+Math.cos(a)*r*.65,y+Math.sin(a)*r*.65,r*.52,r*.36,a,0,Math.PI*2);ctx.fill();}ctx.fillStyle="#b99536";ctx.beginPath();ctx.arc(x,y,r*.22,0,Math.PI*2);ctx.fill();};
+ if(n===2||n===7){ctx.beginPath();ctx.moveTo(1,22);ctx.quadraticCurveTo(-2,5,4,-12);ctx.stroke();leaf(-5,13,-.8);leaf(8,8,.8);blossom(4,-10,12,n===2?"#b88526":"#ad8127",13);}
+ else if(n===1){ctx.beginPath();ctx.moveTo(1,21);ctx.lineTo(0,-10);ctx.stroke();leaf(-8,16,-1.3);leaf(10,13,1.1);blossom(0,-9,12,"#b4484a",7);}
+ else if(n===5){for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(0,23);ctx.quadraticCurveTo((i-2)*9,-7,(i-2)*9,-16+(i%2)*8);ctx.stroke();}blossom(2,-8,6,"#8b4c94",5);blossom(-9,1,5,"#8b4c94",5);}
+ else if(n===6){bamboo(-5,4,42,colors.green);bamboo(10,9,32,colors.green);for(const [x,y,a]of[[-12,-7,-.8],[2,0,.8],[16,9,.7],[-12,14,-.7]])leaf(x,y,a);}
+ else{ctx.strokeStyle="#74513c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-13,23);ctx.lineTo(-6,4);ctx.lineTo(4,-15);ctx.moveTo(-7,7);ctx.lineTo(15,0);ctx.stroke();for(const [x,y]of[[3,-14],[-5,3],[14,0]])blossom(x,y,n===0?6:5,n===3?"#b33c37":"#b75368");}
+ ctx.restore();
+}
 /* 牌面以52×74的局部坐标绘制；每张牌均使用相同映射，旋转不会改变牌面与拾取范围。 */
 function face(tile,x,y,w=48,h=68,a=0,back=false,alpha=1){
  ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(a);ctx.scale(w/52,h/74);
@@ -56,14 +72,14 @@ function face(tile,x,y,w=48,h=68,a=0,back=false,alpha=1){
    7:[[-13,-24],[0,-17],[13,-10],[-12,7],[12,7],[-12,24],[12,24]],
    8:[[-12,-25],[12,-25],[-12,-9],[12,-9],[-12,9],[12,9],[-12,25],[12,25]],
    9:[[-14,-23],[0,-23],[14,-23],[-14,0],[0,0],[14,0],[-14,23],[0,23],[14,23]]};
-  layouts[n].forEach(([px,py],i)=>pip(px,py-3,n===1?16:n>=7?5.2:7,n===1?colors.green:n===3?[colors.blue,colors.red,colors.green][i]:n===5&&i===2?colors.red:colors.blue));
+  layouts[n].forEach(([px,py],i)=>pip(px,py-3,n===1?18:n>=7?5.2:7,n===1?colors.ink:n===3?[colors.blue,colors.red,colors.green][i]:n===5&&i===2?colors.red:n===7&&i<3?colors.red:n===9&&Math.floor(i/3)===1?colors.red:colors.green));
  }else if(tile<27){
   const n=tile-17;
-  if(n===1){ctx.strokeStyle=colors.green;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-3,10,17,-.25,0,Math.PI*2);ctx.stroke();pip(5,-22,4,colors.green);ctx.beginPath();ctx.moveTo(-5,11);ctx.lineTo(-17,27);ctx.moveTo(1,12);ctx.lineTo(-5,28);ctx.moveTo(7,11);ctx.lineTo(11,23);ctx.stroke();ctx.fillStyle=colors.red;ctx.beginPath();ctx.moveTo(9,-23);ctx.lineTo(18,-21);ctx.lineTo(9,-18);ctx.fill();}
-  else {const rows=n<=3?1:n<=6?2:3,cols=Math.ceil(n/rows);for(let i=0;i<n;i++){const row=Math.floor(i/cols),col=i%cols;bamboo((col-(cols-1)/2)*14,(row-(rows-1)/2)*22-3,rows===1?37:16,n===5&&i===2||n===7&&i===0?colors.red:colors.green);}}
- }else if(tile===33){roundRect(-16,-27,32,48,2,null,colors.blue);roundRect(-12,-23,24,40,1,null,colors.blue);}
+  if(n===1)bird();
+  else {const layouts={2:[[-9,0],[9,0]],3:[[-15,0],[0,0],[15,0]],4:[[-10,-17],[10,-17],[-10,16],[10,16]],5:[[-12,-20],[12,-20],[0,0],[-12,20],[12,20]],6:[[-14,-17],[0,-17],[14,-17],[-14,16],[0,16],[14,16]],7:[[0,-25],[-14,-5],[0,-5],[14,-5],[-14,19],[0,19],[14,19]],8:[[-11,-25],[11,-25],[-11,-9],[11,-9],[-11,9],[11,9],[-11,25],[11,25]],9:[[-14,-23],[0,-23],[14,-23],[-14,0],[0,0],[14,0],[-14,23],[0,23],[14,23]]};layouts[n].forEach(([x,y],i)=>bamboo(x,y-3,n<=3?48:n===4||n===6?22:14,n===5&&i===2||n===7&&i===0||n===9&&i%3===1?colors.red:colors.green));}
+ }else if(tile===33){/* 参考牌面：白板保持空白，只有牌体轮廓，不写“白”字。 */}
  else if(tile<34){text(["東","南","西","北","中","發"][tile-27],0,-4,37,tile===31?colors.red:tile===32?colors.green:colors.ink,"center",'"STKaiti","KaiTi",serif');}
- else{const flower=tile-34;text(names[tile],0,-12,24,flower<4?colors.red:colors.green,"center",'"STKaiti","KaiTi",serif');for(let i=0;i<5;i++){const a=i*Math.PI*2/5;pip(Math.cos(a)*8,13+Math.sin(a)*8,4,flower%2?colors.green:colors.red);}}
+ else flowerArtwork(tile);
  ctx.restore();
  if(tile===state?.gold){roundRect(7,-36,18,16,2,"#b68a24");text("金",16,-28,11,"#fff4c2");}
  ctx.restore();
@@ -84,24 +100,24 @@ function drawTable(now){
  ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();}
  ctx.restore();
  if(!state){text("正在连接牌桌…",700,390,24);return;}
- for(let seat=0;seat<4;seat++){drawRiver(seat,now);drawOpponent(seat,now);drawMelds(seat);}
+ for(let seat=0;seat<4;seat++){drawRiver(seat,now);drawOpponent(seat,now);drawMelds(seat);drawFlowers(seat,now);}
  drawCenter(now);drawOwnHand(now);
  const goldBox=ctx.createLinearGradient(140,70,320,190);goldBox.addColorStop(0,"#101d32ef");goldBox.addColorStop(1,"#17233dbb");roundRect(144,78,158,100,10,goldBox,"#ccac6855");face(state.gold,180,123,35,50);text("本局金牌",242,101,15,"#e9ca85");text(names[state.gold],242,125,17,"#f0f1ed");text(state.gold===33?"白板为金":"白板代"+names[state.gold],242,151,11,"#a6bad3");
  const lastLog=state.log[state.log.length-1]||"祝你好运";
- text(lastLog,700,665,15,"#c1d1e4");
+ text(lastLog,700,101,14,"#c1d1e4");
  text(canDiscard()?(selected===null?"点击手牌拿起 · 再点或向上拖动出牌":"已拿起 "+names[state.hands[state.seat][selected]]+" · 再点一次或向上拖出"):"等待轮到你 · 可随时查看牌谱与规则",700,803,14,"#c9d5e4");
  drawFlights(now);
  if(banner){const t=(now-banner.start)/banner.duration;if(t>=1)banner=null;else{
  const fade=Math.min(1,t*7,(1-t)*5),scale=1+.22*Math.exp(-t*8)*Math.cos(t*20);ctx.save();ctx.globalAlpha=fade;ctx.translate(700,365);ctx.scale(scale,scale);roundRect(-155,-67,310,134,15,"#101b31ef","#edca7f");text(banner.label,0,-10,58,"#f4d590","center",'"STKaiti","KaiTi",serif');text(banner.sub,0,40,16,"#c0cde1");ctx.restore();}}
 }
 function drawCenter(now){
- roundRect(600,288,200,154,18,"#111f35","#aa905966");roundRect(608,296,184,138,13,null,"#8eacd52b");
- const active=seatRelative(state.turn),spots=[{x:700,y:429},{x:787,y:365},{x:700,y:301},{x:613,y:365}];
+ roundRect(620,280,160,160,17,"#111d2c","#a99a7066");roundRect(628,288,144,144,11,null,"#77899b55");
+ const active=seatRelative(state.turn),spots=[{x:700,y:426},{x:766,y:360},{x:700,y:294},{x:634,y:360}];
  for(let i=0;i<4;i++){const seat=(state.seat+i)%4,p=spots[i];text(winds[seat],p.x,p.y,18,i===active?"#ffdb80":"#778ca9");}
- text("泉 州 麻 将",700,330,17,"#c4b17b","center",'"STSong",serif');text(state.remaining,700,366,37,"#f4e0a7","center","ui-monospace");
+ text("泉 州",700,323,16,"#c4b17b","center",'"STSong",serif');text(state.remaining,700,359,32,"#79d6d3","center","ui-monospace");
  let label=state.status!=="PLAYING"||room.game.finished?"本局结束":room.game.restartRequest?"等待重开确认":state.phase==="REACTION"?"等待响应":canDiscard()?"请出牌":winds[state.turn]+"家思考";
- text(label,700,403,15,canDiscard()?"#ffe0a2":"#adc1d9");
- if(state.pending){const seconds=Math.max(0,Math.ceil((state.pending.deadline-Date.now())/1000));roundRect(817,338,42,48,8,"#111d31bb");text(seconds,838,361,22,"#edc779","center","ui-monospace");}
+ text(label,700,397,13,canDiscard()?"#ffe0a2":"#adc1d9");
+ if(state.pending){const seconds=Math.max(0,Math.ceil((state.pending.deadline-Date.now())/1000));text(seconds+"秒",700,375,11,"#edc779","center","ui-monospace");}
 }
 function drawRiver(seat,now){
  const list=state.discards[seat];
@@ -109,8 +125,8 @@ function drawRiver(seat,now){
   const p=riverPoint(seat,i),key=seat+":"+i;
   if(flights.some(f=>f.kind==="DISCARD"&&f.targetKey===key&&now<f.start+f.duration))continue;
   const latest=state.pending?.from===seat&&i===list.length-1;
-  if(latest){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);roundRect(-19,-27,38,53,4,"#ffd47c",null);ctx.restore();}
-  face(list[i],p.x,p.y,33,46,p.a);
+  if(latest){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);roundRect(-20,-29,40,57,4,"#ffd47c",null);ctx.restore();}
+  face(list[i],p.x,p.y,36,51,p.a);
  }
 }
 function drawOpponent(seat,now){
@@ -133,11 +149,20 @@ function drawOpponent(seat,now){
 }
 function drawMelds(seat){
  const relative=seatRelative(seat),a=[0,-Math.PI/2,Math.PI,Math.PI/2][relative];
- const base=[{x:325,y:673},{x:1150,y:520},{x:1030,y:113},{x:250,y:215}][relative];
+ const total=state.melds[seat].reduce((sum,m)=>sum+m.tiles.length*28+10,0);
+ const base=[{x:1140-total,y:670},{x:1143,y:627},{x:1030,y:113},{x:257,y:112}][relative];
  let offset=0;for(const m of state.melds[seat]){
-  for(const t of m.tiles){const x=base.x+offset*Math.cos(a),y=base.y+offset*Math.sin(a);face(t,x,y,29,42,a,t===null);offset+=30;}offset+=12;
+  for(const t of m.tiles){const x=base.x+offset*Math.cos(a),y=base.y+offset*Math.sin(a);face(t,x,y,27,40,a,t===null);offset+=28;}offset+=10;
  }
- const flowers=state.flowers[seat];if(flowers.length){const pos=[{x:165,y:756},{x:1295,y:510},{x:1140,y:115},{x:115,y:520}][relative];text("花 "+flowers.length,pos.x,pos.y,13,"#d4c297");}
+}
+function drawFlowers(seat,now){
+ const flowers=state.flowers[seat],relative=seatRelative(seat);
+ for(let i=0;i<flowers.length;i++){
+  const tile=flowers[i],p=flowerPoint(seat,i);
+  if(flights.some(f=>f.kind==="FLOWER"&&f.seat===seat&&f.tile===tile&&now<f.start+f.duration))continue;
+  face(tile,p.x,p.y,relative===0?31:27,relative===0?45:40,p.a);
+ }
+ if(flowers.length){const p=flowerPoint(seat,0);ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);text("补花 · "+flowers.length,-21,0,11,"#d4c297","right");ctx.restore();}
 }
 function visibleHand(){
  if(!state)return[];
@@ -150,7 +175,7 @@ function spring(body,target,dt){
  for(let elapsed=0;elapsed<dt;elapsed+=1/240){const h=Math.min(1/240,dt-elapsed);body.vx+=(230*(target.x-body.x)-26*body.vx)*h;body.vy+=(260*(target.y-body.y)-25*body.vy)*h;body.x+=body.vx*h;body.y+=body.vy*h;}
 }
 function drawOwnHand(now){
- const items=visibleHand(),width=48,step=49,start=(W-items.length*step-14)/2+width/2;
+ const items=visibleHand(),width=52,step=53,start=(W-items.length*step-14)/2+width/2;
  handHits=[];const activeKeys=new Set(),dt=Math.min(.04,Math.max(.001,(now-lastTime)/1000||.016));
  for(let i=0;i<items.length;i++){
   const item=items[i],x=start+i*step+(item.drawn?14:0),chosen=selected===item.index,y=735-(chosen?25:0);
@@ -160,24 +185,29 @@ function drawOwnHand(now){
   if(reduced){body.x=target.x;body.y=target.y;}else spring(body,target,dt);
   const hidden=item.drawn&&now<drawnUntil;
   if(!hidden){
-   if(chosen){ctx.save();ctx.shadowBlur=16;ctx.shadowColor="#f4cf6d99";roundRect(body.x-width/2-2,body.y-37,52,73,5,"#efca70");ctx.restore();}
-   face(item.tile,body.x,body.y,width,69,dragging?(pointer.x-pointer.startX)*.001:0);
+   if(chosen){ctx.save();ctx.shadowBlur=16;ctx.shadowColor="#f4cf6d99";roundRect(body.x-width/2-2,body.y-42,56,82,5,"#efca70");ctx.restore();}
+   face(item.tile,body.x,body.y,width,77,dragging?(pointer.x-pointer.startX)*.001:0);
   }
-  handHits.push({index:item.index,tile:item.tile,key:item.key,x:body.x,y:body.y,w:width,h:69,targetX:x,targetY:y});
+  handHits.push({index:item.index,tile:item.tile,key:item.key,x:body.x,y:body.y,w:width,h:77,targetX:x,targetY:y});
  }
  for(const key of handBodies.keys())if(!activeKeys.has(key))handBodies.delete(key);
 }
 function drawFlights(now){
  flights=flights.filter(f=>now<f.start+f.duration);
- for(const f of flights){const t=Math.max(0,Math.min(1,(now-f.start)/f.duration)),e=1-Math.pow(1-t,3),lift=Math.sin(t*Math.PI)*(f.kind==="DRAW"?25:95),bounce=t>.83?-Math.sin((t-.83)/.17*Math.PI)*5:0;
+ for(const f of flights){if(now<f.start)continue;const t=Math.max(0,Math.min(1,(now-f.start)/f.duration)),e=1-Math.pow(1-t,3),lift=Math.sin(t*Math.PI)*(f.kind==="DRAW"?25:95),bounce=t>.83?-Math.sin((t-.83)/.17*Math.PI)*5:0;
  const x=f.from.x+(f.to.x-f.from.x)*e,y=f.from.y+(f.to.y-f.from.y)*e-lift+bounce,w=f.w||36,h=f.h||50;
  face(f.tile,x,y,w,h,f.to.a*e+(1-t)*.16,f.tile===null);
- if(t>.83&&!f.sounded){f.sounded=true;sound(f.kind==="DRAW"?"draw":"drop",f.kind==="DRAW"?.65:1);}
+ if(t>.83&&!f.sounded){f.sounded=true;sound(f.kind==="FLOWER"?"flower":f.kind==="DRAW"?"draw":"drop",f.kind==="DRAW"?.65:1);}
  }
 }
 function animateState(previous,next){
  if(reduced||!previous||previous.status!=="PLAYING")return;
  const now=performance.now();
+ for(let seat=0;seat<4;seat++){
+  const added=next.flowers[seat].filter(tile=>!previous.flowers[seat].includes(tile));
+  if(added.length){banner={label:"补花",sub:winds[seat]+"家 · "+added.map(t=>names[t]).join(" "),start:now,duration:1100};
+   for(const tile of added){const index=next.flowers[seat].indexOf(tile);flights.push({kind:"FLOWER",seat,tile,from:seatOrigin(seat),to:flowerPoint(seat,index),start:now+added.indexOf(tile)*100,duration:520,w:31,h:45});}}
+ }
  if(next.steps>previous.steps){
   let discard=null;for(let seat=0;seat<4;seat++)if(next.discards[seat].length>previous.discards[seat].length)discard={seat,tile:next.discards[seat].at(-1),index:next.discards[seat].length-1};
   if(!discard){const line=next.log.slice().reverse().find(l=>/家打出/.test(l));if(line){const seat=winds.indexOf(line[0]),t=names.findIndex(n=>line.includes("家打出"+n));if(seat>=0&&t>=0)discard={seat,tile:t,index:previous.discards[seat].length};}}
@@ -186,9 +216,9 @@ function animateState(previous,next){
  for(let seat=0;seat<4;seat++)if(next.melds[seat].length>previous.melds[seat].length||next.melds[seat].some((m,i)=>m.tiles.length>(previous.melds[seat][i]?.tiles.length||0))){
   const m=next.melds[seat].at(-1);banner={label:m.kind==="CHI"?"吃":m.kind==="PONG"?"碰":"杠",sub:winds[seat]+"家 · "+playerName(seat),start:now,duration:1150};sound("claim");
  }
- if(next.status==="PLAYING"&&next.phase==="DISCARD"&&next.drawn!==null&&(next.turn!==previous.turn||next.hands[next.seat].length>previous.hands[next.seat].length)&&next.turn===next.seat){
-  const count=next.hands[next.seat].length,start=(W-count*49-14)/2+24,to={x:start+(count-1)*49+14,y:735,a:0};
-  drawnUntil=now+380;flights.push({kind:"DRAW",tile:next.drawn,from:{x:1010,y:610},to,start:now,duration:380,w:48,h:69});
+ if(next.status==="PLAYING"&&next.phase==="DISCARD"&&next.drawn!==null&&(next.turn!==previous.turn||next.hands[next.seat].length>previous.hands[next.seat].length||next.flowers[next.seat].length>previous.flowers[next.seat].length)&&next.turn===next.seat){
+  const count=next.hands[next.seat].length,start=(W-count*53-14)/2+26,to={x:start+(count-1)*53+14,y:735,a:0};
+  drawnUntil=now+380;flights.push({kind:"DRAW",tile:next.drawn,from:{x:1010,y:610},to,start:now,duration:380,w:52,h:77});
  }
  if(next.status==="FINISHED"&&previous.status!=="FINISHED"){banner={label:next.result?.name||"胡",sub:next.winner===null?"本局流局":winds[next.winner]+"家胡牌",start:now,duration:1500};sound("win");}
 }
