@@ -1,6 +1,6 @@
 "use strict";
 const crypto = require("node:crypto");
-const RULES = Object.freeze({ name: "泉州麻将·16张", reserve: 16, multipliers: { 平胡: 1, 自摸: 2, 游金: 3, 双游: 6, 三游: 9, 三金倒: 3, 八花: 3 }, description: "144张，16张手牌，5组面子加1对。翻出的牌为金，白板代替金原面值；金不可吃碰杠。金雀只可自摸，出金一圈禁吃碰杠和接炮。底1，庄家相关底2，花金计水，游金3/6/9倍。每局独立计分，不累加连庄。" });
+const RULES = Object.freeze({ name: "泉州麻将·16张", reserve: 16, multipliers: { 平胡: 1, 自摸: 2, 游金: 3, 双游: 6, 三游: 9, 三金倒: 3, 八花: 3 }, description: "144张，16张手牌，5组面子加1对。四家双骰比点定首庄，同点重掷；庄胡或流局连庄，闲家胡接庄。闲家底1，庄家相关底2+连庄次数。翻金、白板代金面值，游金3/6/9倍。" });
 const WIN_NAMES = ["", "游金", "双游", "三游"];
 const NAMES = ["一万","二万","三万","四万","五万","六万","七万","八万","九万","一筒","二筒","三筒","四筒","五筒","六筒","七筒","八筒","九筒","一条","二条","三条","四条","五条","六条","七条","八条","九条","东","南","西","北","中","发","白","春","夏","秋","冬","梅","兰","竹","菊"];
 function shuffle(a) { for (let i=a.length-1;i>0;i--) { const j=crypto.randomInt(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -46,14 +46,29 @@ function goldWait(hand,gold,open=0) {
   return wild>=1&&melds(c,wild-1)!==null;
 }
 function log(s,text) { s.log.push(text); if(s.log.length>40)s.log.shift(); }
-function createGame() {
+function rollDealer(randomInt=n=>crypto.randomInt(n)){
+  let candidates=[0,1,2,3];const rounds=[];
+  while(candidates.length>1){const rolls=candidates.map(seat=>{const dice=[randomInt(6)+1,randomInt(6)+1];return{seat,dice,total:dice[0]+dice[1]}});rounds.push(rolls);const high=Math.max(...rolls.map(r=>r.total));candidates=rolls.filter(r=>r.total===high).map(r=>r.seat);}
+  return{rounds,winner:candidates[0]};
+}
+// 只有已经结算的胡牌/流局推进庄次；未完成牌局的确认重开保留原庄及连庄数。
+function nextRound(previous,settled=true){
+  const dealer=previous?.dealer??0,streak=previous?.streak||0;
+  if(!settled||previous?.status!=="FINISHED")return{dealer,streak,dealerReason:"原庄重开"};
+  if(previous.winner===null||previous.winner===dealer)return{dealer,streak:streak+1,dealerReason:previous.winner===null?"流局连庄":"庄家胡牌连庄"};
+  return{dealer:previous.winner,streak:0,dealerReason:"闲家胡牌接庄"};
+}
+function createGame(options={}) {
+  const initial=!Number.isInteger(options.dealer)||options.dealer<0||options.dealer>3,dealerRoll=initial?rollDealer():null,dealer=initial?dealerRoll.winner:options.dealer,streak=Math.max(0,Math.floor(options.streak||0));
   const wall=shuffle(Array.from({length:34},(_,t)=>Array(4).fill(t)).flat().concat(Array.from({length:8},(_,i)=>34+i)));
-  const s={version:1,phase:"DISCARD",turn:0,dealer:0,gold:null,indicator:null,wall,hands:[[],[],[],[]],flowers:[[],[],[],[]],melds:[[],[],[],[]],discards:[[],[],[],[]],you:[0,0,0,0],drawn:[null,null,null,null],pending:null,lockSeat:null,steps:0,status:"PLAYING",winner:null,scores:[0,0,0,0],result:null,log:[],nextAt:Date.now()+900};
+  const s={version:2,phase:"DISCARD",turn:dealer,dealer,streak,dealerBase:2+streak,dealerReason:options.dealerReason||"摇骰定庄",dealerRoll,rollStartedAt:initial?Date.now():null,rollUntil:initial?Date.now()+2200:null,gold:null,indicator:null,wall,hands:[[],[],[],[]],flowers:[[],[],[],[]],melds:[[],[],[],[]],discards:[[],[],[],[]],you:[0,0,0,0],drawn:[null,null,null,null],pending:null,lockSeat:null,steps:0,status:"PLAYING",winner:null,scores:[0,0,0,0],result:null,log:[],nextAt:Date.now()+900};
   for(let n=0;n<16;n++)for(let seat=0;seat<4;seat++)deal(s,seat,false);
-  let t=s.wall.pop();while(t>=34){s.flowers[0].push(t);t=s.wall.pop();}s.gold=t;s.indicator=t;
+  let t=s.wall.pop();while(t>=34){s.flowers[dealer].push(t);t=s.wall.pop();}s.gold=t;s.indicator=t;
   for(const h of s.hands)sort(h);
-  log(s,`翻金：${NAMES[t]}；庄家东家先行`);
-  draw(s,0);
+  log(s,`${s.dealerReason}：${["东","南","西","北"][dealer]}家坐庄 · 连庄${streak}次 · 庄底${s.dealerBase}`);
+  log(s,`翻金：${NAMES[t]}；庄家${["东","南","西","北"][dealer]}家先行`);
+  draw(s,dealer);
+  if(initial&&s.status==="PLAYING")s.phase="ROLLING_DICE";
   return s;
 }
 function deal(s,seat,reserve=true) {
@@ -88,9 +103,9 @@ function water(s,seat,shape) {
 }
 function finish(s,seat,name) {
   const shape=winningShape(s.hands[seat],s.gold,s.melds[seat].length,true),n=water(s,seat,shape),multiplier=RULES.multipliers[name]||1;
-  const scores=[0,0,0,0];for(let p=0;p<4;p++)if(p!==seat){const pay=((p===s.dealer||seat===s.dealer?2:1)+n)*multiplier;scores[p]-=pay;scores[seat]+=pay;}
+  const dealerBase=2+(s.streak||0),scores=[0,0,0,0];for(let p=0;p<4;p++)if(p!==seat){const pay=((p===s.dealer||seat===s.dealer?dealerBase:1)+n)*multiplier;scores[p]-=pay;scores[seat]+=pay;}
   s.scores=scores;s.winner=seat;s.status="FINISHED";s.phase="FINISHED";s.pending=null;
-  s.result={name,water:n,multiplier,scores,detail:`${name} · ${multiplier}倍 · ${n}水`};log(s,`${["东","南","西","北"][seat]}家${s.result.detail}`);
+  s.result={name,water:n,multiplier,scores,dealerBase,detail:`${name} · ${multiplier}倍 · ${n}水 · 庄底${dealerBase}`};log(s,`${["东","南","西","北"][seat]}家${s.result.detail}`);
 }
 function sequences(s,seat,tile) {
   if(tile===s.gold)return [];
@@ -192,6 +207,7 @@ function aiDiscard(s,seat) {
 }
 function tick(s,humanSeats,now=Date.now()) {
   if(s.status!=="PLAYING")return false;
+  if(s.phase==="ROLLING_DICE"){if(now<s.rollUntil)return false;s.phase="DISCARD";s.nextAt=now+900;log(s,`骰子定庄：${["东","南","西","北"][s.dealer]}家，开始出牌`);return true;}
   if(s.phase==="REACTION") {
     const p=s.pending;let changed=false;
     for(let seat=0;seat<4;seat++)if(seat!==p.from&&!p.replies[seat]&&((!humanSeats.includes(seat)&&now>=s.nextAt)||now>=p.deadline)) {
@@ -204,9 +220,9 @@ function tick(s,humanSeats,now=Date.now()) {
 }
 function view(s,seat) {
   const options=s.phase==="REACTION"?reactionOptions(s,seat):ownOptions(s,seat);
-  return {phase:s.phase,status:s.status,turn:s.turn,dealer:s.dealer,gold:s.gold,indicator:s.indicator,remaining:s.wall.length,seat,steps:s.steps,
+  return {phase:s.phase,status:s.status,turn:s.turn,dealer:s.dealer,streak:s.streak||0,dealerBase:2+(s.streak||0),dealerReason:s.dealerReason||"原庄继续",dealerRoll:s.dealerRoll||null,rollStartedAt:s.rollStartedAt||null,rollUntil:s.rollUntil||null,nextDealer:s.status==="FINISHED"?nextRound(s):null,gold:s.gold,indicator:s.indicator,remaining:s.wall.length,seat,steps:s.steps,
     hands:s.hands.map((h,i)=>i===seat||s.status==="FINISHED"?h.slice():Array(h.length).fill(null)),flowers:s.flowers,melds:s.melds.map((ms,i)=>ms.map(m=>({...m,tiles:m.concealed&&i!==seat&&s.status!=="FINISHED"?Array(4).fill(null):m.tiles}))),discards:s.discards,you:s.you,
     drawn:s.drawn[seat],pending:s.pending?{from:s.pending.from,tile:s.pending.tile,kind:s.pending.kind,deadline:s.pending.deadline,responded:!!s.pending.replies[seat]}:null,
     options,winner:s.winner,scores:s.scores,result:s.result,log:s.log,rules:RULES};
 }
-module.exports={createGame,apply,tick,view,winningShape,goldWait,aiDiscard,RULES,NAMES,effective};
+module.exports={createGame,apply,tick,view,winningShape,goldWait,aiDiscard,rollDealer,nextRound,RULES,NAMES,effective};

@@ -8,12 +8,12 @@
 <body>
 <main>
 <header><div class="brand"><div><div class="eyebrow">QUANZHOU MAHJONG / BLACK GOLD</div><h1>泉州麻将</h1></div><div id="roomMeta" class="meta">正在入座…</div></div>
-<nav class="toolbar"><button id="rulesButton">玩法</button><button id="logButton">牌谱</button><button id="soundButton" aria-pressed="true">音效 开</button><button id="musicButton">音乐</button><button id="fullscreen">全屏</button><button id="restart">重开</button><button id="exit" class="danger">退出</button></nav></header>
+<nav class="toolbar"><button id="rulesButton">玩法</button><button id="logButton">牌谱</button><button id="assistButton" aria-pressed="true">牌号 开</button><button id="soundButton" aria-pressed="true">音效 开</button><button id="musicButton">音乐</button><button id="fullscreen">全屏</button><button id="restart">重开</button><button id="exit" class="danger">退出</button></nav></header>
 <div class="portrait-tip">横屏可放大手牌 · 点牌拿起，再点或向桌心拖动出牌</div>
 <div class="stage" id="stage"><div class="scene" id="scene"><canvas id="table" tabindex="0" aria-label="泉州麻将牌桌：点击手牌选中，再次点击或向上拖动出牌"></canvas><div id="actions" class="actions"></div><div id="status" class="sr-only" role="status"></div><div id="handDescription" class="sr-only"></div></div></div>
 </main>
 <div class="notice" id="notice" role="alert"></div>
-<dialog id="rulesDialog"><h2>泉州麻将 · 怎么玩</h2><div class="rules"><h3>操作</h3><p>你的手牌就在画面底部。点一下拿起，再点一下打出；也可将牌向桌心拖出。电脑出牌后，如你能吃、碰、杠、胡，右下方会出现对应按钮，不操作则20秒后自动过。</p><p>轮到你时，点击牌桌底部金色「出牌」按钮，或按空格打出已选牌。金色牌角标是本局金，摸到的新牌单独放在手牌最右边。</p><h3>本版规则</h3><p>四人桌：在线房间两位真人 + 两位电脑；人机和练习房间为一位真人 + 三位电脑。东家固定为本局庄家。</p><p>144 张牌，花牌自动补花。翻出的牌为金，另外三张作万能牌；若金不是白板，白板按金原来的面值使用。金不可吃碰杠。</p><p>上家可吃，任何一家可碰、杠；胡优先于碰杠，碰杠优先于吃，同级按座次先后。响应限时 20 秒，超时视为过。暗杠、补杠、抢补杠均支持。</p><p>胡牌为五组面子加一对。金可补面子，金作雀只可自摸。留下金单钓形成游金；打金后仍可游金则升级双游、三游，下一次摸牌可胡。出金一圈内禁止吃碰杠和接炮。</p><p>平胡 1 倍，自摸 2 倍，游金 3 倍、双游 6 倍、三游 9 倍。开局或牌墙末段三金可三金倒；八花直接胡。剩 16 张流局。</p><p>输家各付（底 + 水）× 倍数：底 1，庄家相关底 2；花、金每张 1 水，字明刻 1 水，暗刻数牌 1 / 字牌 2 水，明杠 2 / 3 水，暗杠 3 / 4 水。各局独立，不累计连庄；暂不加入跟打风牌、抢金等地方可选规则。</p><p>在线战绩按最终胡牌者记胜，其余真人记负；电脑胡时两位真人均记负，流局记和。练习与人机不计排行。</p><p>本版规则口径参考：<a href="https://kzpn200.blogspot.com/2015/10/blog-post_14.html" target="_blank" rel="noopener">厦门与泉州麻将规则整理</a>。地方约定不同，以本面板为准。</p></div><div class="toolbar"><button data-close="rulesDialog" class="primary">知道了</button></div></dialog>
+<dialog id="rulesDialog"><h2>泉州麻将 · 怎么玩</h2><div class="rules"><h3>操作</h3><p>你的手牌就在画面底部。点一下拿起，再点一下打出；也可将牌向桌心拖出。电脑出牌后，如你能吃、碰、杠、胡，右下方会出现对应按钮，不操作则20秒后自动过。</p><p>轮到你时，点击牌桌底部金色「出牌」按钮，或按空格打出已选牌。金色牌角标是本局金，摸到的新牌自动按万、筒、条、字牌顺序理入手牌，并用「摸」字标明。</p><h3>本版规则</h3><p>四人桌：在线房间支持2至4位真人，房主可连续邀请三位好友；未坐满的位置由电脑补齐。人机和练习房间为一位真人与三位电脑。首局四家各掷双骰，总点数最高者坐庄，同点者重掷；庄家拿17张并先出牌。庄胡或流局连庄，闲家胡由胡牌者接庄。</p><p>144 张牌，花牌自动补花。翻出的牌为金，另外三张作万能牌；若金不是白板，白板按金原来的面值使用。金不可吃碰杠。</p><p>上家可吃，任何一家可碰、杠；胡优先于碰杠，碰杠优先于吃，同级按座次先后。响应限时 20 秒，超时视为过。暗杠、补杠、抢补杠均支持。</p><p>胡牌为五组面子加一对。金可补面子，金作雀只可自摸。留下金单钓形成游金；打金后仍可游金则升级双游、三游，下一次摸牌可胡。出金一圈内禁止吃碰杠和接炮。</p><p>平胡 1 倍，自摸 2 倍，游金 3 倍、双游 6 倍、三游 9 倍。开局或牌墙末段三金可三金倒；八花直接胡。剩 16 张流局。</p><p>输家各付（底 + 水）× 倍数：闲家底 1，庄家相关底为 2 + 连庄次数；花、金每张 1 水，字明刻 1 水，暗刻数牌 1 / 字牌 2 水，明杠 2 / 3 水，暗杠 3 / 4 水。连庄底分每次加1，换庄清零；未结束的确认重开保留原庄与连庄次数。暂不加入跟打风牌、抢金等地方可选规则。</p><p>在线战绩按最终胡牌者记胜，其余真人记负；电脑胡时两位真人均记负，流局记和。练习与人机不计排行。</p><p>本版规则口径参考：<a href="https://kzpn200.blogspot.com/2015/10/blog-post_14.html" target="_blank" rel="noopener">厦门与泉州麻将规则整理</a>。地方约定不同，以本面板为准。</p></div><div class="toolbar"><button data-close="rulesDialog" class="primary">知道了</button></div></dialog>
 <dialog id="logDialog"><h2>牌局记录</h2><div id="log" class="log"></div><div class="toolbar"><button data-close="logDialog">返回牌桌</button></div></dialog>
 <dialog id="result"><h2 id="resultTitle"></h2><p id="resultDetail" class="result-detail"></p><div id="scores"></div><div class="toolbar"><button id="again" class="primary">开始新一局</button><button id="closeResult">查看牌局</button></div></dialog>
 <script src="/game-audio.js"></script>
@@ -25,6 +25,7 @@ const names=["一万","二万","三万","四万","五万","六万","七万","八
 const W=1400,H=820,canvas=$("#table"),ctx=canvas.getContext("2d");
 let state=null,room=null,me=null,revision=-1,selected=null,busy=false,loading=false,refreshAgain=false,events=null,lastRequest="",resultKey="",sceneRound=null;
 let sounds=localStorage.getItem("mahjongSounds")!=="0",reduced=matchMedia("(prefers-reduced-motion: reduce)").matches,frame=0,lastTime=0,clock=0,handBodies=new Map(),handHits=[],pointer=null,flights=[],banner=null,drawnUntil=0;
+let tileAssist=localStorage.getItem("mahjongTileAssist")!=="0",diceCelebrationUntil=0;
 const colors={red:"#b42c2f",green:"#17704b",blue:"#245a8d",ink:"#202a31"};
 const seatRelative=seat=>(seat-(state?.seat||0)+4)%4;
 const seatOrigin=seat=>[{x:700,y:735},{x:1210,y:365},{x:700,y:60},{x:190,y:365}][seatRelative(seat)];
@@ -35,16 +36,16 @@ function flowerPoint(seat,index){const r=seatRelative(seat),base=[{x:270,y:650},
 function sound(name,k=1){if(!sounds)return;window.gameAudio?.mahjong?.(name,k);}
 function toast(text){$("#notice").textContent=text;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("#notice").textContent="",2700);}
 async function api(url,options={}){const res=await fetch(url,{...options,headers:{"Content-Type":"application/json",...options.headers}}),data=await res.json();if(!res.ok){if(res.status===401)location.href="/lobby.html";throw Error(data.error||"连接失败");}return data;}
-function playerName(seat){return seat===0?room.host.username:seat===2&&room.playType==="PVP"?room.guest.username:"电脑"+(seat===1?"阿泉":seat===2?"阿州":"阿厝");}
+function playerName(seat){return room.seats?.[seat]?.username||(seat===0?room.host.username:seat===2&&room.playType==="PVP"?room.guest?.username:"电脑"+(seat===1?"阿泉":seat===2?"阿州":"阿厝"));}
 function canDiscard(){return state?.status==="PLAYING"&&!room?.game.finished&&!room?.game.restartRequest&&state.phase==="DISCARD"&&state.turn===state.seat;}
 function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.stroke();}}
 function text(value,x,y,size=18,color="#dae4f3",align="center",font="system-ui"){ctx.fillStyle=color;ctx.font="600 "+size+"px "+font;ctx.textAlign=align;ctx.textBaseline="middle";ctx.fillText(value,x,y);}
-function pip(x,y,r,color){ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=Math.max(.8,r*.13);ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,r*.72,0,Math.PI*2);ctx.stroke();for(let i=0;i<6;i++){const a=i*Math.PI/3;ctx.fillStyle=color;ctx.beginPath();ctx.arc(Math.cos(a)*r*.4,Math.sin(a)*r*.4,r*.2,0,Math.PI*2);ctx.fill();}ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,r*.18,0,Math.PI*2);ctx.fill();ctx.restore();}
+function pip(x,y,r,color){ctx.save();ctx.translate(x,y);ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f6f5e9";ctx.beginPath();ctx.arc(0,0,r*.62,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,r*.28,0,Math.PI*2);ctx.fill();if(r>14){ctx.strokeStyle=color;ctx.lineWidth=1.1;for(let i=0;i<12;i++){const a=i*Math.PI/6;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*.40,Math.sin(a)*r*.40);ctx.lineTo(Math.cos(a)*r*.58,Math.sin(a)*r*.58);ctx.stroke();}}ctx.restore();}
 function bamboo(x,y,length,color){ctx.strokeStyle=color;ctx.lineWidth=4;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(x,y-length/2);ctx.lineTo(x,y+length/2);ctx.stroke();ctx.lineWidth=2;for(const d of [-.4,0,.4]){ctx.beginPath();ctx.moveTo(x-3,y+length*d);ctx.lineTo(x+3,y+length*d);ctx.stroke();}}
 function bird(){ctx.save();ctx.strokeStyle=colors.green;ctx.fillStyle=colors.green;ctx.lineWidth=1.6;for(let i=0;i<7;i++){const x=-17+i*5;ctx.beginPath();ctx.moveTo(2,4);ctx.quadraticCurveTo(x*1.1,17,x,28);ctx.stroke();ctx.beginPath();ctx.ellipse(x,23,2,5,-x*.025,0,Math.PI*2);ctx.stroke();}ctx.beginPath();ctx.ellipse(-1,-5,8,13,-.4,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f4f3dd";ctx.beginPath();ctx.ellipse(-4,-3,4,8,-.6,0,Math.PI*2);ctx.fill();ctx.fillStyle=colors.green;ctx.beginPath();ctx.arc(5,-22,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle=colors.green;ctx.beginPath();ctx.moveTo(3,-18);ctx.quadraticCurveTo(9,-7,5,1);ctx.stroke();ctx.fillStyle=colors.red;ctx.beginPath();ctx.moveTo(10,-23);ctx.lineTo(18,-21);ctx.lineTo(10,-19);ctx.fill();ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(6,-23,1.1,0,Math.PI*2);ctx.fill();ctx.restore();}
 function flowerArtwork(tile){
  const n=tile-34,season=n<4,color=season?colors.red:colors.green;
- text(names[tile],-15,-23,17,color,"center",'"STKaiti","KaiTi",serif');text(String(n%4+1),16,-24,10,color);
+ text(names[tile],-2,-24,23,color,"center",'"STKaiti","KaiTi",serif');text(String(n%4+1),18,-25,9,color);
  ctx.save();ctx.translate(1,8);ctx.strokeStyle=colors.green;ctx.lineWidth=1.4;
  const leaf=(x,y,a)=>{ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.fillStyle=colors.green;ctx.beginPath();ctx.ellipse(0,0,2,8,0,0,Math.PI*2);ctx.fill();ctx.restore();};
  const blossom=(x,y,r,c,petals=5)=>{for(let k=0;k<petals;k++){const a=k*Math.PI*2/petals;ctx.fillStyle=c;ctx.beginPath();ctx.ellipse(x+Math.cos(a)*r*.65,y+Math.sin(a)*r*.65,r*.52,r*.36,a,0,Math.PI*2);ctx.fill();}ctx.fillStyle="#b99536";ctx.beginPath();ctx.arc(x,y,r*.22,0,Math.PI*2);ctx.fill();};
@@ -63,7 +64,7 @@ function face(tile,x,y,w=48,h=68,a=0,back=false,alpha=1){
  const g=ctx.createLinearGradient(-24,-36,23,32);g.addColorStop(0,back?"#f2c761":"#fffff4");g.addColorStop(1,back?"#d18c29":"#e3e6de");
  roundRect(-26,-38,52,67,4,g,"#ffffff60");
  if(back){roundRect(-20,-32,40,54,2,null,"#936523");roundRect(-16,-28,32,46,2,null,"#fce3a077");ctx.restore();return;}
- ctx.save();ctx.scale(.92,.92);
+ ctx.save();ctx.scale(tile>=9&&tile<27?.85:.92,tile>=9&&tile<27?.85:.92);
  if(tile<9){text(numerals[tile],0,-13,29,colors.ink,"center",'"STKaiti","KaiTi",serif');text("萬",0,16,26,colors.red,"center",'"STKaiti","KaiTi",serif');}
  else if(tile<18){
   const n=tile-8,layouts={
@@ -72,15 +73,16 @@ function face(tile,x,y,w=48,h=68,a=0,back=false,alpha=1){
    7:[[-13,-24],[0,-17],[13,-10],[-12,7],[12,7],[-12,24],[12,24]],
    8:[[-12,-25],[12,-25],[-12,-9],[12,-9],[-12,9],[12,9],[-12,25],[12,25]],
    9:[[-14,-23],[0,-23],[14,-23],[-14,0],[0,0],[14,0],[-14,23],[0,23],[14,23]]};
-  layouts[n].forEach(([px,py],i)=>pip(px,py-3,n===1?18:n>=7?5.2:7,n===1?colors.ink:n===3?[colors.blue,colors.red,colors.green][i]:n===5&&i===2?colors.red:n===7&&i<3?colors.red:n===9&&Math.floor(i/3)===1?colors.red:colors.green));
+  layouts[n].forEach(([px,py],i)=>pip(px,py-3,n===1?18:n>=7?5.2:7,n===1?colors.ink:n===3?[colors.blue,colors.red,colors.green][i]:n===5&&i===2?colors.red:n===7&&i<3?colors.red:n===9&&Math.floor(i/3)===1?colors.red:n===4||n===5||n===8?colors.blue:colors.green));
  }else if(tile<27){
   const n=tile-17;
   if(n===1)bird();
-  else {const layouts={2:[[-9,0],[9,0]],3:[[-15,0],[0,0],[15,0]],4:[[-10,-17],[10,-17],[-10,16],[10,16]],5:[[-12,-20],[12,-20],[0,0],[-12,20],[12,20]],6:[[-14,-17],[0,-17],[14,-17],[-14,16],[0,16],[14,16]],7:[[0,-25],[-14,-5],[0,-5],[14,-5],[-14,19],[0,19],[14,19]],8:[[-11,-25],[11,-25],[-11,-9],[11,-9],[-11,9],[11,9],[-11,25],[11,25]],9:[[-14,-23],[0,-23],[14,-23],[-14,0],[0,0],[14,0],[-14,23],[0,23],[14,23]]};layouts[n].forEach(([x,y],i)=>bamboo(x,y-3,n<=3?48:n===4||n===6?22:14,n===5&&i===2||n===7&&i===0||n===9&&i%3===1?colors.red:colors.green));}
+  else {const layouts={2:[[-9,0],[9,0]],3:[[-15,0],[0,0],[15,0]],4:[[-10,-17],[10,-17],[-10,16],[10,16]],5:[[-12,-20],[12,-20],[0,0],[-12,20],[12,20]],6:[[-14,-17],[0,-17],[14,-17],[-14,16],[0,16],[14,16]],7:[[0,-25],[-14,-5],[0,-5],[14,-5],[-14,19],[0,19],[14,19]],8:[[-18,-17],[-6,-17],[6,-17],[18,-17],[-18,16],[-6,16],[6,16],[18,16]],9:[[-14,-23],[0,-23],[14,-23],[-14,0],[0,0],[14,0],[-14,23],[0,23],[14,23]]};layouts[n].forEach(([x,y],i)=>bamboo(x,y-3,n<=3?48:n===4||n===6||n===8?22:14,n===5&&i===2||n===7&&i===0||n===9&&i%3===1?colors.red:colors.green));}
  }else if(tile===33){/* 参考牌面：白板保持空白，只有牌体轮廓，不写“白”字。 */}
  else if(tile<34){text(["東","南","西","北","中","發"][tile-27],0,-4,37,tile===31?colors.red:tile===32?colors.green:colors.ink,"center",'"STKaiti","KaiTi",serif');}
  else flowerArtwork(tile);
  ctx.restore();
+ if(tileAssist&&tile>=9&&tile<27)text(String(tile%9+1),-20,-29,10,tile<18?colors.blue:colors.green);
  if(tile===state?.gold){roundRect(7,-36,18,16,2,"#b68a24");text("金",16,-28,11,"#fff4c2");}
  ctx.restore();
 }
@@ -93,11 +95,10 @@ function felt(){
 function drawTable(now){
  ctx.clearRect(0,0,W,H);
  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,"#423c38");bg.addColorStop(.35,"#171d2a");bg.addColorStop(1,"#514437");roundRect(0,0,W,H,18,bg);
- ctx.save();ctx.beginPath();ctx.moveTo(100,14);ctx.lineTo(1300,14);ctx.lineTo(1385,805);ctx.lineTo(15,805);ctx.closePath();ctx.fillStyle=felt();ctx.fill();ctx.strokeStyle="#a18c6555";ctx.lineWidth=3;ctx.stroke();ctx.clip();
+ ctx.save();roundRect(14,14,W-28,H-28,17,felt(),"#a18c6555");ctx.clip();
  const light=ctx.createRadialGradient(700,360,50,700,390,780);light.addColorStop(0,"#6c96be19");light.addColorStop(1,"#040b2488");ctx.fillStyle=light;ctx.fillRect(0,0,W,H);
  ctx.strokeStyle="#070f234d";ctx.lineWidth=3;
- for(const pts of [[[170,125],[1230,125],[1290,645],[110,645],[170,125]],[[170,125],[550,290]],[[1230,125],[850,290]],[[110,645],[550,440]],[[1290,645],[850,440]]]){
- ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();}
+ roundRect(31,31,W-62,H-62,12,null,"#7794ac22");
  ctx.restore();
  if(!state){text("正在连接牌桌…",700,390,24);return;}
  for(let seat=0;seat<4;seat++){drawRiver(seat,now);drawOpponent(seat,now);drawMelds(seat);drawFlowers(seat,now);}
@@ -106,7 +107,7 @@ function drawTable(now){
  const lastLog=state.log[state.log.length-1]||"祝你好运";
  text(lastLog,700,101,14,"#c1d1e4");
  text(canDiscard()?(selected===null?"点击手牌拿起 · 再点或向上拖动出牌":"已拿起 "+names[state.hands[state.seat][selected]]+" · 再点一次或向上拖出"):"等待轮到你 · 可随时查看牌谱与规则",700,803,14,"#c9d5e4");
- drawFlights(now);
+ drawFlights(now);drawDealerDice(now);
  if(banner){const t=(now-banner.start)/banner.duration;if(t>=1)banner=null;else{
  const fade=Math.min(1,t*7,(1-t)*5),scale=1+.22*Math.exp(-t*8)*Math.cos(t*20);ctx.save();ctx.globalAlpha=fade;ctx.translate(700,365);ctx.scale(scale,scale);roundRect(-155,-67,310,134,15,"#101b31ef","#edca7f");text(banner.label,0,-10,58,"#f4d590","center",'"STKaiti","KaiTi",serif');text(banner.sub,0,40,16,"#c0cde1");ctx.restore();}}
 }
@@ -114,10 +115,23 @@ function drawCenter(now){
  roundRect(620,280,160,160,17,"#111d2c","#a99a7066");roundRect(628,288,144,144,11,null,"#77899b55");
  const active=seatRelative(state.turn),spots=[{x:700,y:426},{x:766,y:360},{x:700,y:294},{x:634,y:360}];
  for(let i=0;i<4;i++){const seat=(state.seat+i)%4,p=spots[i];text(winds[seat],p.x,p.y,18,i===active?"#ffdb80":"#778ca9");}
- text("泉 州",700,323,16,"#c4b17b","center",'"STSong",serif');text(state.remaining,700,359,32,"#79d6d3","center","ui-monospace");
- let label=state.status!=="PLAYING"||room.game.finished?"本局结束":room.game.restartRequest?"等待重开确认":state.phase==="REACTION"?"等待响应":canDiscard()?"请出牌":winds[state.turn]+"家思考";
+ text(winds[state.dealer]+"家庄 · 连"+(state.streak||0),700,321,13,"#e4bf77");text(state.remaining,700,353,31,"#79d6d3","center","ui-monospace");
+ text("庄底 "+(state.dealerBase||2),700,375,11,"#baa67d");
+ let label=state.status!=="PLAYING"||room.game.finished?"本局结束":room.game.restartRequest?"等待重开确认":state.phase==="ROLLING_DICE"?"摇骰定庄":state.phase==="REACTION"?"等待响应":canDiscard()?"请出牌":winds[state.turn]+"家思考";
  text(label,700,397,13,canDiscard()?"#ffe0a2":"#adc1d9");
- if(state.pending){const seconds=Math.max(0,Math.ceil((state.pending.deadline-Date.now())/1000));text(seconds+"秒",700,375,11,"#edc779","center","ui-monospace");}
+ if(state.pending){const seconds=Math.max(0,Math.ceil((state.pending.deadline-Date.now())/1000));text(seconds+"秒",743,397,10,"#edc779","center","ui-monospace");}
+}
+function drawDie(value,x,y,angle=0){ctx.save();ctx.translate(x,y);ctx.rotate(angle);roundRect(-16,-16,32,32,6,"#f8f4e5","#c6bd9c");const pips={1:[[0,0]],2:[[-7,-7],[7,7]],3:[[-7,-7],[0,0],[7,7]],4:[[-7,-7],[7,-7],[-7,7],[7,7]],5:[[-7,-7],[7,-7],[0,0],[-7,7],[7,7]],6:[[-7,-8],[7,-8],[-7,0],[7,0],[-7,8],[7,8]]};ctx.fillStyle=value===1||value===4?"#b63030":"#26313a";for(const [px,py]of pips[value]){ctx.beginPath();ctx.arc(px,py,value===1?4:2.7,0,Math.PI*2);ctx.fill();}ctx.restore();}
+function drawDealerDice(now){
+ if(!state.dealerRoll||(state.phase!=="ROLLING_DICE"&&now>=diceCelebrationUntil))return;
+ const rolling=state.phase==="ROLLING_DICE"&&Date.now()<state.rollUntil,age=Math.max(0,Date.now()-(state.rollStartedAt||Date.now())),rounds=state.dealerRoll.rounds,round=rounds.at(-1),final=new Map(round.map(r=>[r.seat,r]));
+ ctx.save();roundRect(416,202,568,324,18,"#0e1a2ff5","#c7a45d");text(rolling?"摇骰定庄":"定庄 · "+winds[state.dealer]+"家",700,237,27,"#efce86","center",'"STKaiti","KaiTi",serif');
+ text(rounds.length>1?"同点重掷 · 第 "+rounds.length+" 轮":"双骰比总点 · 最高者坐庄 · 同点重掷",700,269,13,"#aabed5");
+ for(let seat=0;seat<4;seat++){const roll=final.get(seat)||rounds.slice().reverse().find(rs=>rs.some(r=>r.seat===seat)).find(r=>r.seat===seat),y=311+seat*47,winner=!rolling&&seat===state.dealer;
+  if(winner)roundRect(441,y-21,518,42,7,"#d3ae5428","#d2af63");text(winds[seat]+" · "+playerName(seat),463,y,15,winner?"#ffe0a0":"#c0cee1","left");
+  const dice=rolling?[(Math.floor(age/65)+seat*3)%6+1,(Math.floor(age/83)+seat*5)%6+1]:roll.dice;
+  drawDie(dice[0],725,y,rolling?Math.sin(age*.02+seat)*.17:0);drawDie(dice[1],771,y,rolling?Math.cos(age*.02+seat)*.17:0);text(rolling?"…":String(roll.total)+"点"+(final.has(seat)?"":" · 已出局"),867,y,final.has(seat)?18:13,winner?"#f5d487":"#b1c2da");}
+ ctx.restore();
 }
 function drawRiver(seat,now){
  const list=state.discards[seat];
@@ -138,10 +152,10 @@ function drawOpponent(seat,now){
  roundRect(namePos.x-50,namePos.y-20,29,37,6,seat===state.seat?"#c49c56":"#365577");
  text(winds[seat],namePos.x-36,namePos.y-2,20,seat===state.seat?"#162134":"#e0ebf7");
  const name=playerName(seat);text(name.length>7?name.slice(0,6)+"…":name,namePos.x+18,namePos.y-7,14,"#f4edda");
- const status=state.you[seat]?["","游金","双游","三游"][state.you[seat]]:seat===state.seat?"你 · "+(seat===state.dealer?"庄家":"闲家"):seat===state.dealer?"庄家":state.hands[seat].length+" 张";
+ const status=state.you[seat]?["","游金","双游","三游"][state.you[seat]]:seat===state.dealer?"庄 · 连"+(state.streak||0):seat===state.seat?"你 · 闲家":state.hands[seat].length+" 张";
  text(status,namePos.x+18,namePos.y+13,11,state.you[seat]?"#ffcd64":"#93acc9");
  if(relative===0)return;
- const a=relative===1?-Math.PI/2:relative===2?Math.PI:Math.PI/2,hand=state.hands[seat],step=relative===2?28:27,w=relative===2?27:26,h=relative===2?42:40;
+ const a=relative===1?-Math.PI/2:relative===2?Math.PI:Math.PI/2,hand=state.hands[seat],step=relative===2?35:31,w=relative===2?34:30,h=relative===2?51:47;
  for(let i=0;i<hand.length;i++){
   const local=(i-(hand.length-1)/2)*step;
   face(hand[i],origin.x+local*Math.cos(a),origin.y+local*Math.sin(a),w,h,a,hand[i]===null);
@@ -149,10 +163,10 @@ function drawOpponent(seat,now){
 }
 function drawMelds(seat){
  const relative=seatRelative(seat),a=[0,-Math.PI/2,Math.PI,Math.PI/2][relative];
- const total=state.melds[seat].reduce((sum,m)=>sum+m.tiles.length*28+10,0);
+ const count=state.melds[seat].reduce((sum,m)=>sum+m.tiles.length,0),step=relative===0?28:Math.min(33,510/Math.max(1,count)),total=count*step+state.melds[seat].length*10;
  const base=[{x:1140-total,y:670},{x:1143,y:627},{x:1030,y:113},{x:257,y:112}][relative];
  let offset=0;for(const m of state.melds[seat]){
-  for(const t of m.tiles){const x=base.x+offset*Math.cos(a),y=base.y+offset*Math.sin(a);face(t,x,y,27,40,a,t===null);offset+=28;}offset+=10;
+  for(const t of m.tiles){const x=base.x+offset*Math.cos(a),y=base.y+offset*Math.sin(a);face(t,x,y,Math.min(step-1,relative===0?27:32),relative===0?40:46,a,t===null);offset+=step;}offset+=10;
  }
 }
 function drawFlowers(seat,now){
@@ -166,8 +180,7 @@ function drawFlowers(seat,now){
 }
 function visibleHand(){
  if(!state)return[];
- const source=state.hands[state.seat],items=source.map((tile,index)=>({tile,index})),drawnIndex=source.lastIndexOf(state.drawn);
- if(drawnIndex>=0)items.push(...items.splice(drawnIndex,1));
+ const source=state.hands[state.seat],items=source.map((tile,index)=>({tile,index})).sort((a,b)=>a.tile-b.tile||a.index-b.index),drawnIndex=source.lastIndexOf(state.drawn);
  const seen=new Map();return items.map(item=>{const n=seen.get(item.tile)||0;seen.set(item.tile,n+1);return {...item,key:item.tile+":"+n,drawn:item.index===drawnIndex};});
 }
 function spring(body,target,dt){
@@ -175,10 +188,10 @@ function spring(body,target,dt){
  for(let elapsed=0;elapsed<dt;elapsed+=1/240){const h=Math.min(1/240,dt-elapsed);body.vx+=(230*(target.x-body.x)-26*body.vx)*h;body.vy+=(260*(target.y-body.y)-25*body.vy)*h;body.x+=body.vx*h;body.y+=body.vy*h;}
 }
 function drawOwnHand(now){
- const items=visibleHand(),width=52,step=53,start=(W-items.length*step-14)/2+width/2;
+ const items=visibleHand(),width=52,step=53,start=(W-items.length*step)/2+width/2;
  handHits=[];const activeKeys=new Set(),dt=Math.min(.04,Math.max(.001,(now-lastTime)/1000||.016));
  for(let i=0;i<items.length;i++){
-  const item=items[i],x=start+i*step+(item.drawn?14:0),chosen=selected===item.index,y=735-(chosen?25:0);
+  const item=items[i],x=start+i*step,chosen=selected===item.index,y=735-(chosen?25:0);
   activeKeys.add(item.key);
   let body=handBodies.get(item.key);if(!body){body={x,y:reduced?y:790,vx:0,vy:0};handBodies.set(item.key,body);}
   const dragging=pointer?.dragging&&pointer.index===item.index,target=dragging?{x:x+pointer.x-pointer.startX,y:y+pointer.y-pointer.startY}:{x,y};
@@ -187,6 +200,7 @@ function drawOwnHand(now){
   if(!hidden){
    if(chosen){ctx.save();ctx.shadowBlur=16;ctx.shadowColor="#f4cf6d99";roundRect(body.x-width/2-2,body.y-42,56,82,5,"#efca70");ctx.restore();}
    face(item.tile,body.x,body.y,width,77,dragging?(pointer.x-pointer.startX)*.001:0);
+   if(item.drawn&&canDiscard())text("摸",body.x,body.y-46,11,"#efd18e");
   }
   handHits.push({index:item.index,tile:item.tile,key:item.key,x:body.x,y:body.y,w:width,h:77,targetX:x,targetY:y});
  }
@@ -203,6 +217,7 @@ function drawFlights(now){
 function animateState(previous,next){
  if(reduced||!previous||previous.status!=="PLAYING")return;
  const now=performance.now();
+ if(previous.phase==="ROLLING_DICE"&&next.phase!=="ROLLING_DICE")diceCelebrationUntil=now+1000;
  for(let seat=0;seat<4;seat++){
   const added=next.flowers[seat].filter(tile=>!previous.flowers[seat].includes(tile));
   if(added.length){banner={label:"补花",sub:winds[seat]+"家 · "+added.map(t=>names[t]).join(" "),start:now,duration:1100};
@@ -217,7 +232,7 @@ function animateState(previous,next){
   const m=next.melds[seat].at(-1);banner={label:m.kind==="CHI"?"吃":m.kind==="PONG"?"碰":"杠",sub:winds[seat]+"家 · "+playerName(seat),start:now,duration:1150};sound("claim");
  }
  if(next.status==="PLAYING"&&next.phase==="DISCARD"&&next.drawn!==null&&(next.turn!==previous.turn||next.hands[next.seat].length>previous.hands[next.seat].length||next.flowers[next.seat].length>previous.flowers[next.seat].length)&&next.turn===next.seat){
-  const count=next.hands[next.seat].length,start=(W-count*53-14)/2+26,to={x:start+(count-1)*53+14,y:735,a:0};
+  const items=visibleHand(),count=items.length,index=items.findIndex(item=>item.drawn),start=(W-count*53)/2+26,to={x:start+Math.max(0,index)*53,y:735,a:0};
   drawnUntil=now+380;flights.push({kind:"DRAW",tile:next.drawn,from:{x:1010,y:610},to,start:now,duration:380,w:52,h:77});
  }
  if(next.status==="FINISHED"&&previous.status!=="FINISHED"){banner={label:next.result?.name||"胡",sub:next.winner===null?"本局流局":winds[next.winner]+"家胡牌",start:now,duration:1500};sound("win");}
@@ -227,7 +242,8 @@ function fitScene(){
  const rect=$("#stage").getBoundingClientRect(),scale=Math.max(.1,Math.min(rect.width/W,rect.height/H)),scene=$("#scene");scene.style.width=W*scale+"px";scene.style.height=H*scale+"px";
  const dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);feltPattern=null;
 }
-function button(label,fn,primary=false){const b=document.createElement("button");b.textContent=label;b.className=primary?"primary":"";b.disabled=busy;b.onclick=fn;return b;}
+function button(label,fn,primary=false,kind=""){const b=document.createElement("button");b.className=primary?"primary":"";const glyph={CHI:"吃",PONG:"碰",KONG:"杠",ADD_KONG:"杠",HU:"胡",PASS:"过"}[kind];if(glyph){b.classList.add("call-option","call-"+kind.toLowerCase());const title=document.createElement("span"),detail=document.createElement("small");title.className="call-glyph";title.textContent=glyph;detail.textContent=label;b.append(title,detail);b.setAttribute("aria-label",label);}else b.textContent=label;b.disabled=busy;b.onclick=fn;return b;}
+const callStyle=document.createElement("style");callStyle.textContent='.actions{gap:12px;bottom:18%;right:8%}.actions .call-option{display:flex;align-items:center;justify-content:center;flex-direction:column;min-width:74px;min-height:87px;padding:4px 9px 6px;border:1px solid #c9ad71;border-radius:14px;background:linear-gradient(145deg,#27394eeF,#0d192df5);box-shadow:0 6px 18px #0007,inset 0 0 18px #b99b4215;color:#f4d58e}.call-glyph{font:900 52px/1.05 "STKaiti","KaiTi","Kaiti SC","Noto Serif CJK SC",cursive;transform:skew(-7deg);text-shadow:1px 3px #584011,0 0 10px #e6ad4544;-webkit-text-stroke:.5px currentColor}.call-option small{display:block;font:10px/1.4 system-ui;max-width:140px;color:#e6dec9}.actions .call-hu{background:linear-gradient(140deg,#9b3c30,#552018);border-color:#f5c476;color:#ffe4a0}.actions .call-pass{color:#bacbda;border-color:#75889d;min-width:57px}.call-pass .call-glyph{font-size:36px}@media(max-height:520px){.actions{gap:7px}.actions .call-option{min-width:55px;min-height:61px;border-radius:9px}.call-glyph{font-size:36px}.call-option small{font-size:9px;max-width:90px}.call-pass .call-glyph{font-size:27px}}';document.head.appendChild(callStyle);
 function render(){
  if(!state)return;
  $("#roomMeta").textContent="房间 "+roomId.slice(-6).toUpperCase()+" · 第 "+room.game.round+" 局 · 你坐"+winds[state.seat]+"家";
@@ -235,15 +251,16 @@ function render(){
  $("#handDescription").textContent="我的手牌："+state.hands[state.seat].map(t=>names[t]).join("，");
  const actions=$("#actions");actions.replaceChildren();
  if(state.status==="PLAYING"&&!room.game.finished&&!room.game.restartRequest){
-  for(const option of state.options){let label=option.label;if(option.tile!==undefined)label+=" "+names[option.tile];if(option.tiles)label+=" "+option.tiles.map(t=>names[t]).join(" ");actions.append(button(label,()=>act(option),option.type==="HU"));}
-  if(state.phase==="REACTION"&&state.options.length)actions.append(button("过",()=>act({type:"PASS"})));
+  for(const option of state.options){let label=option.label;if(option.tile!==undefined)label+=" "+names[option.tile];if(option.tiles)label+=" "+option.tiles.map(t=>names[t]).join(" ");actions.append(button(label,()=>act(option),option.type==="HU",option.type));}
+  if(state.phase==="REACTION"&&state.options.length)actions.append(button("过",()=>act({type:"PASS"}),false,"PASS"));
   // 主出牌按钮绘制在牌桌底部，DOM区只展示吃碰杠胡，避免挡住中央弃牌。
  }
  const log=$("#log");log.replaceChildren(...state.log.map(value=>{const d=document.createElement("div");d.textContent=value;return d;}));log.scrollTop=log.scrollHeight;
  $("#restart").textContent=state.status==="PLAYING"&&!room.game.finished?"重开":"新一局";
  $("#soundButton").textContent=sounds?"音效 开":"音效 关";$("#soundButton").setAttribute("aria-pressed",String(sounds));
+ $("#assistButton").textContent=tileAssist?"牌号 开":"牌号 关";$("#assistButton").setAttribute("aria-pressed",String(tileAssist));
  if((state.status==="FINISHED"||room.game.finished)&&resultKey!==room.game.round+":"+room.game.winner+":"+state.winner){
-  resultKey=room.game.round+":"+room.game.winner+":"+state.winner;$("#resultTitle").textContent=state.result?.name||"本局结束";$("#resultDetail").textContent=state.result?.detail||"对局已经结束";
+  resultKey=room.game.round+":"+room.game.winner+":"+state.winner;$("#resultTitle").textContent=state.result?.name||"本局结束";$("#resultDetail").textContent=(state.result?.detail||"对局已经结束")+(state.nextDealer?"；下局"+winds[state.nextDealer.dealer]+"家庄 · 连"+state.nextDealer.streak:"");
   $("#scores").replaceChildren(...state.scores.map((score,seat)=>{const d=document.createElement("div");d.className="score";const label=document.createElement("span"),b=document.createElement("b");label.textContent=winds[seat]+"家 · "+playerName(seat)+(seat===state.winner?" · 胡":"");b.textContent=(score>0?"+":"")+score;d.append(label,b);return d;}));
   clearTimeout(render.resultTimer);render.resultTimer=setTimeout(()=>{if(!$("#result").open)$("#result").showModal();},reduced?0:950);
  }
@@ -273,7 +290,7 @@ async function sync(){
  try{const next=await api("/api/rooms/"+roomId+"/mahjong");if(next.revision<revision)return;
  const previous=state,newRound=sceneRound!==next.room.game.round;room=next.room;me=next.me;
  if(newRound){sceneRound=room.game.round;handBodies.clear();flights=[];selected=null;resultKey="";clearTimeout(render.resultTimer);$("#result").close();banner=null;drawnUntil=0;sound("shuffle");}
- state=next.state;if(next.revision!==revision){animateState(newRound?null:previous,state);selected=null;pointer=null;}
+ state=next.state;if(newRound){diceCelebrationUntil=0;if(state.phase==="ROLLING_DICE")sound("dice");else if(state.dealerReason!=="摇骰定庄"){banner={label:state.dealerReason==="原庄重开"?"重新发牌":state.streak?"连庄":"换庄",sub:winds[state.dealer]+"家 · 庄底"+state.dealerBase,start:performance.now(),duration:1300};}}if(next.revision!==revision){animateState(newRound?null:previous,state);selected=null;pointer=null;}
  revision=next.revision;render();await promptRestart(room.game.restartRequest);
  }catch(error){toast(error.message);}finally{loading=false;if(refreshAgain){refreshAgain=false;sync();}}
 }
@@ -284,11 +301,12 @@ async function act(action){
  }catch(error){toast(error.message);}finally{busy=false;render();await sync();}
 }
 async function restart(){try{const result=await api("/api/rooms/"+roomId+"/rematch",{method:"POST",body:JSON.stringify({round:room.game.round})});if(result.started){$("#result").close();revision=-1;}else toast("已向对方发送重开确认");await sync();}catch(error){toast(error.message);}}
-async function promptRestart(request){if(!request||request.to!==(state.seat===0?0:1)||lastRequest===request.id)return;lastRequest=request.id;const accepted=confirm("对手请求重新开始，当前未完成对局将不计战绩。是否同意？");await api("/api/rooms/"+roomId+"/rematch",{method:"POST",body:JSON.stringify({round:request.round,requestId:request.id,response:accepted?"ACCEPT":"DECLINE"})});refreshAgain=true;}
+async function promptRestart(request){if(!request||lastRequest===request.id)return;const eligible=request.required?request.required.includes(me.id)&&!request.accepted.includes(me.id):request.to===(state.seat===0?0:1);if(!eligible)return;lastRequest=request.id;const accepted=confirm("其他玩家请求重新开始，未完成对局将不计战绩。需要所有真人同意，是否同意？");await api("/api/rooms/"+roomId+"/rematch",{method:"POST",body:JSON.stringify({round:request.round,requestId:request.id,response:accepted?"ACCEPT":"DECLINE"})});refreshAgain=true;}
 $("#restart").onclick=restart;$("#again").onclick=restart;$("#closeResult").onclick=()=>$("#result").close();
 $("#rulesButton").onclick=()=>$("#rulesDialog").showModal();$("#logButton").onclick=()=>$("#logDialog").showModal();
 document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).close());
 $("#soundButton").onclick=()=>{sounds=!sounds;localStorage.setItem("mahjongSounds",sounds?"1":"0");sound("pick");render();};
+$("#assistButton").onclick=()=>{tileAssist=!tileAssist;localStorage.setItem("mahjongTileAssist",tileAssist?"1":"0");render();};
 $("#musicButton").onclick=()=>document.body.classList.toggle("music-open");
 $("#exit").onclick=async()=>{if(!confirm("确定退出房间？未完成的在线对局将按退出判负。"))return;try{await api("/api/rooms/"+roomId+"/exit",{method:"POST"});location.href="/lobby.html";}catch(error){toast(error.message);}};
 $("#fullscreen").onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else{await document.documentElement.requestFullscreen();if(screen.orientation?.lock)try{await screen.orientation.lock("landscape");}catch{}}fitScene();}catch{toast("浏览器未开放全屏，请横屏并隐藏工具栏");}};
