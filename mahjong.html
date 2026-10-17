@@ -8,12 +8,12 @@
 <body>
 <main>
 <header><div class="brand"><div><div class="eyebrow">QUANZHOU MAHJONG / BLACK GOLD</div><h1>泉州麻将</h1></div><div id="roomMeta" class="meta">正在入座…</div></div>
-<nav class="toolbar"><button id="rulesButton">玩法</button><button id="logButton">牌谱</button><button id="assistButton" aria-pressed="true">牌号 开</button><button id="soundButton" aria-pressed="true">音效 开</button><button id="musicButton">音乐</button><button id="fullscreen">全屏</button><button id="restart">重开</button><button id="exit" class="danger">退出</button></nav></header>
+<nav class="toolbar"><button id="rulesButton">玩法</button><button id="logButton">牌谱</button><button id="settlementButton">结算</button><button id="assistButton" aria-pressed="true">牌号 开</button><button id="soundButton" aria-pressed="true">音效 开</button><button id="musicButton">音乐</button><button id="fullscreen">全屏</button><button id="restart">重开</button><button id="exit" class="danger">退出</button></nav></header>
 <div class="portrait-tip">横屏可放大手牌 · 点牌拿起，再点或向桌心拖动出牌</div>
 <div class="stage" id="stage"><div class="scene" id="scene"><canvas id="table" tabindex="0" aria-label="泉州麻将牌桌：点击手牌选中，再次点击或向上拖动出牌"></canvas><div id="actions" class="actions"></div><div id="status" class="sr-only" role="status"></div><div id="handDescription" class="sr-only"></div></div></div>
 </main>
 <div class="notice" id="notice" role="alert"></div>
-<dialog id="rulesDialog"><h2>泉州麻将 · 怎么玩</h2><div class="rules"><h3>操作</h3><p>你的手牌就在画面底部。点一下拿起，再点一下打出；也可将牌向桌心拖出。电脑出牌后，如你能吃、碰、杠、胡，右下方会出现对应按钮，不操作则20秒后自动过。</p><p>轮到你时，点击牌桌底部金色「出牌」按钮，或按空格打出已选牌。金色牌角标是本局金，摸到的新牌自动按万、筒、条、字牌顺序理入手牌，并用「摸」字标明。</p><h3>本版规则</h3><p>四人桌：在线房间支持2至4位真人，房主可连续邀请三位好友；未坐满的位置由电脑补齐。人机和练习房间为一位真人与三位电脑。首局四家各掷双骰，总点数最高者坐庄，同点者重掷；庄家拿17张并先出牌。庄胡或流局连庄，闲家胡由胡牌者接庄。</p><p>144 张牌，花牌自动补花。翻出的牌为金，另外三张作万能牌；若金不是白板，白板按金原来的面值使用。金不可吃碰杠。</p><p>上家可吃，任何一家可碰、杠；胡优先于碰杠，碰杠优先于吃，同级按座次先后。响应限时 20 秒，超时视为过。暗杠、补杠、抢补杠均支持。</p><p>胡牌为五组面子加一对。金可补面子，金作雀只可自摸。留下金单钓形成游金；打金后仍可游金则升级双游、三游，下一次摸牌可胡。出金一圈内禁止吃碰杠和接炮。</p><p>平胡 1 倍，自摸 2 倍，游金 3 倍、双游 6 倍、三游 9 倍。开局或牌墙末段三金可三金倒；八花直接胡。剩 16 张流局。</p><p>输家各付（底 + 水）× 倍数：闲家底 1，庄家相关底为 2 + 连庄次数；花、金每张 1 水，字明刻 1 水，暗刻数牌 1 / 字牌 2 水，明杠 2 / 3 水，暗杠 3 / 4 水。连庄底分每次加1，换庄清零；未结束的确认重开保留原庄与连庄次数。暂不加入跟打风牌、抢金等地方可选规则。</p><p>在线战绩按最终胡牌者记胜，其余真人记负；电脑胡时两位真人均记负，流局记和。练习与人机不计排行。</p><p>本版规则口径参考：<a href="https://kzpn200.blogspot.com/2015/10/blog-post_14.html" target="_blank" rel="noopener">厦门与泉州麻将规则整理</a>。地方约定不同，以本面板为准。</p></div><div class="toolbar"><button data-close="rulesDialog" class="primary">知道了</button></div></dialog>
+<dialog id="rulesDialog"><h2>泉州麻将 · 怎么玩</h2><div class="rules"><h3>操作</h3><p>你的手牌就在画面底部。点一下拿起，再点一下打出；也可将牌向桌心拖出。电脑出牌后，如你能吃、碰、杠、胡，右下方会出现对应按钮，不操作则20秒后自动过。</p><p>轮到你时，点击牌桌底部金色「出牌」按钮，或按空格打出已选牌。金色牌角标是本局金，摸到的新牌自动按万、筒、条、字牌顺序理入手牌，并用「摸」字标明。</p><h3>本版规则</h3><p>四人桌：在线房间支持2至4位真人，房主可连续邀请三位好友；未坐满的位置由电脑补齐。人机和练习房间为一位真人与三位电脑。首局四家各掷双骰，总点数最高者坐庄，同点者重掷；庄家拿17张并先出牌。庄胡或流局连庄，闲家胡由胡牌者接庄。</p><p>144 张牌，花牌自动补花。翻出的牌为金，另外三张作万能牌；若金不是白板，白板按金原来的面值使用。金不可吃碰杠；手中有金时不能吃、碰、明杠、接炮胡或抢杠胡，只能自摸胡牌（仍可正常出牌及暗杠、补杠）。</p><p>上家可吃，任何一家可碰、杠；胡优先于碰杠，碰杠优先于吃，同级按座次先后。响应限时 20 秒，超时视为过。暗杠、补杠、抢补杠均支持。</p><p>胡牌为五组面子加一对。金可补面子，金作雀只可自摸。留下金单钓形成游金；打金后仍可游金则升级双游、三游，下一次摸牌可胡。出金一圈内禁止吃碰杠和接炮。</p><p>平胡 1 倍，自摸 2 倍，游金 3 倍、双游 6 倍、三游 9 倍。开局或牌墙末段三金可三金倒；八花直接胡。剩 16 张流局。</p><p>输家各付（底 + 水）× 倍数：闲家底 1，庄家相关底为 2 + 连庄次数；花、金每张 1 水，字明刻 1 水，暗刻数牌 1 / 字牌 2 水，明杠 2 / 3 水，暗杠 3 / 4 水。连庄底分每次加1，换庄清零；未结束的确认重开保留原庄与连庄次数。暂不加入跟打风牌、抢金等地方可选规则。</p><p>在线战绩按最终胡牌者记胜，其余真人记负；电脑胡时两位真人均记负，流局记和。练习与人机不计排行。</p><p>本版规则口径参考：<a href="https://kzpn200.blogspot.com/2015/10/blog-post_14.html" target="_blank" rel="noopener">厦门与泉州麻将规则整理</a>。地方约定不同，以本面板为准。</p></div><div class="toolbar"><button data-close="rulesDialog" class="primary">知道了</button></div></dialog>
 <dialog id="logDialog"><h2>牌局记录</h2><div id="log" class="log"></div><div class="toolbar"><button data-close="logDialog">返回牌桌</button></div></dialog>
 <dialog id="result"><h2 id="resultTitle"></h2><p id="resultDetail" class="result-detail"></p><div id="scores"></div><div class="toolbar"><button id="again" class="primary">开始新一局</button><button id="closeResult">查看牌局</button></div></dialog>
 <script src="/game-audio.js"></script>
@@ -244,6 +244,19 @@ function fitScene(){
 }
 function button(label,fn,primary=false,kind=""){const b=document.createElement("button");b.className=primary?"primary":"";const glyph={CHI:"吃",PONG:"碰",KONG:"杠",ADD_KONG:"杠",HU:"胡",PASS:"过"}[kind];if(glyph){b.classList.add("call-option","call-"+kind.toLowerCase());const title=document.createElement("span"),detail=document.createElement("small");title.className="call-glyph";title.textContent=glyph;detail.textContent=label;b.append(title,detail);b.setAttribute("aria-label",label);}else b.textContent=label;b.disabled=busy;b.onclick=fn;return b;}
 const callStyle=document.createElement("style");callStyle.textContent='.actions{gap:12px;bottom:18%;right:8%}.actions .call-option{display:flex;align-items:center;justify-content:center;flex-direction:column;min-width:74px;min-height:87px;padding:4px 9px 6px;border:1px solid #c9ad71;border-radius:14px;background:linear-gradient(145deg,#27394eeF,#0d192df5);box-shadow:0 6px 18px #0007,inset 0 0 18px #b99b4215;color:#f4d58e}.call-glyph{font:900 52px/1.05 "STKaiti","KaiTi","Kaiti SC","Noto Serif CJK SC",cursive;transform:skew(-7deg);text-shadow:1px 3px #584011,0 0 10px #e6ad4544;-webkit-text-stroke:.5px currentColor}.call-option small{display:block;font:10px/1.4 system-ui;max-width:140px;color:#e6dec9}.actions .call-hu{background:linear-gradient(140deg,#9b3c30,#552018);border-color:#f5c476;color:#ffe4a0}.actions .call-pass{color:#bacbda;border-color:#75889d;min-width:57px}.call-pass .call-glyph{font-size:36px}@media(max-height:520px){.actions{gap:7px}.actions .call-option{min-width:55px;min-height:61px;border-radius:9px}.call-glyph{font-size:36px}.call-option small{font-size:9px;max-width:90px}.call-pass .call-glyph{font-size:27px}}';document.head.appendChild(callStyle);
+function populateSettlement(){
+ const finished=state.status==="FINISHED"||room.game.finished;
+ $("#resultTitle").textContent=finished?(state.result?.name||"本局结束"):"本局尚未结算";
+ $("#resultDetail").textContent=finished?(state.result?.detail||"对局已经结束")+(state.nextDealer?"；下局"+winds[state.nextDealer.dealer]+"家庄 · 连"+state.nextDealer.streak:""):"牌局仍在进行，胡牌或流局后自动结算。查看不会结束本局。";
+ $("#again").hidden=!finished;
+ $("#scores").replaceChildren(...state.scores.map((score,seat)=>{const d=document.createElement("div");d.className="score";const label=document.createElement("span"),b=document.createElement("b");label.textContent=winds[seat]+"家 · "+playerName(seat)+(finished&&seat===state.winner?" · 胡":"");b.textContent=finished?(score>0?"+":"")+score:"待结算";d.append(label,b);return d;}));
+}
+function showSettlement(){
+ if(!state||!room)return;
+ clearTimeout(render.resultTimer);
+ populateSettlement();
+ if(!$("#result").open)$("#result").showModal();
+}
 function render(){
  if(!state)return;
  $("#roomMeta").textContent="房间 "+roomId.slice(-6).toUpperCase()+" · 第 "+room.game.round+" 局 · 你坐"+winds[state.seat]+"家";
@@ -260,10 +273,10 @@ function render(){
  $("#soundButton").textContent=sounds?"音效 开":"音效 关";$("#soundButton").setAttribute("aria-pressed",String(sounds));
  $("#assistButton").textContent=tileAssist?"牌号 开":"牌号 关";$("#assistButton").setAttribute("aria-pressed",String(tileAssist));
  if((state.status==="FINISHED"||room.game.finished)&&resultKey!==room.game.round+":"+room.game.winner+":"+state.winner){
-  resultKey=room.game.round+":"+room.game.winner+":"+state.winner;$("#resultTitle").textContent=state.result?.name||"本局结束";$("#resultDetail").textContent=(state.result?.detail||"对局已经结束")+(state.nextDealer?"；下局"+winds[state.nextDealer.dealer]+"家庄 · 连"+state.nextDealer.streak:"");
-  $("#scores").replaceChildren(...state.scores.map((score,seat)=>{const d=document.createElement("div");d.className="score";const label=document.createElement("span"),b=document.createElement("b");label.textContent=winds[seat]+"家 · "+playerName(seat)+(seat===state.winner?" · 胡":"");b.textContent=(score>0?"+":"")+score;d.append(label,b);return d;}));
-  clearTimeout(render.resultTimer);render.resultTimer=setTimeout(()=>{if(!$("#result").open)$("#result").showModal();},reduced?0:950);
+  resultKey=room.game.round+":"+room.game.winner+":"+state.winner;
+  clearTimeout(render.resultTimer);render.resultTimer=setTimeout(showSettlement,reduced?0:950);
  }
+ if($("#result").open)populateSettlement();
 }
 function drawDiscardButton(){
  const enabled=canDiscard()&&selected!==null&&!busy;
@@ -303,6 +316,7 @@ async function act(action){
 async function restart(){try{const result=await api("/api/rooms/"+roomId+"/rematch",{method:"POST",body:JSON.stringify({round:room.game.round})});if(result.started){$("#result").close();revision=-1;}else toast("已向对方发送重开确认");await sync();}catch(error){toast(error.message);}}
 async function promptRestart(request){if(!request||lastRequest===request.id)return;const eligible=request.required?request.required.includes(me.id)&&!request.accepted.includes(me.id):request.to===(state.seat===0?0:1);if(!eligible)return;lastRequest=request.id;const accepted=confirm("其他玩家请求重新开始，未完成对局将不计战绩。需要所有真人同意，是否同意？");await api("/api/rooms/"+roomId+"/rematch",{method:"POST",body:JSON.stringify({round:request.round,requestId:request.id,response:accepted?"ACCEPT":"DECLINE"})});refreshAgain=true;}
 $("#restart").onclick=restart;$("#again").onclick=restart;$("#closeResult").onclick=()=>$("#result").close();
+$("#settlementButton").onclick=showSettlement;
 $("#rulesButton").onclick=()=>$("#rulesDialog").showModal();$("#logButton").onclick=()=>$("#logDialog").showModal();
 document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).close());
 $("#soundButton").onclick=()=>{sounds=!sounds;localStorage.setItem("mahjongSounds",sounds?"1":"0");sound("pick");render();};

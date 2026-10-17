@@ -120,7 +120,10 @@ function sequences(s,seat,tile) {
 }
 function reactionOptions(s,seat) {
   const p=s.pending;if(!p||seat===p.from||p.replies[seat])return [];
-  if(s.lockSeat!==null||p.tile===s.gold||s.you[seat])return [];
+  // 持有真正的金牌时，只允许自摸胡，不响应弃牌（含明杠）或抢补杠。
+  // 白板代金面值并非金牌，不能用 effective() 判定此限制。
+  // 所有入口共用此函数：按钮、电脑决策和 apply 的服务端校验保持一致。
+  if(s.lockSeat!==null||p.tile===s.gold||s.you[seat]||s.hands[seat].includes(s.gold))return [];
   const options=[];
   if(winningShape(s.hands[seat].concat(p.tile),s.gold,s.melds[seat].length,false))options.push({type:"HU",label:"胡"});
   if(p.kind==="ROB_KONG")return options;
