@@ -1,5 +1,5 @@
 [Unit]
-Description=Black Gold isolated study runner (rootless Docker)
+Description=Black Gold lightweight C++ judge (Bubblewrap, no Docker)
 After=network-online.target
 Wants=network-online.target
 
@@ -17,8 +17,21 @@ ProtectSystem=strict
 ReadWritePaths=/tmp
 ProtectHome=read-only
 UMask=0077
-# Docker daemon must resolve worker bind-mount source paths.
-PrivateTmp=false
+# 沙箱为worker直接启动的子进程，继承该私有/tmp；不依赖外部守护进程。
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+MemoryAccounting=true
+MemoryMax=512M
+MemorySwapMax=0
+TasksMax=64
+CPUQuota=75%
+CPUWeight=20
+Nice=10
+KillMode=control-group
+TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target

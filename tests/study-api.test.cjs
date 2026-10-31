@@ -5,7 +5,7 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
 test('学习联网：账号隔离、真实状态分支、私有草稿/源码、持久化、服务故障不误记AC',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'study-api-')),dbFile=path.join(dir,'db.json'),token=crypto.randomBytes(32).toString('hex');
  const root=path.join(__dirname,'..'),port=22000+crypto.randomInt(1000);let child,exited,runnerDelay=0,mode='OK',requests=0,lastPayload;
- // 模拟可信 worker 的协议。它不执行提交代码；真正的隔离容器需在 Linux 部署后另做冒烟测试。
+ // 模拟可信 worker 的协议。它不执行提交代码；真正的轻量沙箱需在 Linux 部署后另做冒烟测试。
  const runner=http.createServer(async(req,res)=>{
   if(req.headers.authorization!=='Bearer '+token){res.writeHead(401);res.end('{}');return;}
   if(req.url==='/health'){res.setHeader('content-type','application/json');res.end(JSON.stringify({ready:true}));return;}
