@@ -33,7 +33,7 @@ async function container(job,cmd,stdin='',compile=false){
   return{...result,timeMs:Date.now()-started};
 }
 async function execute(payload){
-  if(!['javascript','python','cpp'].includes(payload.language)||typeof payload.code!=='string'||!payload.code.trim()||Buffer.byteLength(payload.code)>32768||!Array.isArray(payload.inputs)||!payload.inputs.length||payload.inputs.length>48||payload.inputs.some(x=>typeof x!=='string'||Buffer.byteLength(x)>65536))throw Object.assign(Error('判题请求参数无效'),{status:400});
+  if(payload.language!=='cpp'||typeof payload.code!=='string'||!payload.code.trim()||Buffer.byteLength(payload.code)>131072||!Array.isArray(payload.inputs)||!payload.inputs.length||payload.inputs.length>48||payload.inputs.some(x=>typeof x!=='string'||Buffer.byteLength(x)>65536))throw Object.assign(Error('判题请求参数无效'),{status:400});
   if(!(await health()).ready)throw Object.assign(Error((await health()).message),{status:503});
   const deadline=Date.now()+40000;
   const job=await fs.mkdtemp(path.join(os.tmpdir(),'blackgold-study-'));await fs.chmod(job,0o755);

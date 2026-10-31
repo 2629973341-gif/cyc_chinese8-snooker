@@ -1,5 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http'),crypto=require('node:crypto'),{spawn}=require('node:child_process');
 const R=require('../study/reference');
+const Cpp=require('../study/cpp');
 const browser=process.env.BROWSER_PATH||['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe','/usr/bin/chromium','/usr/bin/google-chrome'].find(p=>fs.existsSync(p));
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿、源码、手机竖屏和账号切换',{skip:process.env.STUDY_BROWSER_TEST!=='1'||!browser||typeof WebSocket==='undefined',timeout:40000},async t=>{
@@ -27,13 +28,26 @@ test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿�
  await evaluate('document.querySelectorAll("#plans button")[1].click()');assert.equal(await evaluate('document.querySelectorAll(".problem-item").length'),150);assert.equal(await evaluate('document.querySelector(".problem-item").dataset.id'),'88','面试150必须保留官方顺序');
  await evaluate('document.querySelector("#search").value="两数之和";document.querySelector("#search").dispatchEvent(new Event("input"))');assert.ok((await evaluate('document.querySelectorAll(".problem-item").length'))>=1);
  await evaluate('document.querySelector("#search").value="";document.querySelector("#search").dispatchEvent(new Event("input"));setTab("solutions")');assert.equal(await evaluate('document.querySelectorAll(".solution-card").length'),2);
- await evaluate(`document.querySelector('#code').value=${JSON.stringify(R.program(1))};document.querySelector('#code').dispatchEvent(new Event('input'));setTab('description')`);
+ assert.equal(await evaluate('mode'),'LEETCODE');assert.ok(await evaluate('document.querySelector("#code").value.includes("class Solution")'));
+ assert.ok(await evaluate('getComputedStyle(document.body).backgroundColor==="rgb(24, 24, 24)"'),'默认使用VS Code风格灰黑背景');
+ assert.ok(await evaluate('document.querySelector("#code").getBoundingClientRect().height>450'),'桌面代码区应获得足够高度');
+ await evaluate(`document.querySelector('#code').value=${JSON.stringify(Cpp.reference(1))};document.querySelector('#code').dispatchEvent(new Event('input'));setTab('description')`);
  await until('document.querySelector("#saveState").textContent.includes("已保存")');
+ await evaluate('document.querySelector("#mode").value="ACM_BLANK";document.querySelector("#mode").dispatchEvent(new Event("change"))');await until('mode==="ACM_BLANK" && !changing');assert.equal(await evaluate('document.querySelector("#code").value'),'');
+ await evaluate('document.querySelector("#code").value="// blank-mode draft";document.querySelector("#code").dispatchEvent(new Event("input"));document.querySelector("#mode").value="ACM_TEMPLATE";document.querySelector("#mode").dispatchEvent(new Event("change"))');await until('mode==="ACM_TEMPLATE" && !changing');assert.ok(await evaluate('document.querySelector("#code").value.includes("int main()")'));
+ await evaluate('document.querySelector("#mode").value="LEETCODE";document.querySelector("#mode").dispatchEvent(new Event("change"))');await until('mode==="LEETCODE" && !changing');assert.equal(await evaluate('document.querySelector("#code").value'),Cpp.reference(1));
+ assert.ok(await evaluate('document.querySelector("#codeHighlight .tok-keyword")!==null'),'编辑器应有C++语法着色');
  await evaluate('document.querySelector("#run").click()');await until('!working');assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("未判定答案")'));
  await evaluate('document.querySelector("#submit").click()');await until('!working && document.querySelector("#totalSolved").textContent==="1"');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("通过本地测试")'));
  assert.equal(posts,2);assert.ok(await evaluate('catalog.plans.every(p=>p.solved===1)'));
- await evaluate('setTab("history")');await until('document.querySelector(".history-row")!==null');await evaluate('document.querySelector(".history-row").click()');await until('document.querySelector("#submissionDialog").open');assert.ok((await evaluate('document.querySelector("#submissionCode").textContent')).includes('solutions'));
+ await evaluate('setTab("history")');await until('document.querySelector(".history-row")!==null');await evaluate('document.querySelector(".history-row").click()');await until('document.querySelector("#submissionDialog").open');assert.ok((await evaluate('document.querySelector("#submissionCode").textContent')).includes('class Solution'));
  await evaluate('document.querySelector("#closeSubmission").click()');
+ await evaluate('setTab("solutions");document.querySelector("#readFocus").click()');assert.ok(await evaluate('getComputedStyle(document.querySelector("#editorPane")).display==="none"'),'可放大题目区专注阅读');await evaluate('document.querySelector("#readFocus").click()');
+ const resize=await evaluate('(()=>{const r=document.querySelector("#problemResize").getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+200,before:document.querySelector("#editorPane").getBoundingClientRect().width};})()');
+ await pause(100);await command('Input.dispatchMouseEvent',{type:'mouseMoved',x:resize.x,y:resize.y,button:'none',buttons:0});
+ await command('Input.dispatchMouseEvent',{type:'mousePressed',x:resize.x,y:resize.y,button:'left',buttons:1,clickCount:1});await command('Input.dispatchMouseEvent',{type:'mouseMoved',x:resize.x-90,y:resize.y,button:'none',buttons:1});await command('Input.dispatchMouseEvent',{type:'mouseReleased',x:resize.x-90,y:resize.y,button:'left',buttons:0,clickCount:1});
+ const afterResize=await evaluate('({width:document.querySelector("#editorPane").getBoundingClientRect().width,problem:document.querySelector("#problemPane").getBoundingClientRect().width,setting:document.documentElement.style.getPropertyValue("--problem-width"),columns:getComputedStyle(document.querySelector("#workspace")).gridTemplateColumns})');
+ assert.ok(afterResize.width>resize.before+60,'拖动分栏可扩大代码区 '+JSON.stringify({resize,afterResize}));
  if(process.env.STUDY_SCREENSHOTS==='1'){const shot=await command('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(root,'.tmp-study-desktop.png'),Buffer.from(shot.data,'base64'));}
  await command('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await pause(250);
  assert.ok(await evaluate('document.documentElement.scrollWidth<=innerWidth+1'),'竖屏页面不横向溢出');
@@ -43,6 +57,6 @@ test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿�
  runnerReady=false;await evaluate('checkRunner()');assert.ok(await evaluate('document.querySelector("#run").disabled && !document.querySelector("#environmentNotice").hidden'));
  await evaluate('fetch("/api/auth/logout",{method:"POST"}).then(()=>fetch("/api/auth/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({username:"studyui1",password:"123456"})})).then(r=>r.json())');
  await command('Page.navigate',{url:`http://127.0.0.1:${port}/study.html`});await until('typeof current!=="undefined" && current?.id==="1" && catalog?.me.username==="studyui1"');
- assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#code").value===catalog.templates.javascript'));
+ assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#code").value===current.templates[mode]'));
  assert.deepEqual(errors,[]);
 });

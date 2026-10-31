@@ -1,6 +1,7 @@
 "use strict";
 // 自行编写的简明练习说明、ACM 输入协议与测试数据，不复制力扣题干/题解。
 const catalog=require('./catalog.json'),reference=require('./reference');
+const cpp=require('./cpp');
 // 参数说明 / 目标 / 解题思路 / 本站参考实现时间与额外空间 / 测试参数组。
 const specs={
 1:['nums, target：整数数组、目标和','输出两个不同元素的下标，使它们的和等于 target；保证恰有一组解。下标从0开始。','哈希表记录已访问数值的下标。查询 target-x，先查询再插入，避免重复使用同一元素。','O(n) / O(n)',[[[4,8,2,11],10],[[3,3],6],[[0,-2,5],-2],[[9,1,7,4],13]]],
@@ -208,5 +209,5 @@ const alternates={
 for(const [id,cases]of Object.entries(require('./generators').extraCases()))specs[id][4].push(...cases);
 for(const p of catalog.problems){if(!specs[p.id]||!reference.solutions[p.id])throw Error(`题目 ${p.id} 缺少本地实现`);}
 function get(id){const p=catalog.problems.find(p=>p.id===String(id));if(!p)return null;const [parameters,statement,idea,complexity,cases]=specs[p.id];return{...p,parameters,statement,idea,complexity,cases};}
-function detail(id){const p=get(id);if(!p)return null;return {...p,cases:undefined,example:{input:JSON.stringify(p.cases[0]),output:JSON.stringify(reference.solve(p.id,p.cases[0]))},testCount:p.cases.length,source:`https://leetcode.cn/problems/${p.slug}/`,editorial:`https://leetcode.cn/problems/${p.slug}/solutions/`,solutions:[{title:'ACM 参考实现（本站原创）',idea:p.idea,complexity:p.complexity,language:'javascript',code:reference.program(p.id)},...(alternates[p.id]?[alternates[p.id]]:[])]};}
+function detail(id){const p=get(id);if(!p)return null;return {...p,cases:undefined,example:{input:JSON.stringify(p.cases[0]),output:JSON.stringify(reference.solve(p.id,p.cases[0]))},testCount:p.cases.length,source:`https://leetcode.cn/problems/${p.slug}/`,editorial:`https://leetcode.cn/problems/${p.slug}/solutions/`,solutions:[{title:'C++17 参考解法',idea:cpp.idea(p.id,p.idea),language:'cpp',code:cpp.reference(p.id),acmCode:cpp.acmReference(p.id)},...cpp.alternatives(p.id)]};}
 module.exports={catalog,specs,get,detail,alternates};
