@@ -11,6 +11,7 @@ WorkingDirectory=/opt/billiards-club
 ExecStart=/usr/bin/node /opt/billiards-club/server.js
 Environment=NODE_ENV=production
 Environment=PORT=80
+EnvironmentFile=-/etc/billiards-study.env
 Restart=always
 RestartSec=3
 

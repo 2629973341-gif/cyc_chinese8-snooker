@@ -1,0 +1,3565 @@
+{
+  "syncedAt": "2026-10-31T05:13:02.696Z",
+  "plans": [
+    {
+      "id": "HOT100",
+      "title": "LeetCode 热题 100",
+      "url": "https://leetcode.cn/studyplan/top-100-liked/",
+      "ids": [
+        "1",
+        "49",
+        "128",
+        "283",
+        "11",
+        "15",
+        "42",
+        "3",
+        "438",
+        "560",
+        "239",
+        "76",
+        "53",
+        "56",
+        "189",
+        "238",
+        "41",
+        "73",
+        "54",
+        "48",
+        "240",
+        "160",
+        "206",
+        "234",
+        "141",
+        "142",
+        "21",
+        "2",
+        "19",
+        "24",
+        "25",
+        "138",
+        "148",
+        "23",
+        "146",
+        "94",
+        "104",
+        "226",
+        "101",
+        "543",
+        "102",
+        "108",
+        "98",
+        "230",
+        "199",
+        "114",
+        "105",
+        "437",
+        "236",
+        "124",
+        "200",
+        "994",
+        "207",
+        "208",
+        "46",
+        "78",
+        "17",
+        "39",
+        "22",
+        "79",
+        "131",
+        "51",
+        "35",
+        "74",
+        "34",
+        "33",
+        "153",
+        "4",
+        "20",
+        "155",
+        "394",
+        "739",
+        "84",
+        "215",
+        "347",
+        "295",
+        "121",
+        "55",
+        "45",
+        "763",
+        "70",
+        "118",
+        "198",
+        "279",
+        "322",
+        "139",
+        "300",
+        "152",
+        "416",
+        "32",
+        "62",
+        "64",
+        "5",
+        "1143",
+        "72",
+        "136",
+        "169",
+        "75",
+        "31",
+        "287"
+      ]
+    },
+    {
+      "id": "INTERVIEW150",
+      "title": "面试经典 150 题",
+      "url": "https://leetcode.cn/studyplan/top-interview-150/",
+      "ids": [
+        "88",
+        "27",
+        "26",
+        "80",
+        "169",
+        "189",
+        "121",
+        "122",
+        "55",
+        "45",
+        "274",
+        "380",
+        "238",
+        "134",
+        "135",
+        "42",
+        "13",
+        "12",
+        "58",
+        "14",
+        "151",
+        "6",
+        "28",
+        "68",
+        "125",
+        "392",
+        "167",
+        "11",
+        "15",
+        "209",
+        "3",
+        "30",
+        "76",
+        "36",
+        "54",
+        "48",
+        "73",
+        "289",
+        "383",
+        "205",
+        "290",
+        "242",
+        "49",
+        "1",
+        "202",
+        "219",
+        "128",
+        "228",
+        "56",
+        "57",
+        "452",
+        "20",
+        "71",
+        "155",
+        "150",
+        "224",
+        "141",
+        "2",
+        "21",
+        "138",
+        "92",
+        "25",
+        "19",
+        "82",
+        "61",
+        "86",
+        "146",
+        "104",
+        "100",
+        "226",
+        "101",
+        "105",
+        "106",
+        "117",
+        "114",
+        "112",
+        "129",
+        "124",
+        "173",
+        "222",
+        "236",
+        "199",
+        "637",
+        "102",
+        "103",
+        "530",
+        "230",
+        "98",
+        "200",
+        "130",
+        "133",
+        "399",
+        "207",
+        "210",
+        "909",
+        "433",
+        "127",
+        "208",
+        "211",
+        "212",
+        "17",
+        "77",
+        "46",
+        "39",
+        "52",
+        "22",
+        "79",
+        "108",
+        "148",
+        "427",
+        "23",
+        "53",
+        "918",
+        "35",
+        "74",
+        "162",
+        "33",
+        "34",
+        "153",
+        "4",
+        "215",
+        "502",
+        "373",
+        "295",
+        "67",
+        "190",
+        "191",
+        "136",
+        "137",
+        "201",
+        "9",
+        "66",
+        "172",
+        "69",
+        "50",
+        "149",
+        "70",
+        "198",
+        "139",
+        "322",
+        "300",
+        "120",
+        "64",
+        "63",
+        "5",
+        "97",
+        "72",
+        "123",
+        "188",
+        "221"
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "id": "1",
+      "title": "两数之和",
+      "slug": "two-sum",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "哈希表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "哈希",
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "49",
+      "title": "字母异位词分组",
+      "slug": "group-anagrams",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "哈希表",
+        "字符串",
+        "排序"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "哈希",
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "128",
+      "title": "最长连续序列",
+      "slug": "longest-consecutive-sequence",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "并查集",
+        "数组",
+        "哈希表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "哈希",
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "283",
+      "title": "移动零",
+      "slug": "move-zeroes",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "双指针"
+      }
+    },
+    {
+      "id": "11",
+      "title": "盛最多水的容器",
+      "slug": "container-with-most-water",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "双指针",
+        "INTERVIEW150": "双指针"
+      }
+    },
+    {
+      "id": "15",
+      "title": "三数之和",
+      "slug": "3sum",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "双指针",
+        "排序"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "双指针",
+        "INTERVIEW150": "双指针"
+      }
+    },
+    {
+      "id": "42",
+      "title": "接雨水",
+      "slug": "trapping-rain-water",
+      "difficulty": "HARD",
+      "tags": [
+        "栈",
+        "数组",
+        "双指针",
+        "动态规划",
+        "单调栈"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "双指针",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "3",
+      "title": "无重复字符的最长子串",
+      "slug": "longest-substring-without-repeating-characters",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "滑动窗口"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "滑动窗口",
+        "INTERVIEW150": "滑动窗口"
+      }
+    },
+    {
+      "id": "438",
+      "title": "找到字符串中所有字母异位词",
+      "slug": "find-all-anagrams-in-a-string",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "滑动窗口"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "滑动窗口"
+      }
+    },
+    {
+      "id": "560",
+      "title": "和为 K 的子数组",
+      "slug": "subarray-sum-equals-k",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "哈希表",
+        "前缀和"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "子串"
+      }
+    },
+    {
+      "id": "239",
+      "title": "滑动窗口最大值",
+      "slug": "sliding-window-maximum",
+      "difficulty": "HARD",
+      "tags": [
+        "队列",
+        "数组",
+        "滑动窗口",
+        "单调队列",
+        "堆（优先队列）",
+        "区间最值查询"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "子串"
+      }
+    },
+    {
+      "id": "76",
+      "title": "最小覆盖子串",
+      "slug": "minimum-window-substring",
+      "difficulty": "HARD",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "滑动窗口"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "子串",
+        "INTERVIEW150": "滑动窗口"
+      }
+    },
+    {
+      "id": "53",
+      "title": "最大子数组和",
+      "slug": "maximum-subarray",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "分治",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "普通数组",
+        "INTERVIEW150": "Kadane 算法"
+      }
+    },
+    {
+      "id": "56",
+      "title": "合并区间",
+      "slug": "merge-intervals",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "排序",
+        "快速排序"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "普通数组",
+        "INTERVIEW150": "区间"
+      }
+    },
+    {
+      "id": "189",
+      "title": "轮转数组",
+      "slug": "rotate-array",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "数学",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "普通数组",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "238",
+      "title": "除了自身以外数组的乘积",
+      "slug": "product-of-array-except-self",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "前缀和"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "普通数组",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "41",
+      "title": "缺失的第一个正数",
+      "slug": "first-missing-positive",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "哈希表"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "普通数组"
+      }
+    },
+    {
+      "id": "73",
+      "title": "矩阵置零",
+      "slug": "set-matrix-zeroes",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "哈希表",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "矩阵",
+        "INTERVIEW150": "矩阵"
+      }
+    },
+    {
+      "id": "54",
+      "title": "螺旋矩阵",
+      "slug": "spiral-matrix",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "矩阵",
+        "模拟"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "矩阵",
+        "INTERVIEW150": "矩阵"
+      }
+    },
+    {
+      "id": "48",
+      "title": "旋转图像",
+      "slug": "rotate-image",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "数学",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "矩阵",
+        "INTERVIEW150": "矩阵"
+      }
+    },
+    {
+      "id": "240",
+      "title": "搜索二维矩阵 II",
+      "slug": "search-a-2d-matrix-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找",
+        "分治",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "矩阵"
+      }
+    },
+    {
+      "id": "160",
+      "title": "相交链表",
+      "slug": "intersection-of-two-linked-lists",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "链表"
+      }
+    },
+    {
+      "id": "206",
+      "title": "反转链表",
+      "slug": "reverse-linked-list",
+      "difficulty": "EASY",
+      "tags": [
+        "递归",
+        "链表"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "链表"
+      }
+    },
+    {
+      "id": "234",
+      "title": "回文链表",
+      "slug": "palindrome-linked-list",
+      "difficulty": "EASY",
+      "tags": [
+        "栈",
+        "递归",
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "链表"
+      }
+    },
+    {
+      "id": "141",
+      "title": "环形链表",
+      "slug": "linked-list-cycle",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "链表",
+        "双指针",
+        "Floyd 判圈算法"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "142",
+      "title": "环形链表 II",
+      "slug": "linked-list-cycle-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "链表",
+        "双指针",
+        "Floyd 判圈算法"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "链表"
+      }
+    },
+    {
+      "id": "21",
+      "title": "合并两个有序链表",
+      "slug": "merge-two-sorted-lists",
+      "difficulty": "EASY",
+      "tags": [
+        "递归",
+        "链表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "2",
+      "title": "两数相加",
+      "slug": "add-two-numbers",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "递归",
+        "链表",
+        "数学"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "19",
+      "title": "删除链表的倒数第 N 个结点",
+      "slug": "remove-nth-node-from-end-of-list",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "24",
+      "title": "两两交换链表中的节点",
+      "slug": "swap-nodes-in-pairs",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "递归",
+        "链表"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "链表"
+      }
+    },
+    {
+      "id": "25",
+      "title": "K 个一组翻转链表",
+      "slug": "reverse-nodes-in-k-group",
+      "difficulty": "HARD",
+      "tags": [
+        "递归",
+        "链表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "138",
+      "title": "随机链表的复制",
+      "slug": "copy-list-with-random-pointer",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "链表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "148",
+      "title": "排序链表",
+      "slug": "sort-list",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表",
+        "双指针",
+        "分治",
+        "排序",
+        "归并排序"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "分治"
+      }
+    },
+    {
+      "id": "23",
+      "title": "合并 K 个升序链表",
+      "slug": "merge-k-sorted-lists",
+      "difficulty": "HARD",
+      "tags": [
+        "链表",
+        "分治",
+        "堆（优先队列）",
+        "归并排序",
+        "锦标赛排序"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "分治"
+      }
+    },
+    {
+      "id": "146",
+      "title": "LRU 缓存",
+      "slug": "lru-cache",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "设计",
+        "哈希表",
+        "链表",
+        "双向链表"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "链表",
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "94",
+      "title": "二叉树的中序遍历",
+      "slug": "binary-tree-inorder-traversal",
+      "difficulty": "EASY",
+      "tags": [
+        "栈",
+        "树",
+        "深度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "二叉树"
+      }
+    },
+    {
+      "id": "104",
+      "title": "二叉树的最大深度",
+      "slug": "maximum-depth-of-binary-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "226",
+      "title": "翻转二叉树",
+      "slug": "invert-binary-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "101",
+      "title": "对称二叉树",
+      "slug": "symmetric-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "543",
+      "title": "二叉树的直径",
+      "slug": "diameter-of-binary-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉树",
+        "树形 DP"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "二叉树"
+      }
+    },
+    {
+      "id": "102",
+      "title": "二叉树的层序遍历",
+      "slug": "binary-tree-level-order-traversal",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树层次遍历"
+      }
+    },
+    {
+      "id": "108",
+      "title": "将有序数组转换为二叉搜索树",
+      "slug": "convert-sorted-array-to-binary-search-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "二叉搜索树",
+        "数组",
+        "分治",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "分治"
+      }
+    },
+    {
+      "id": "98",
+      "title": "验证二叉搜索树",
+      "slug": "validate-binary-search-tree",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉搜索树",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉搜索树"
+      }
+    },
+    {
+      "id": "230",
+      "title": "二叉搜索树中第 K 小的元素",
+      "slug": "kth-smallest-element-in-a-bst",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉搜索树",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉搜索树"
+      }
+    },
+    {
+      "id": "199",
+      "title": "二叉树的右视图",
+      "slug": "binary-tree-right-side-view",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树层次遍历"
+      }
+    },
+    {
+      "id": "114",
+      "title": "二叉树展开为链表",
+      "slug": "flatten-binary-tree-to-linked-list",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "树",
+        "深度优先搜索",
+        "链表",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "105",
+      "title": "从前序与中序遍历序列构造二叉树",
+      "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "数组",
+        "哈希表",
+        "分治",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "437",
+      "title": "路径总和 III",
+      "slug": "path-sum-iii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "二叉树"
+      }
+    },
+    {
+      "id": "236",
+      "title": "二叉树的最近公共祖先",
+      "slug": "lowest-common-ancestor-of-a-binary-tree",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉树",
+        "最近公共祖先",
+        "Binary Lifting"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "124",
+      "title": "二叉树中的最大路径和",
+      "slug": "binary-tree-maximum-path-sum",
+      "difficulty": "HARD",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "动态规划",
+        "二叉树",
+        "树形 DP"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二叉树",
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "200",
+      "title": "岛屿数量",
+      "slug": "number-of-islands",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "并查集",
+        "数组",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "图论",
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "994",
+      "title": "腐烂的橘子",
+      "slug": "rotting-oranges",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "广度优先搜索",
+        "数组",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "图论"
+      }
+    },
+    {
+      "id": "207",
+      "title": "课程表",
+      "slug": "course-schedule",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "图",
+        "拓扑排序",
+        "有向无环图"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "图论",
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "208",
+      "title": "实现 Trie (前缀树)",
+      "slug": "implement-trie-prefix-tree",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "设计",
+        "字典树",
+        "哈希表",
+        "字符串"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "图论",
+        "INTERVIEW150": "字典树"
+      }
+    },
+    {
+      "id": "46",
+      "title": "全排列",
+      "slug": "permutations",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "回溯"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "回溯",
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "78",
+      "title": "子集",
+      "slug": "subsets",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "位运算",
+        "数组",
+        "回溯"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "回溯"
+      }
+    },
+    {
+      "id": "17",
+      "title": "电话号码的字母组合",
+      "slug": "letter-combinations-of-a-phone-number",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "回溯"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "回溯",
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "39",
+      "title": "组合总和",
+      "slug": "combination-sum",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "回溯"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "回溯",
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "22",
+      "title": "括号生成",
+      "slug": "generate-parentheses",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串",
+        "动态规划",
+        "回溯",
+        "括号序列"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "回溯",
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "79",
+      "title": "单词搜索",
+      "slug": "word-search",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "数组",
+        "字符串",
+        "回溯",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "回溯",
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "131",
+      "title": "分割回文串",
+      "slug": "palindrome-partitioning",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串",
+        "动态规划",
+        "回溯"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "回溯"
+      }
+    },
+    {
+      "id": "51",
+      "title": "N 皇后",
+      "slug": "n-queens",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "回溯",
+        "X 算法"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "回溯"
+      }
+    },
+    {
+      "id": "35",
+      "title": "搜索插入位置",
+      "slug": "search-insert-position",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "二分查找"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "74",
+      "title": "搜索二维矩阵",
+      "slug": "search-a-2d-matrix",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "34",
+      "title": "在排序数组中查找元素的第一个和最后一个位置",
+      "slug": "find-first-and-last-position-of-element-in-sorted-array",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "33",
+      "title": "搜索旋转排序数组",
+      "slug": "search-in-rotated-sorted-array",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "153",
+      "title": "寻找旋转排序数组中的最小值",
+      "slug": "find-minimum-in-rotated-sorted-array",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "4",
+      "title": "寻找两个正序数组的中位数",
+      "slug": "median-of-two-sorted-arrays",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "二分查找",
+        "分治"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "二分查找",
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "20",
+      "title": "有效的括号",
+      "slug": "valid-parentheses",
+      "difficulty": "EASY",
+      "tags": [
+        "栈",
+        "字符串",
+        "括号序列"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "栈",
+        "INTERVIEW150": "栈"
+      }
+    },
+    {
+      "id": "155",
+      "title": "最小栈",
+      "slug": "min-stack",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "设计"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "栈",
+        "INTERVIEW150": "栈"
+      }
+    },
+    {
+      "id": "394",
+      "title": "字符串解码",
+      "slug": "decode-string",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "递归",
+        "字符串"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "栈"
+      }
+    },
+    {
+      "id": "739",
+      "title": "每日温度",
+      "slug": "daily-temperatures",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "数组",
+        "单调栈"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "栈"
+      }
+    },
+    {
+      "id": "84",
+      "title": "柱状图中最大的矩形",
+      "slug": "largest-rectangle-in-histogram",
+      "difficulty": "HARD",
+      "tags": [
+        "栈",
+        "数组",
+        "单调栈",
+        "区间最值查询"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "栈"
+      }
+    },
+    {
+      "id": "215",
+      "title": "数组中的第K个最大元素",
+      "slug": "kth-largest-element-in-an-array",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "分治",
+        "快速选择",
+        "排序",
+        "堆（优先队列）"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "堆",
+        "INTERVIEW150": "堆"
+      }
+    },
+    {
+      "id": "347",
+      "title": "前 K 个高频元素",
+      "slug": "top-k-frequent-elements",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "哈希表",
+        "分治",
+        "桶排序",
+        "计数",
+        "快速选择",
+        "排序",
+        "堆（优先队列）"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "堆"
+      }
+    },
+    {
+      "id": "295",
+      "title": "数据流的中位数",
+      "slug": "find-median-from-data-stream",
+      "difficulty": "HARD",
+      "tags": [
+        "设计",
+        "双指针",
+        "数据流",
+        "排序",
+        "堆（优先队列）"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "堆",
+        "INTERVIEW150": "堆"
+      }
+    },
+    {
+      "id": "121",
+      "title": "买卖股票的最佳时机",
+      "slug": "best-time-to-buy-and-sell-stock",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "贪心算法",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "55",
+      "title": "跳跃游戏",
+      "slug": "jump-game",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "贪心算法",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "45",
+      "title": "跳跃游戏 II",
+      "slug": "jump-game-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "贪心算法",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "763",
+      "title": "划分字母区间",
+      "slug": "partition-labels",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "哈希表",
+        "双指针",
+        "字符串"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "贪心算法"
+      }
+    },
+    {
+      "id": "70",
+      "title": "爬楼梯",
+      "slug": "climbing-stairs",
+      "difficulty": "EASY",
+      "tags": [
+        "记忆化",
+        "数学",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "动态规划",
+        "INTERVIEW150": "一维动态规划"
+      }
+    },
+    {
+      "id": "118",
+      "title": "杨辉三角",
+      "slug": "pascals-triangle",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "动态规划"
+      }
+    },
+    {
+      "id": "198",
+      "title": "打家劫舍",
+      "slug": "house-robber",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "动态规划",
+        "INTERVIEW150": "一维动态规划"
+      }
+    },
+    {
+      "id": "279",
+      "title": "完全平方数",
+      "slug": "perfect-squares",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "广度优先搜索",
+        "数学",
+        "动态规划",
+        "背包问题",
+        "完全背包"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "动态规划"
+      }
+    },
+    {
+      "id": "322",
+      "title": "零钱兑换",
+      "slug": "coin-change",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "广度优先搜索",
+        "数组",
+        "动态规划",
+        "背包问题",
+        "完全背包"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "动态规划",
+        "INTERVIEW150": "一维动态规划"
+      }
+    },
+    {
+      "id": "139",
+      "title": "单词拆分",
+      "slug": "word-break",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字典树",
+        "记忆化",
+        "数组",
+        "哈希表",
+        "字符串",
+        "动态规划",
+        "Brute-Force Search"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "动态规划",
+        "INTERVIEW150": "一维动态规划"
+      }
+    },
+    {
+      "id": "300",
+      "title": "最长递增子序列",
+      "slug": "longest-increasing-subsequence",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找",
+        "动态规划",
+        "最长上升子序列"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "动态规划",
+        "INTERVIEW150": "一维动态规划"
+      }
+    },
+    {
+      "id": "152",
+      "title": "乘积最大子数组",
+      "slug": "maximum-product-subarray",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "动态规划"
+      }
+    },
+    {
+      "id": "416",
+      "title": "分割等和子集",
+      "slug": "partition-equal-subset-sum",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划",
+        "背包问题",
+        "0-1 背包"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "动态规划"
+      }
+    },
+    {
+      "id": "32",
+      "title": "最长有效括号",
+      "slug": "longest-valid-parentheses",
+      "difficulty": "HARD",
+      "tags": [
+        "栈",
+        "字符串",
+        "动态规划",
+        "括号序列"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "动态规划"
+      }
+    },
+    {
+      "id": "62",
+      "title": "不同路径",
+      "slug": "unique-paths",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数学",
+        "动态规划",
+        "组合数学"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "多维动态规划"
+      }
+    },
+    {
+      "id": "64",
+      "title": "最小路径和",
+      "slug": "minimum-path-sum",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划",
+        "矩阵"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "多维动态规划",
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "5",
+      "title": "最长回文子串",
+      "slug": "longest-palindromic-substring",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "双指针",
+        "字符串",
+        "动态规划",
+        "Manacher 算法"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "多维动态规划",
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "1143",
+      "title": "最长公共子序列",
+      "slug": "longest-common-subsequence",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串",
+        "动态规划",
+        "最长公共子序列"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "多维动态规划"
+      }
+    },
+    {
+      "id": "72",
+      "title": "编辑距离",
+      "slug": "edit-distance",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串",
+        "动态规划"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "多维动态规划",
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "136",
+      "title": "只出现一次的数字",
+      "slug": "single-number",
+      "difficulty": "EASY",
+      "tags": [
+        "位运算",
+        "数组"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "技巧",
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "169",
+      "title": "多数元素",
+      "slug": "majority-element",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "哈希表",
+        "分治",
+        "计数",
+        "排序",
+        "摩尔投票算法"
+      ],
+      "plans": [
+        "HOT100",
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "HOT100": "技巧",
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "75",
+      "title": "颜色分类",
+      "slug": "sort-colors",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "双指针",
+        "冒泡排序",
+        "排序",
+        "快速排序"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "技巧"
+      }
+    },
+    {
+      "id": "31",
+      "title": "下一个排列",
+      "slug": "next-permutation",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "技巧"
+      }
+    },
+    {
+      "id": "287",
+      "title": "寻找重复数",
+      "slug": "find-the-duplicate-number",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "位运算",
+        "数组",
+        "双指针",
+        "二分查找",
+        "Floyd 判圈算法",
+        "抽屉原理"
+      ],
+      "plans": [
+        "HOT100"
+      ],
+      "categories": {
+        "HOT100": "技巧"
+      }
+    },
+    {
+      "id": "88",
+      "title": "合并两个有序数组",
+      "slug": "merge-sorted-array",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "双指针",
+        "排序"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "27",
+      "title": "移除元素",
+      "slug": "remove-element",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "26",
+      "title": "删除有序数组中的重复项",
+      "slug": "remove-duplicates-from-sorted-array",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "80",
+      "title": "删除有序数组中的重复项 II",
+      "slug": "remove-duplicates-from-sorted-array-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "122",
+      "title": "买卖股票的最佳时机 II",
+      "slug": "best-time-to-buy-and-sell-stock-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "274",
+      "title": "H 指数",
+      "slug": "h-index",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "计数排序",
+        "排序"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "380",
+      "title": "O(1) 时间插入、删除和获取随机元素",
+      "slug": "insert-delete-getrandom-o1",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "设计",
+        "数组",
+        "哈希表",
+        "数学",
+        "随机化"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "134",
+      "title": "加油站",
+      "slug": "gas-station",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "135",
+      "title": "分发糖果",
+      "slug": "candy",
+      "difficulty": "HARD",
+      "tags": [
+        "贪心",
+        "数组"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "13",
+      "title": "罗马数字转整数",
+      "slug": "roman-to-integer",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "数学",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "12",
+      "title": "整数转罗马数字",
+      "slug": "integer-to-roman",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "哈希表",
+        "数学",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "58",
+      "title": "最后一个单词的长度",
+      "slug": "length-of-last-word",
+      "difficulty": "EASY",
+      "tags": [
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "14",
+      "title": "最长公共前缀",
+      "slug": "longest-common-prefix",
+      "difficulty": "EASY",
+      "tags": [
+        "字典树",
+        "数组",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "151",
+      "title": "反转字符串中的单词",
+      "slug": "reverse-words-in-a-string",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "双指针",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "6",
+      "title": "Z 字形变换",
+      "slug": "zigzag-conversion",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "28",
+      "title": "找出字符串中第一个匹配项的下标",
+      "slug": "find-the-index-of-the-first-occurrence-in-a-string",
+      "difficulty": "EASY",
+      "tags": [
+        "双指针",
+        "字符串",
+        "字符串匹配",
+        "KMP 算法",
+        "Boyer–Moore 算法",
+        "扩展 KMP"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "68",
+      "title": "文本左右对齐",
+      "slug": "text-justification",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "字符串",
+        "模拟"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数组 / 字符串"
+      }
+    },
+    {
+      "id": "125",
+      "title": "验证回文串",
+      "slug": "valid-palindrome",
+      "difficulty": "EASY",
+      "tags": [
+        "双指针",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "双指针"
+      }
+    },
+    {
+      "id": "392",
+      "title": "判断子序列",
+      "slug": "is-subsequence",
+      "difficulty": "EASY",
+      "tags": [
+        "双指针",
+        "字符串",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "双指针"
+      }
+    },
+    {
+      "id": "167",
+      "title": "两数之和 II - 输入有序数组",
+      "slug": "two-sum-ii-input-array-is-sorted",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "双指针",
+        "二分查找"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "双指针"
+      }
+    },
+    {
+      "id": "209",
+      "title": "长度最小的子数组",
+      "slug": "minimum-size-subarray-sum",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找",
+        "前缀和",
+        "滑动窗口"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "滑动窗口"
+      }
+    },
+    {
+      "id": "30",
+      "title": "串联所有单词的子串",
+      "slug": "substring-with-concatenation-of-all-words",
+      "difficulty": "HARD",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "滑动窗口"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "滑动窗口"
+      }
+    },
+    {
+      "id": "36",
+      "title": "有效的数独",
+      "slug": "valid-sudoku",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "哈希表",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "矩阵"
+      }
+    },
+    {
+      "id": "289",
+      "title": "生命游戏",
+      "slug": "game-of-life",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "矩阵",
+        "模拟"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "矩阵"
+      }
+    },
+    {
+      "id": "383",
+      "title": "赎金信",
+      "slug": "ransom-note",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "计数"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "205",
+      "title": "同构字符串",
+      "slug": "isomorphic-strings",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "290",
+      "title": "单词规律",
+      "slug": "word-pattern",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "242",
+      "title": "有效的字母异位词",
+      "slug": "valid-anagram",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "字符串",
+        "排序"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "202",
+      "title": "快乐数",
+      "slug": "happy-number",
+      "difficulty": "EASY",
+      "tags": [
+        "哈希表",
+        "数学",
+        "双指针",
+        "Floyd 判圈算法"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "219",
+      "title": "存在重复元素 II",
+      "slug": "contains-duplicate-ii",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "哈希表",
+        "滑动窗口"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "哈希表"
+      }
+    },
+    {
+      "id": "228",
+      "title": "汇总区间",
+      "slug": "summary-ranges",
+      "difficulty": "EASY",
+      "tags": [
+        "数组"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "区间"
+      }
+    },
+    {
+      "id": "57",
+      "title": "插入区间",
+      "slug": "insert-interval",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "区间"
+      }
+    },
+    {
+      "id": "452",
+      "title": "用最少数量的箭引爆气球",
+      "slug": "minimum-number-of-arrows-to-burst-balloons",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "贪心",
+        "数组",
+        "排序"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "区间"
+      }
+    },
+    {
+      "id": "71",
+      "title": "简化路径",
+      "slug": "simplify-path",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "栈"
+      }
+    },
+    {
+      "id": "150",
+      "title": "逆波兰表达式求值",
+      "slug": "evaluate-reverse-polish-notation",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "数组",
+        "数学"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "栈"
+      }
+    },
+    {
+      "id": "224",
+      "title": "基本计算器",
+      "slug": "basic-calculator",
+      "difficulty": "HARD",
+      "tags": [
+        "栈",
+        "递归",
+        "数学",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "栈"
+      }
+    },
+    {
+      "id": "92",
+      "title": "反转链表 II",
+      "slug": "reverse-linked-list-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "82",
+      "title": "删除排序链表中的重复元素 II",
+      "slug": "remove-duplicates-from-sorted-list-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "61",
+      "title": "旋转链表",
+      "slug": "rotate-list",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "86",
+      "title": "分隔链表",
+      "slug": "partition-list",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "链表",
+        "双指针"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "链表"
+      }
+    },
+    {
+      "id": "100",
+      "title": "相同的树",
+      "slug": "same-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "106",
+      "title": "从中序与后序遍历序列构造二叉树",
+      "slug": "construct-binary-tree-from-inorder-and-postorder-traversal",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "数组",
+        "哈希表",
+        "分治",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "117",
+      "title": "填充每个节点的下一个右侧节点指针 II",
+      "slug": "populating-next-right-pointers-in-each-node-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "链表",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "112",
+      "title": "路径总和",
+      "slug": "path-sum",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "129",
+      "title": "求根节点到叶节点数字之和",
+      "slug": "sum-root-to-leaf-numbers",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "173",
+      "title": "二叉搜索树迭代器",
+      "slug": "binary-search-tree-iterator",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "栈",
+        "树",
+        "设计",
+        "二叉搜索树",
+        "二叉树",
+        "迭代器"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "222",
+      "title": "完全二叉树的节点个数",
+      "slug": "count-complete-tree-nodes",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "位运算",
+        "树",
+        "二分查找",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树"
+      }
+    },
+    {
+      "id": "637",
+      "title": "二叉树的层平均值",
+      "slug": "average-of-levels-in-binary-tree",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树层次遍历"
+      }
+    },
+    {
+      "id": "103",
+      "title": "二叉树的锯齿形层序遍历",
+      "slug": "binary-tree-zigzag-level-order-traversal",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "广度优先搜索",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉树层次遍历"
+      }
+    },
+    {
+      "id": "530",
+      "title": "二叉搜索树的最小绝对差",
+      "slug": "minimum-absolute-difference-in-bst",
+      "difficulty": "EASY",
+      "tags": [
+        "树",
+        "深度优先搜索",
+        "广度优先搜索",
+        "二叉搜索树",
+        "二叉树"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二叉搜索树"
+      }
+    },
+    {
+      "id": "130",
+      "title": "被围绕的区域",
+      "slug": "surrounded-regions",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "并查集",
+        "数组",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "133",
+      "title": "克隆图",
+      "slug": "clone-graph",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "图",
+        "哈希表"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "399",
+      "title": "除法求值",
+      "slug": "evaluate-division",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "并查集",
+        "图",
+        "数组",
+        "字符串",
+        "最短路",
+        "Floyd 算法",
+        "Bellman–Ford 算法"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "210",
+      "title": "课程表 II",
+      "slug": "course-schedule-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "广度优先搜索",
+        "图",
+        "拓扑排序"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图"
+      }
+    },
+    {
+      "id": "909",
+      "title": "蛇梯棋",
+      "slug": "snakes-and-ladders",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "广度优先搜索",
+        "数组",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图的广度优先搜索"
+      }
+    },
+    {
+      "id": "433",
+      "title": "最小基因变化",
+      "slug": "minimum-genetic-mutation",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "广度优先搜索",
+        "哈希表",
+        "字符串",
+        "双向搜索"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图的广度优先搜索"
+      }
+    },
+    {
+      "id": "127",
+      "title": "单词接龙",
+      "slug": "word-ladder",
+      "difficulty": "HARD",
+      "tags": [
+        "广度优先搜索",
+        "哈希表",
+        "字符串",
+        "双向搜索"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "图的广度优先搜索"
+      }
+    },
+    {
+      "id": "211",
+      "title": "添加与搜索单词 - 数据结构设计",
+      "slug": "design-add-and-search-words-data-structure",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "深度优先搜索",
+        "设计",
+        "字典树",
+        "字符串"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "字典树"
+      }
+    },
+    {
+      "id": "212",
+      "title": "单词搜索 II",
+      "slug": "word-search-ii",
+      "difficulty": "HARD",
+      "tags": [
+        "字典树",
+        "数组",
+        "字符串",
+        "回溯",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "字典树"
+      }
+    },
+    {
+      "id": "77",
+      "title": "组合",
+      "slug": "combinations",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "回溯"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "52",
+      "title": "N 皇后 II",
+      "slug": "n-queens-ii",
+      "difficulty": "HARD",
+      "tags": [
+        "回溯",
+        "X 算法"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "回溯"
+      }
+    },
+    {
+      "id": "427",
+      "title": "建立四叉树",
+      "slug": "construct-quad-tree",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "树",
+        "数组",
+        "分治",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "分治"
+      }
+    },
+    {
+      "id": "918",
+      "title": "环形子数组的最大和",
+      "slug": "maximum-sum-circular-subarray",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "队列",
+        "数组",
+        "分治",
+        "动态规划",
+        "单调队列"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "Kadane 算法"
+      }
+    },
+    {
+      "id": "162",
+      "title": "寻找峰值",
+      "slug": "find-peak-element",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "二分查找"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "二分查找"
+      }
+    },
+    {
+      "id": "502",
+      "title": "IPO",
+      "slug": "ipo",
+      "difficulty": "HARD",
+      "tags": [
+        "贪心",
+        "数组",
+        "排序",
+        "堆（优先队列）"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "堆"
+      }
+    },
+    {
+      "id": "373",
+      "title": "查找和最小的 K 对数字",
+      "slug": "find-k-pairs-with-smallest-sums",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "堆（优先队列）"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "堆"
+      }
+    },
+    {
+      "id": "67",
+      "title": "二进制求和",
+      "slug": "add-binary",
+      "difficulty": "EASY",
+      "tags": [
+        "位运算",
+        "数学",
+        "字符串",
+        "模拟"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "190",
+      "title": "颠倒二进制位",
+      "slug": "reverse-bits",
+      "difficulty": "EASY",
+      "tags": [
+        "位运算",
+        "分治"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "191",
+      "title": "位1的个数",
+      "slug": "number-of-1-bits",
+      "difficulty": "EASY",
+      "tags": [
+        "位运算",
+        "分治"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "137",
+      "title": "只出现一次的数字 II",
+      "slug": "single-number-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "位运算",
+        "数组"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "201",
+      "title": "数字范围按位与",
+      "slug": "bitwise-and-of-numbers-range",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "位运算"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "位运算"
+      }
+    },
+    {
+      "id": "9",
+      "title": "回文数",
+      "slug": "palindrome-number",
+      "difficulty": "EASY",
+      "tags": [
+        "数学"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "66",
+      "title": "加一",
+      "slug": "plus-one",
+      "difficulty": "EASY",
+      "tags": [
+        "数组",
+        "数学"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "172",
+      "title": "阶乘后的零",
+      "slug": "factorial-trailing-zeroes",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数学"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "69",
+      "title": "x 的平方根 ",
+      "slug": "sqrtx",
+      "difficulty": "EASY",
+      "tags": [
+        "数学",
+        "二分查找",
+        "牛顿迭代法"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "50",
+      "title": "Pow(x, n)",
+      "slug": "powx-n",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "递归",
+        "数学"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "149",
+      "title": "直线上最多的点数",
+      "slug": "max-points-on-a-line",
+      "difficulty": "HARD",
+      "tags": [
+        "几何",
+        "数组",
+        "哈希表",
+        "数学",
+        "最大公约数",
+        "欧几里得算法"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "数学"
+      }
+    },
+    {
+      "id": "120",
+      "title": "三角形最小路径和",
+      "slug": "triangle",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "63",
+      "title": "不同路径 II",
+      "slug": "unique-paths-ii",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "97",
+      "title": "交错字符串",
+      "slug": "interleaving-string",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "字符串",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "123",
+      "title": "买卖股票的最佳时机 III",
+      "slug": "best-time-to-buy-and-sell-stock-iii",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "188",
+      "title": "买卖股票的最佳时机 IV",
+      "slug": "best-time-to-buy-and-sell-stock-iv",
+      "difficulty": "HARD",
+      "tags": [
+        "数组",
+        "动态规划"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    },
+    {
+      "id": "221",
+      "title": "最大正方形",
+      "slug": "maximal-square",
+      "difficulty": "MEDIUM",
+      "tags": [
+        "数组",
+        "动态规划",
+        "矩阵"
+      ],
+      "plans": [
+        "INTERVIEW150"
+      ],
+      "categories": {
+        "INTERVIEW150": "多维动态规划"
+      }
+    }
+  ]
+}

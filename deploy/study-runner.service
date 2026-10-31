@@ -1,0 +1,24 @@
+[Unit]
+Description=Black Gold isolated study runner (rootless Docker)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=judge
+Group=judge
+WorkingDirectory=/opt/billiards-club
+EnvironmentFile=/etc/billiards-study.env
+ExecStart=/usr/bin/node /opt/billiards-club/study-runner.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/tmp
+ProtectHome=read-only
+UMask=0077
+# Docker daemon must resolve worker bind-mount source paths.
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target

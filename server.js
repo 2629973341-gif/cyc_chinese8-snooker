@@ -2,6 +2,7 @@
 const http=require("http"),fs=require("fs"),path=require("path"),crypto=require("crypto");
 const ROOT=__dirname,DB_FILE=process.env.DB_FILE?path.resolve(process.env.DB_FILE):path.join(ROOT,"data","db.json"),DATA_DIR=path.dirname(DB_FILE),MUSIC_DIR=path.join(ROOT,"music"),PORT=Number(process.env.PORT)||80,STALE_SHOT_MS=Math.max(5000,Number(process.env.STALE_SHOT_MS)||35000);
 const Mahjong=require("./mahjong-engine");
+const Study=require("./study-service");
 const STATUS=Object.freeze({OFFLINE:0,ONLINE:1,IN_ROOM:2,IN_GAME:4}),GAME_MODES=["EIGHT","SNOOKER","CHESS","CHESS_BLIND","FIVE","GO","MAHJONG"],PLAY_TYPES=["PVP","AI","PRACTICE"],MUSIC_TYPES={".mp3":"audio/mpeg",".ogg":"audio/ogg",".wav":"audio/wav",".m4a":"audio/mp4",".aac":"audio/aac",".flac":"audio/flac"};
 const CHESS_INITIAL=[
   ["C0","M0","X0","S0","J0","S1","X1","M1","C1"],
@@ -166,6 +167,10 @@ async function api(req,res,url){
   if(req.method==="POST"&&url.pathname==="/api/auth/login"){const data=await body(req),user=db.users.find(u=>u.username.toLowerCase()===String(data.username||"").trim().toLowerCase());if(!user||!verifyPassword(String(data.password||""),user))return fail(res,401,"用户名或密码错误");json(res,200,{user:publicUser(user)},setSession(res,user.id));broadcastRefresh();return}
   if(req.method==="POST"&&url.pathname==="/api/auth/logout"){const sid=cookies(req).sid,userId=sessions.get(sid);sessions.delete(sid);json(res,200,{ok:true},{"Set-Cookie":"sid=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0"});if(userId)broadcastRefresh();return}
   const user=requireAuth(req,res);if(!user)return;
+  if(url.pathname.startsWith("/api/study/")){
+    try{const result=await Study.handle(req,url,user,{body,json,save});return json(res,result.status,result.data);}
+    catch(error){return fail(res,error.status||500,error.status?error.message:"学习服务异常，请稍后重试");}
+  }
   const mahjongOp=url.pathname.match(/^\/api\/rooms\/([^/]+)\/(invite|invite-response|exit|resign|rematch)$/);
   if(req.method==="POST"&&mahjongOp){const room=db.rooms.find(r=>r.id===mahjongOp[1]);if(room?.mode==="MAHJONG")return mahjongRoomOperation(room,user,mahjongOp[2],req,res);}
   if(req.method==="GET"&&url.pathname==="/api/leaderboard"){const mode=String(url.searchParams.get("mode")||"EIGHT");if(!modeName(mode))return fail(res,400,"不支持的游戏模式");const ranking=db.users.map(player=>{const stat=ensureStats(player)[mode],games=stat.wins+stat.losses+stat.draws;return{id:player.id,username:player.username,wins:stat.wins,losses:stat.losses,draws:stat.draws,games,winRate:stat.wins+stat.losses?Math.round(stat.wins/(stat.wins+stat.losses)*100):0}}).sort((a,b)=>b.wins-a.wins||a.losses-b.losses||b.winRate-a.winRate||a.username.localeCompare(b.username,"zh-CN")).map((entry,index)=>({...entry,rank:index+1}));return json(res,200,{mode,ranking})}
@@ -230,8 +235,8 @@ async function api(req,res,url){
 }
 
 function openStream(req,res,user){res.writeHead(200,{"Content-Type":"text/event-stream; charset=utf-8","Cache-Control":"no-cache, no-transform","Connection":"keep-alive","X-Accel-Buffering":"no"});res.write(`data: ${JSON.stringify({type:"CONNECTED",me:publicUser(user)})}\n\n`);if(!streams.has(user.id))streams.set(user.id,new Set());streams.get(user.id).add(res);broadcastRefresh();const timer=setInterval(()=>res.write(": ping\n\n"),25000);req.on("close",()=>{clearInterval(timer);const set=streams.get(user.id);if(set){set.delete(res);if(!set.size)streams.delete(user.id)}broadcastRefresh()})}
-const STATIC={"/mahjong.html":"mahjong.html","/":"lobby.html","/lobby.html":"lobby.html","/billiards.html":"billiards.html","/chess.html":"chess.html","/five.html":"five.html","/go.html":"go.html","/index.html":"index.html","/game-audio.js":"game-audio.js"};
-const server=http.createServer(async(req,res)=>{try{const url=new URL(req.url,"http://localhost");if(url.pathname.startsWith("/music/")){serveMusic(req,res,url.pathname);return}if(url.pathname==="/api/events"){const user=requireAuth(req,res);if(user)openStream(req,res,user);return}if(url.pathname.startsWith("/api/")){await api(req,res,url);return}const file=STATIC[url.pathname];if(!file)return fail(res,404,"页面不存在");const content=fs.readFileSync(path.join(ROOT,file)),type=file.endsWith(".js")?"application/javascript; charset=utf-8":"text/html; charset=utf-8";res.writeHead(200,{"Content-Type":type,"Cache-Control":"no-cache"});res.end(content)}catch(error){console.error(error);fail(res,500,error.message||"服务器错误")}});
+const STATIC={"/study.html":"study.html","/study.css":"study.css","/study.js":"study.js","/mahjong.html":"mahjong.html","/":"lobby.html","/lobby.html":"lobby.html","/billiards.html":"billiards.html","/chess.html":"chess.html","/five.html":"five.html","/go.html":"go.html","/index.html":"index.html","/game-audio.js":"game-audio.js"};
+const server=http.createServer(async(req,res)=>{try{const url=new URL(req.url,"http://localhost");if(url.pathname.startsWith("/music/")){serveMusic(req,res,url.pathname);return}if(url.pathname==="/api/events"){const user=requireAuth(req,res);if(user)openStream(req,res,user);return}if(url.pathname.startsWith("/api/")){await api(req,res,url);return}const file=STATIC[url.pathname];if(!file)return fail(res,404,"页面不存在");const content=fs.readFileSync(path.join(ROOT,file)),type=file.endsWith(".js")?"application/javascript; charset=utf-8":file.endsWith(".css")?"text/css; charset=utf-8":"text/html; charset=utf-8";res.writeHead(200,{"Content-Type":type,"Cache-Control":"no-cache"});res.end(content)}catch(error){console.error(error);fail(res,500,error.message||"服务器错误")}});
 /* 电脑由服务端推进；广播只带修订号，手牌通过鉴权接口按座位读取。 */
 const mahjongTimer=setInterval(()=>{
   for(const room of db.rooms){

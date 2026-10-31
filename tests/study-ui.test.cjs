@@ -1,0 +1,48 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http'),crypto=require('node:crypto'),{spawn}=require('node:child_process');
+const R=require('../study/reference');
+const browser=process.env.BROWSER_PATH||['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe','/usr/bin/chromium','/usr/bin/google-chrome'].find(p=>fs.existsSync(p));
+const pause=ms=>new Promise(r=>setTimeout(r,ms));
+test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿、源码、手机竖屏和账号切换',{skip:process.env.STUDY_BROWSER_TEST!=='1'||!browser||typeof WebSocket==='undefined',timeout:40000},async t=>{
+ const temp=fs.mkdtempSync(path.join(os.tmpdir(),'study-ui-')),profile=path.join(temp,'chrome'),root=path.join(__dirname,'..'),port=24000+crypto.randomInt(1000),token=crypto.randomBytes(32).toString('hex');let runnerReady=true,posts=0;
+ const worker=http.createServer(async(req,res)=>{res.setHeader('content-type','application/json');if(req.headers.authorization!=='Bearer '+token){res.writeHead(401);res.end('{}');return;}if(req.url==='/health'){res.end(JSON.stringify({ready:runnerReady,message:'测试环境关闭'}));return;}let raw='';for await(const c of req)raw+=c;const p=JSON.parse(raw);posts++;res.end(JSON.stringify({status:'OK',runs:p.inputs.map(input=>({status:'OK',stdout:JSON.stringify(R.solve(1,JSON.parse(input.trim())))+'\n',stderr:'',timeMs:12}))}));});
+ await new Promise(r=>worker.listen(0,'127.0.0.1',r));
+ const app=spawn(process.execPath,['server.js'],{cwd:root,env:{...process.env,PORT:String(port),DB_FILE:path.join(temp,'db.json'),STUDY_RUNNER_TOKEN:token,STUDY_RUNNER_URL:`http://127.0.0.1:${worker.address().port}`},stdio:['ignore','pipe','pipe']});
+ const appExit=new Promise(r=>app.once('exit',r));let browserChild,socket,browserExit;
+ t.after(async()=>{socket?.close();browserChild?.kill();if(browserExit)await Promise.race([browserExit,pause(2000)]);app.kill();await appExit;worker.closeAllConnections();await new Promise(r=>worker.close(r));try{fs.rmSync(temp,{recursive:true,force:true,maxRetries:2,retryDelay:100});}catch{}});
+ await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('app startup timeout')),5000);app.stdout.on('data',b=>{if(String(b).includes('running')){clearTimeout(timer);resolve();}});app.once('exit',()=>reject(Error('app exited')));});
+ browserChild=spawn(browser,['--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--disable-background-networking','--remote-debugging-port=0',`--user-data-dir=${profile}`,'about:blank'],{stdio:['ignore','ignore','pipe']});browserExit=new Promise(r=>browserChild.once('exit',r));
+ const endpoint=await new Promise((resolve,reject)=>{let out='';const timer=setTimeout(()=>reject(Error('browser startup timeout '+out.slice(-500))),10000);browserChild.stderr.on('data',b=>{out+=b;const m=out.match(/DevTools listening on (ws:\/\/[^\s]+)/);if(m){clearTimeout(timer);resolve(m[1]);}});});
+ socket=new WebSocket(endpoint);await new Promise((resolve,reject)=>{socket.onopen=resolve;socket.onerror=reject;});
+ let seq=0;const pending=new Map(),errors=[];
+ socket.onmessage=e=>{const m=JSON.parse(e.data);if(m.id){const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result);}}if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails);};
+ function call(method,params={},sessionId){return new Promise((resolve,reject)=>{const id=++seq,timer=setTimeout(()=>reject(Error('CDP '+method)),6000);pending.set(id,{resolve:x=>{clearTimeout(timer);resolve(x);},reject:e=>{clearTimeout(timer);reject(e);}});socket.send(JSON.stringify({id,method,params,sessionId}));});}
+ const target=await call('Target.createTarget',{url:'about:blank'}),session=(await call('Target.attachToTarget',{targetId:target.targetId,flatten:true})).sessionId;
+ const command=(method,params)=>call(method,params,session),evaluate=async expression=>{const r=await command('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value;};
+ async function until(expression){for(let i=0;i<120;i++){if(await evaluate(expression))return;await pause(40);}throw Error('timeout '+expression);}
+ await command('Runtime.enable');await command('Page.enable');await command('Emulation.setDeviceMetricsOverride',{width:1536,height:960,deviceScaleFactor:1,mobile:false});
+ await command('Page.navigate',{url:`http://127.0.0.1:${port}/lobby.html`});await until('document.querySelector("#authForm")!==null');
+ await evaluate('fetch("/api/auth/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({username:"studyui0",password:"123456"})}).then(r=>r.json())');
+ await command('Page.navigate',{url:`http://127.0.0.1:${port}/study.html`});await until('typeof current!=="undefined" && current?.id==="1" && ready');
+ assert.equal(await evaluate('document.querySelectorAll(".problem-item").length'),100);
+ await evaluate('document.querySelectorAll("#plans button")[1].click()');assert.equal(await evaluate('document.querySelectorAll(".problem-item").length'),150);assert.equal(await evaluate('document.querySelector(".problem-item").dataset.id'),'88','面试150必须保留官方顺序');
+ await evaluate('document.querySelector("#search").value="两数之和";document.querySelector("#search").dispatchEvent(new Event("input"))');assert.ok((await evaluate('document.querySelectorAll(".problem-item").length'))>=1);
+ await evaluate('document.querySelector("#search").value="";document.querySelector("#search").dispatchEvent(new Event("input"));setTab("solutions")');assert.equal(await evaluate('document.querySelectorAll(".solution-card").length'),2);
+ await evaluate(`document.querySelector('#code').value=${JSON.stringify(R.program(1))};document.querySelector('#code').dispatchEvent(new Event('input'));setTab('description')`);
+ await until('document.querySelector("#saveState").textContent.includes("已保存")');
+ await evaluate('document.querySelector("#run").click()');await until('!working');assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("未判定答案")'));
+ await evaluate('document.querySelector("#submit").click()');await until('!working && document.querySelector("#totalSolved").textContent==="1"');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("通过本地测试")'));
+ assert.equal(posts,2);assert.ok(await evaluate('catalog.plans.every(p=>p.solved===1)'));
+ await evaluate('setTab("history")');await until('document.querySelector(".history-row")!==null');await evaluate('document.querySelector(".history-row").click()');await until('document.querySelector("#submissionDialog").open');assert.ok((await evaluate('document.querySelector("#submissionCode").textContent')).includes('solutions'));
+ await evaluate('document.querySelector("#closeSubmission").click()');
+ if(process.env.STUDY_SCREENSHOTS==='1'){const shot=await command('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(root,'.tmp-study-desktop.png'),Buffer.from(shot.data,'base64'));}
+ await command('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await pause(250);
+ assert.ok(await evaluate('document.documentElement.scrollWidth<=innerWidth+1'),'竖屏页面不横向溢出');
+ await evaluate('document.querySelector("#toggleList").click()');assert.ok(await evaluate('getComputedStyle(document.querySelector("#catalogPane")).display!=="none"'));
+ await evaluate('document.querySelector("#toggleEditor").click()');assert.ok(await evaluate('getComputedStyle(document.querySelector("#editorPane")).display!=="none" && getComputedStyle(document.querySelector("#problemPane")).display==="none"'));
+ if(process.env.STUDY_SCREENSHOTS==='1'){const shot=await command('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(root,'.tmp-study-mobile.png'),Buffer.from(shot.data,'base64'));}
+ runnerReady=false;await evaluate('checkRunner()');assert.ok(await evaluate('document.querySelector("#run").disabled && !document.querySelector("#environmentNotice").hidden'));
+ await evaluate('fetch("/api/auth/logout",{method:"POST"}).then(()=>fetch("/api/auth/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({username:"studyui1",password:"123456"})})).then(r=>r.json())');
+ await command('Page.navigate',{url:`http://127.0.0.1:${port}/study.html`});await until('typeof current!=="undefined" && current?.id==="1" && catalog?.me.username==="studyui1"');
+ assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#code").value===catalog.templates.javascript'));
+ assert.deepEqual(errors,[]);
+});
