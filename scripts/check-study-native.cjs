@@ -10,7 +10,10 @@ async function main(){
  async function request(route,data){const res=await fetch(base+route,{method:data?'POST':'GET',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:data?JSON.stringify(data):undefined,signal:AbortSignal.timeout(55000)});const value=await res.json();if(!res.ok)throw Error(value.error||'判题请求失败');return value;}
  const health=await request('/health');assert.equal(health.ready,true,health.message);assert.equal(health.backend,'native');
  console.log('✓ 轻量沙箱和systemd资源限制就绪');
- const probe=String.raw`#if __has_include("/opt/billiards-club/server.js") || __has_include("/etc/billiards-study.env")
+ const probe=String.raw`#if __cplusplus != 201103L
+#error The judge must compile in C++11 mode
+#endif
+#if __has_include("/opt/billiards-club/server.js") || __has_include("/etc/billiards-study.env")
 #error Host files must be hidden from the compiler too
 #endif
 #include <iostream>

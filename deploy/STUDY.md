@@ -104,7 +104,8 @@ sudo -u www-data git pull --ff-only origin main && sudo systemctl restart study-
 ## 学习功能保持不变
 
 - Hot100与面试经典150，去重183题；本地1007组主解测试，10份第二解法合计1079次参考执行验证。
-- 全部练习、参考代码均为C++17；力扣函数/设计类模式、ACM有模板、ACM空白三种入口。
+- 全部练习、参考代码均为C++11；力扣函数/设计类模式、ACM有模板、ACM空白三种入口。
+- 编译参数为 `-std=c++11 -pedantic-errors`，不依赖结构化绑定、泛型lambda、`make_unique`或C++17的`gcd`。旧草稿/历史不会自动重写；旧代码若用了高版本语法，需自行调整后提交。
 - 每行JSON参数数组、每行JSON答案；ACM由自己写main解析，力扣模式由平台补齐。
 - 每个账号、每种模式独立草稿；共享单题已通过状态，记录各模式尝试与通过。运行不增加进度，提交全部本地测试通过才算AC。
 - 原有账号、草稿、历史与进度保存在原DB_FILE的user.study字段，备份原数据库即可，不需要导入或迁移。
@@ -118,3 +119,5 @@ node --test tests/study.test.cjs tests/study-api.test.cjs tests/study-cpp.test.c
 ```
 
 Windows不能启动原生沙箱。以上单元/接口测试使用可检查的可信替身和固定可信子进程，**不能替代Linux实际隔离验证**。`node scripts/test-study-cpp.cjs`可使用本机C++工具链编译并运行仓库内的可信参考解答，不用于运行用户提交。
+
+参考解答检查脚本在Linux使用严格C++11；Windows的MSVC最低提供C++14开关，因此Windows的执行结果只属于兼容性回归，不冒充严格C++11编译验证。服务器冒烟脚本会校验实际编译标准确为C++11。

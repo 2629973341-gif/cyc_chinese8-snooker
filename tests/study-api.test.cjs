@@ -26,6 +26,7 @@ test('学习联网：账号隔离、真实状态分支、私有草稿/源码、�
  const a=await api(0,'/api/study/catalog'),b=await api(1,'/api/study/catalog');assert.equal(a.data.problems.length,183);assert.equal(a.data.plans[0].total,100);assert.equal(b.data.plans[1].solved,0);
  assert.equal((await api(0,'/study.css')).status,200);assert.equal((await api(0,'/study/reference.js')).status,404);assert.equal((await api(0,'/study-runner.js')).status,404);assert.equal((await api(0,'/api/study/status')).data.ready,true);
  assert.deepEqual(a.data.languages.map(x=>x.id),['cpp']);assert.deepEqual(a.data.modes.map(x=>x.id),['LEETCODE','ACM_TEMPLATE','ACM_BLANK']);
+ assert.equal(a.data.languages[0].name,'C++11');
  assert.equal((await api(0,'/api/study/problems/1/draft',{language:'cpp',code:'// mine'})).status,200);
  assert.equal((await api(1,'/api/study/problems/1')).data.drafts['cpp:ACM_TEMPLATE'],undefined);
  assert.equal((await api(0,'/api/study/problems/1')).data.drafts['cpp:ACM_TEMPLATE'].code,'// mine');
@@ -48,6 +49,7 @@ test('学习联网：账号隔离、真实状态分支、私有草稿/源码、�
  assert.equal((await api(0,'/api/study/problems/1')).data.drafts['cpp:LEETCODE'].code,'// newer draft while compiling','判题结果不能回滚较新草稿');
  assert.equal(ac.data.submission.verdict,'AC');assert.equal(ac.data.progress.attempts,1);assert.ok(ac.data.progress.acceptedAt);assert.equal(ac.data.plans[0].solved,1);assert.ok(!JSON.stringify(lastPayload).includes('expected'));
  assert.equal(ac.data.submission.mode,'LEETCODE');assert.ok(ac.data.progress.modes.LEETCODE.acceptedAt);
+ assert.equal(ac.data.submission.standard,'c++11');
  const submissionId=ac.data.submission.id;assert.equal((await api(1,`/api/study/submissions/${submissionId}`)).status,404);assert.equal((await api(0,`/api/study/submissions/${submissionId}`)).data.submission.code,payload.code);
  assert.equal((await api(1,'/api/study/catalog')).data.problems.find(p=>p.id==='1').progress,null);
  for(const verdict of['WA','RE','CE']){mode=verdict;const result=await api(0,'/api/study/problems/1/submit',payload);assert.equal(result.data.submission.verdict,verdict);assert.ok(result.data.progress.acceptedAt,'后续失败不能清除已通过');}

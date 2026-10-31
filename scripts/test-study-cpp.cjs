@@ -22,7 +22,8 @@ async function main(){
   for(const p of entries)text+=`namespace P${p.key} {\n`+p.source+'\n}\n';
   text+='int main(){string line;while(getline(cin,line)){auto input=nlohmann::json::parse(line);int id=input[0].get<int>();auto args=input[1];cerr<<"#"<<id<<" "<<args.dump()<<endl;nlohmann::json out;switch(id){'+entries.map(p=>`case ${p.key}:out=P${p.key}::studyInvoke(args);break;`).join('')+'default:return 2;}cout<<out.dump()<<endl;}}';
   fs.writeFileSync(source,text);
-  const args=msvc?['/nologo','/std:c++17','/EHsc','/utf-8','/bigobj','/Od','/I'+path.join(dir,'include'),source,'/Fe:'+binary,'/Fo:'+path.join(dir,'batch-'+start+'.obj')]:['-std=c++17','-O0','-I'+path.join(dir,'include'),source,'-o',binary];
+  // MSVC最低支持/std:c++14，不冒充严格C++11验证；Linux使用严格C++11。
+  const args=msvc?['/nologo','/std:c++14','/EHsc','/utf-8','/bigobj','/Od','/I'+path.join(dir,'include'),source,'/Fe:'+binary,'/Fo:'+path.join(dir,'batch-'+start+'.obj')]:['-std=c++11','-pedantic-errors','-O0','-I'+path.join(dir,'include'),source,'-o',binary];
   const compiled=spawnSync(compiler,args,{env,cwd:dir,encoding:'utf8',timeout:240000,maxBuffer:4*1024*1024});
   if(compiled.status!==0)throw Error('C++编译失败 '+start+'\n'+compiled.stdout+'\n'+compiled.stderr);
   const cases=entries.flatMap(p=>P.get(p.id).cases.map(args=>({id:p.id,key:p.key,args})));

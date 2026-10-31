@@ -28,7 +28,7 @@ function sandboxArgs(job,{compile=false,probe=false}={}){
  }
  args.push('--remount-ro','/','--');
  if(probe)args.push('/usr/bin/true');
- else if(compile)args.push('/usr/bin/g++','-std=c++17','-O1','-pipe','/src/main.cpp','-o','/artifact/main');
+ else if(compile)args.push('/usr/bin/g++','-std=c++11','-pedantic-errors','-O1','-pipe','/src/main.cpp','-o','/artifact/main');
  else args.push('/artifact/main');
  return args;
 }

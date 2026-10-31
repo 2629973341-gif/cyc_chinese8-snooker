@@ -1,7 +1,11 @@
 "use strict";
-// 本站原创 C++17 解答。a、b、c、d 按题目函数参数顺序对应。
+// 本站原创 C++11 解答。a、b、c、d 按题目函数参数顺序对应。
 const s=String.raw;
 const helpers={
+bgGcd:s`int bgGcd(int x,int y) {
+    while(y) { int remainder=x%y; x=y; y=remainder; }
+    return x;
+}`,
 bgInorder:s`vector<int> bgInorder(TreeNode* root) {
     vector<int> out; stack<TreeNode*> st;
     while(root || !st.empty()) {
@@ -303,7 +307,7 @@ gain(a); return best;`,
 200:s`int m=a.size(),n=a[0].size(),answer=0; int dr[]={1,-1,0,0},dc[]={0,0,1,-1};
 for(int r=0;r<m;++r) for(int c=0;c<n;++c) if(a[r][c]=='1') {
     ++answer; queue<pair<int,int>> q; q.push({r,c}); a[r][c]='0';
-    while(!q.empty()) { auto [x,y]=q.front(); q.pop();
+    while(!q.empty()) { pair<int,int> cell=q.front(); q.pop(); int x=cell.first,y=cell.second;
         for(int d=0;d<4;++d) { int i=x+dr[d],j=y+dc[d];
             if(i>=0&&j>=0&&i<m&&j<n&&a[i][j]=='1') { a[i][j]='0'; q.push({i,j}); }
         }
@@ -313,7 +317,7 @@ return answer;`,
 994:s`int m=a.size(),n=a[0].size(),fresh=0,minutes=0; queue<tuple<int,int,int>> q;
 for(int r=0;r<m;++r) for(int c=0;c<n;++c) { if(a[r][c]==2) q.push({r,c,0}); if(a[r][c]==1) ++fresh; }
 int dr[]={1,-1,0,0},dc[]={0,0,1,-1};
-while(!q.empty()) { auto [r,c,t]=q.front(); q.pop(); minutes=t;
+while(!q.empty()) { tuple<int,int,int> cell=q.front(); q.pop(); int r=get<0>(cell),c=get<1>(cell),t=get<2>(cell); minutes=t;
     for(int d=0;d<4;++d) { int x=r+dr[d],y=c+dc[d]; if(x>=0&&y>=0&&x<m&&y<n&&a[x][y]==1) {
         a[x][y]=2; --fresh; q.push({x,y,t+1});
     } }
@@ -405,7 +409,7 @@ return best;`,
 215:s`nth_element(a.begin(),a.end()-b,a.end()); return a[a.size()-b];`,
 347:s`unordered_map<int,int> count; for(int x:a) ++count[x];
 priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> heap;
-for(auto [value,freq]:count) { heap.push({freq,value}); if((int)heap.size()>b) heap.pop(); }
+for(const pair<const int,int>& entry:count) { int value=entry.first,freq=entry.second; heap.push({freq,value}); if((int)heap.size()>b) heap.pop(); }
 vector<int> out; while(!heap.empty()) { out.push_back(heap.top().second); heap.pop(); } return out;`,
 121:s`int low=INT_MAX,best=0;
 for(int price:a) { low=min(low,price); best=max(best,price-low); } return best;`,
@@ -485,7 +489,7 @@ int answer=0;
 for(int i=0;i<(int)a.size();++i) answer+=(i+1<(int)a.size()&&value[a[i]]<value[a[i+1]])?-value[a[i]]:value[a[i]];
 return answer;`,
 12:s`vector<pair<int,string>> symbols={{1000,"M"},{900,"CM"},{500,"D"},{400,"CD"},{100,"C"},{90,"XC"},{50,"L"},{40,"XL"},{10,"X"},{9,"IX"},{5,"V"},{4,"IV"},{1,"I"}};
-string out; for(auto& [value,symbol]:symbols) while(a>=value) { a-=value; out+=symbol; } return out;`,
+string out; for(const pair<int,string>& item:symbols) { int value=item.first; const string& symbol=item.second; while(a>=value) { a-=value; out+=symbol; } } return out;`,
 58:s`int i=(int)a.size()-1,length=0; while(i>=0&&a[i]==' ') --i;
 while(i>=0&&a[i]!=' ') { --i; ++length; } return length;`,
 14:s`string prefix=a[0];
@@ -567,7 +571,7 @@ for(int i=0;i<(int)a.size();++i) { int j=i; while(j+1<(int)a.size()&&(long long)
 while(i<(int)a.size()&&a[i][1]<b[0]) out.push_back(a[i++]);
 while(i<(int)a.size()&&a[i][0]<=b[1]) { b[0]=min(b[0],a[i][0]); b[1]=max(b[1],a[i][1]); ++i; }
 out.push_back(b); while(i<(int)a.size()) out.push_back(a[i++]); return out;`,
-452:s`sort(a.begin(),a.end(),[](auto& x,auto& y) { return x[1]<y[1]; });
+452:s`sort(a.begin(),a.end(),[](const vector<int>& x,const vector<int>& y) { return x[1]<y[1]; });
 int arrows=0; long long end=LLONG_MIN;
 for(auto& interval:a) if(interval[0]>end) { ++arrows; end=interval[1]; } return arrows;`,
 71:s`vector<string> parts; string part; istringstream input(a);
@@ -641,7 +645,7 @@ for(int i=1;i<(int)values.size();++i) best=min(best,(long long)values[i]-values[
 130:s`int m=a.size(),n=a[0].size(); queue<pair<int,int>> q;
 for(int r=0;r<m;++r) for(int c=0;c<n;++c) if((r==0||c==0||r==m-1||c==n-1)&&a[r][c]=='O') { a[r][c]='#'; q.push({r,c}); }
 int dr[]={1,-1,0,0},dc[]={0,0,1,-1};
-while(!q.empty()) { auto [r,c]=q.front(); q.pop(); for(int d=0;d<4;++d) { int x=r+dr[d],y=c+dc[d];
+while(!q.empty()) { pair<int,int> cell=q.front(); q.pop(); int r=cell.first,c=cell.second; for(int d=0;d<4;++d) { int x=r+dr[d],y=c+dc[d];
     if(x>=0&&y>=0&&x<m&&y<n&&a[x][y]=='O') { a[x][y]='#'; q.push({x,y}); }
 } }
 for(auto& row:a) for(auto& ch:row) ch=ch=='#'?'O':'X';`,
@@ -655,28 +659,28 @@ for(int i=0;i<(int)a.size();++i) { graph[a[i][0]].push_back({a[i][1],b[i]}); gra
 vector<double> out;
 for(auto& query:c) { string start=query[0],target=query[1]; double result=-1;
     if(graph.count(start)&&graph.count(target)) { queue<pair<string,double>> q; q.push({start,1}); unordered_set<string> seen={start};
-        while(!q.empty()) { auto [node,value]=q.front(); q.pop(); if(node==target) { result=value; break; }
-            for(auto& [next,weight]:graph[node]) if(seen.insert(next).second) q.push({next,value*weight});
+        while(!q.empty()) { pair<string,double> item=q.front(); q.pop(); string node=item.first; double value=item.second; if(node==target) { result=value; break; }
+            for(const pair<string,double>& edge:graph[node]) if(seen.insert(edge.first).second) q.push({edge.first,value*edge.second});
         }
     } out.push_back(result);
 } return out;`,
 210:s`return bgTopo(a,b);`,
 909:s`int n=a.size(); queue<pair<int,int>> q; q.push({1,0}); vector<bool> seen(n*n+1); seen[1]=true;
-while(!q.empty()) { auto [position,dist]=q.front(); q.pop(); if(position==n*n) return dist;
+while(!q.empty()) { pair<int,int> item=q.front(); q.pop(); int position=item.first,dist=item.second; if(position==n*n) return dist;
     for(int x=position+1;x<=min(position+6,n*n);++x) { int row=(x-1)/n,col=(x-1)%n;
         int jump=a[n-1-row][row%2?n-1-col:col],next=jump==-1?x:jump;
         if(!seen[next]) { seen[next]=true; q.push({next,dist+1}); }
     }
 } return -1;`,
 433:s`unordered_set<string> available(c.begin(),c.end()),seen={a}; queue<pair<string,int>> q; q.push({a,0});
-while(!q.empty()) { auto [word,dist]=q.front(); q.pop(); if(word==b) return dist;
+while(!q.empty()) { pair<string,int> item=q.front(); q.pop(); string word=item.first; int dist=item.second; if(word==b) return dist;
     for(int i=0;i<(int)word.size();++i) for(char ch:string("ACGT")) { string next=word; next[i]=ch;
         if(available.count(next)&&seen.insert(next).second) q.push({next,dist+1});
     }
 } return -1;`,
 127:s`unordered_set<string> words(c.begin(),c.end()); if(!words.count(b)) return 0;
 queue<pair<string,int>> q; q.push({a,1}); words.erase(a);
-while(!q.empty()) { auto [word,dist]=q.front(); q.pop(); if(word==b) return dist;
+while(!q.empty()) { pair<string,int> item=q.front(); q.pop(); string word=item.first; int dist=item.second; if(word==b) return dist;
     for(int i=0;i<(int)word.size();++i) for(char ch='a';ch<='z';++ch) { string next=word; next[i]=ch;
         if(words.erase(next)) q.push({next,dist+1});
     }
@@ -722,7 +726,7 @@ while(a--) { while(i<(int)projects.size()&&projects[i].first<=b) available.push(
 373:s`vector<vector<int>> out; if(a.empty()||b.empty()) return out;
 using Item=tuple<long long,int,int>; priority_queue<Item,vector<Item>,greater<Item>> heap;
 for(int i=0;i<min((int)a.size(),c);++i) heap.push({(long long)a[i]+b[0],i,0});
-while(c--&&!heap.empty()) { auto [total,i,j]=heap.top(); heap.pop(); out.push_back({a[i],b[j]});
+while(c--&&!heap.empty()) { Item item=heap.top(); heap.pop(); int i=get<1>(item),j=get<2>(item); out.push_back({a[i],b[j]});
     if(j+1<(int)b.size()) heap.push({(long long)a[i]+b[j+1],i,j+1});
 } return out;`,
 67:s`string out; int i=(int)a.size()-1,j=(int)b.size()-1,carry=0;
@@ -746,7 +750,7 @@ double result=1;
 while(exponent) { if(exponent&1) result*=a; a*=a; exponent>>=1; } return result;`,
 149:s`int best=1;
 for(int i=0;i<(int)a.size();++i) { map<pair<int,int>,int> count;
-    for(int j=i+1;j<(int)a.size();++j) { int dx=a[j][0]-a[i][0],dy=a[j][1]-a[i][1],g=gcd(abs(dx),abs(dy));
+    for(int j=i+1;j<(int)a.size();++j) { int dx=a[j][0]-a[i][0],dy=a[j][1]-a[i][1],g=bgGcd(abs(dx),abs(dy));
         dx/=g; dy/=g; if(dx<0||(dx==0&&dy<0)) { dx=-dx; dy=-dy; }
         best=max(best,++count[{dx,dy}]+1);
     }
@@ -870,7 +874,7 @@ for(int l=n-1;l>=0;--l) for(int r=l;r<n;++r) if(a[l]==a[r]&&(r-l<2||dp[l+1][r-1]
     dp[l][r]=true; if(r-l+1>length) { start=l; length=r-l+1; }
 } return a.substr(start,length);`}],
 322:[{title:'金额状态图 BFS',idea:'从金额0出发，每加一枚硬币是一条边。首次到目标时的BFS层数就是最少枚数；不可达返回-1。',body:s`vector<bool> seen(b+1); queue<pair<int,int>> q; q.push({0,0}); seen[0]=true;
-while(!q.empty()) { auto [value,count]=q.front(); q.pop(); if(value==b) return count;
+while(!q.empty()) { pair<int,int> item=q.front(); q.pop(); int value=item.first,count=item.second; if(value==b) return count;
     for(int coin:a) if(coin<=b-value&&!seen[value+coin]) { seen[value+coin]=true; q.push({value+coin,count+1}); }
 } return -1;`}],
 98:[{title:'中序遍历判断严格递增',idea:'二叉搜索树中序序列必须严格递增。相邻值相等也必须判为非法；时间 O(n)。',body:s`auto values=bgInorder(a);

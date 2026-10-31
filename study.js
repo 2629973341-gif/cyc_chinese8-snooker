@@ -43,8 +43,8 @@ function saveSnapshot(snapshot){
 function snapshot(){return current?{id:current.id,language:'cpp',mode,code:$('#code').value,version:editVersion}:null;}
 async function flush(){clearTimeout(saveTimer);await saveSnapshot(snapshot());}
 function updateMode(){
- $('#modeDescription').textContent=mode==='LEETCODE'?'力扣模式：只实现本题的 class Solution 或设计类，无需 main。平台会提供节点结构、构造参数、调用函数并序列化结果。':mode==='ACM_TEMPLATE'?'ACM 有模板：提供 C++17 标准输入输出骨架。由你在完整程序中读取参数、实现算法并打印 JSON 结果。':'ACM 无模板：编辑器从空白开始。自行编写头文件、main、输入解析、算法和输出；可使用镜像中预装的 nlohmann/json.hpp。';
- $('#modeBreadcrumb').textContent='C++17 › '+modeNames[mode]+' › '+(current?.id||'');$('#executionMode').textContent=modeNames[mode];$('#solutionFormat').value=mode==='LEETCODE'?'LEETCODE':'ACM';
+ $('#modeDescription').textContent=mode==='LEETCODE'?'力扣模式：只实现本题的 class Solution 或设计类，无需 main。平台会提供节点结构、构造参数、调用函数并序列化结果。':mode==='ACM_TEMPLATE'?'ACM 有模板：提供 C++11 标准输入输出骨架。由你在完整程序中读取参数、实现算法并打印 JSON 结果。':'ACM 无模板：编辑器从空白开始。自行编写头文件、main、输入解析、算法和输出；可使用沙箱内提供的 nlohmann/json.hpp。';
+ $('#modeBreadcrumb').textContent='C++11 › '+modeNames[mode]+' › '+(current?.id||'');$('#executionMode').textContent=modeNames[mode];$('#solutionFormat').value=mode==='LEETCODE'?'LEETCODE':'ACM';
 }
 function fillEditor(){
  const draft=current?.drafts?.[draftKey()]||(mode==='ACM_TEMPLATE'?current?.drafts?.cpp:null);
@@ -70,12 +70,12 @@ function renderSolutions(){
  if(!current)return;const acm=$('#solutionFormat').value==='ACM';
  $('#solutionList').replaceChildren(...current.solutions.map(s=>{const card=node('section',undefined,'solution-card');card.append(node('h3',s.title),node('p',s.idea));
   const code=acm?(s.acmCode||s.code):s.code;
-  if(code){const details=node('details'),summary=node('summary',acm?'C++17 · ACM 完整程序':'C++17 · 力扣函数 / 类');details.open=true;const pre=node('pre');pre.innerHTML=highlight(code);const actions=node('div',undefined,'solution-actions'),copy=node('button','复制代码','quiet');copy.onclick=()=>copyText(code);actions.append(copy);details.append(summary,actions,pre);card.append(details);}
+  if(code){const details=node('details'),summary=node('summary',acm?'C++11 · ACM 完整程序':'C++11 · 力扣函数 / 类');details.open=true;const pre=node('pre');pre.innerHTML=highlight(code);const actions=node('div',undefined,'solution-actions'),copy=node('button','复制代码','quiet');copy.onclick=()=>copyText(code);actions.append(copy);details.append(summary,actions,pre);card.append(details);}
   return card;
  }));
 }
 async function loadHistory(){if(!current)return;const id=current.id;$('#historyList').replaceChildren(node('p','加载中…','muted'));try{const data=await api(`/api/study/submissions?problemId=${id}`);if(current.id!==id)return;
- $('#historyList').replaceChildren(...data.submissions.map(s=>{const b=node('button',undefined,'history-row'),title=node('span',verdictNames[s.verdict]||s.verdict,s.verdict==='AC'?'success':'failure'),info=node('span',`${s.passed} / ${s.total} · ${s.language==='cpp'?'C++17':s.language} · ${modeNames[s.mode]||'旧版ACM'}`);info.append(node('small',new Date(s.createdAt).toLocaleString('zh-CN')));b.append(title,info);b.onclick=()=>viewSubmission(s.id);return b;}));if(!data.submissions.length)$('#historyList').append(node('p','还没有提交记录。','muted'));
+ $('#historyList').replaceChildren(...data.submissions.map(s=>{const b=node('button',undefined,'history-row'),title=node('span',verdictNames[s.verdict]||s.verdict,s.verdict==='AC'?'success':'failure'),info=node('span',`${s.passed} / ${s.total} · ${s.language==='cpp'?(s.standard==='c++11'?'C++11':'C++17（旧版）'):s.language} · ${modeNames[s.mode]||'旧版ACM'}`);info.append(node('small',new Date(s.createdAt).toLocaleString('zh-CN')));b.append(title,info);b.onclick=()=>viewSubmission(s.id);return b;}));if(!data.submissions.length)$('#historyList').append(node('p','还没有提交记录。','muted'));
  }catch(e){$('#historyList').replaceChildren(node('p',e.message,'failure'));}}
 async function viewSubmission(id){try{const data=await api(`/api/study/submissions/${id}`);restorable=data.submission;if(current?.id!==restorable.problemId)return;$('#submissionMeta').textContent=`${restorable.title} · ${restorable.language} · ${modeNames[restorable.mode]||'旧版ACM'} · ${verdictNames[restorable.verdict]}`;$('#submissionCode').innerHTML=highlight(restorable.code);$('#restoreSubmission').disabled=restorable.language!=='cpp';$('#restoreSubmission').title=restorable.language!=='cpp'?'旧版其他语言仅供查看，不能直接恢复为C++':'';$('#submissionDialog').showModal();}catch(e){toast(e.message);}}
 function buttons(){$('#run').disabled=$('#submit').disabled=working||changing||!ready||!current;$('#submit').textContent=working?'判题中…':'提交判题';$('#mode').disabled=working||changing;$('#resetCode').disabled=changing;$('#code').readOnly=changing;}
@@ -88,7 +88,7 @@ async function execute(submit){
  working=true;buttons();setTestTab(true);$('#result').replaceChildren(node('p',`${submit?'提交判题':'运行自测'} · ${job.title} · ${modeNames[job.mode]}，等待隔离环境返回…`,'muted'));
  try{
   await flush();const data=await api(`/api/study/problems/${job.id}/${submit?'submit':'run'}`,{method:'POST',body:JSON.stringify(job)});$('#result').replaceChildren();
-  if(submit){const s=data.submission,heading=node('div',undefined,'result-heading');heading.append(node('strong',verdictNames[s.verdict]||s.verdict,s.verdict==='AC'?'success':'failure'),node('span',`${s.passed} / ${s.total}`));$('#result').append(heading,node('p',`#${job.id} · C++17 · ${modeNames[job.mode]} · 最慢测试墙钟 ${s.timeMs} ms（含沙箱启动开销）`));
+  if(submit){const s=data.submission,heading=node('div',undefined,'result-heading');heading.append(node('strong',verdictNames[s.verdict]||s.verdict,s.verdict==='AC'?'success':'failure'),node('span',`${s.passed} / ${s.total}`));$('#result').append(heading,node('p',`#${job.id} · C++11 · ${modeNames[job.mode]} · 最慢测试墙钟 ${s.timeMs} ms（含沙箱启动开销）`));
    if(s.failed){$('#result').append(node('p',`第 ${s.failed.case} 组：${s.failed.message}`));if(s.failed.input!==undefined){resultLine('示例输入',s.failed.input);resultLine('期望输出',JSON.stringify(s.failed.expected));resultLine('实际输出',s.failed.actual);}else $('#result').append(node('p','隐藏测试仅显示状态，不下发输入或答案。'));}
    if(s.compileError)resultLine('编译信息',s.compileError);catalog.problems.find(p=>p.id===job.id).progress=data.progress;catalog.plans=data.plans;totals();renderList();
    if(current.id===job.id){current.progress=data.progress;$('#problemCompletion').textContent=data.progress.acceptedAt?'✓ 已通过':'';if(tab==='history')loadHistory();}

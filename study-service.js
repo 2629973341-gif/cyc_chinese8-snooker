@@ -2,7 +2,7 @@
 const crypto=require('node:crypto');
 const Problems=require('./study/problems'),Reference=require('./study/reference'),{check}=require('./study/checker');
 const Cpp=require('./study/cpp');
-const LANGUAGES=[{id:'cpp',name:'C++17'}];
+const LANGUAGES=[{id:'cpp',name:'C++11'}];
 const busy=new Set();let active=0;const recent=new Map();
 function error(status,message){return Object.assign(Error(message),{status});}
 function progress(user){return user.study?.progress||{};}
@@ -50,7 +50,7 @@ async function handle(req,url,user,{body,json,save}){
      if(correct){passed++;continue;}
      if(!failed){verdict=r.status==='OK'?'WA':r.status;failed={case:i+1,status:verdict,message:r.status==='OK'?'输出不符合本题JSON协议或答案错误':(r.stderr||r.status).slice(0,2000)};if(i===0){failed.input=JSON.stringify(p.cases[i]);failed.expected=Reference.solve(p.id,p.cases[i]);failed.actual=(r.stdout||'').slice(0,4000);}}
    }
-   const study=normalizeStudy(user),entry={id:crypto.randomUUID(),problemId:p.id,title:p.title,language:'cpp',mode,verdict,passed,total:p.cases.length,createdAt:new Date().toISOString(),timeMs:Math.max(0,...result.runs.map(r=>Number(r.timeMs)||0)),code:data.code,failed,compileError:result.status==='CE'?(result.compileError||'编译失败').slice(0,8000):undefined};
+   const study=normalizeStudy(user),entry={id:crypto.randomUUID(),problemId:p.id,title:p.title,language:'cpp',standard:'c++11',mode,verdict,passed,total:p.cases.length,createdAt:new Date().toISOString(),timeMs:Math.max(0,...result.runs.map(r=>Number(r.timeMs)||0)),code:data.code,failed,compileError:result.status==='CE'?(result.compileError||'编译失败').slice(0,8000):undefined};
    study.submissions.push(entry);if(study.submissions.length>500)study.submissions.splice(0,study.submissions.length-500);
    const state=study.progress[p.id]||={attempts:0};state.attempts++;state.lastVerdict=verdict;state.lastSubmittedAt=entry.createdAt;if(verdict==='AC')state.acceptedAt||=entry.createdAt;
    state.modes||={};state.modes[mode]||={attempts:0};state.modes[mode].attempts++;if(verdict==='AC')state.modes[mode].acceptedAt||=entry.createdAt;

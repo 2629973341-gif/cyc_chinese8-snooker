@@ -27,6 +27,7 @@ test('编译/执行沙箱参数均禁网、强制命名空间、清环境、只�
   assert.ok(!args.includes('--share-net'));assert.ok(!args.includes('docker'));assert.ok(!args.includes('/opt/billiards-club'));assert.ok(!args.includes('/etc/billiards-study.env'));
   const artifact=args.lastIndexOf('/artifact');assert.equal(args[artifact-2],compile?'--bind':'--ro-bind');
   assert.equal(args.includes('/usr/bin/g++'),compile);assert.equal(args.at(-1),'/artifact/main');
+  if(compile){assert.ok(args.includes('-std=c++11'));assert.ok(args.includes('-pedantic-errors'));assert.ok(!args.includes('-std=c++17'));}
  }
 });
 
