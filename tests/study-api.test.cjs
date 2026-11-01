@@ -1,5 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),http=require('node:http'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto'),{spawn}=require('node:child_process');
 const P=require('../study/problems'),R=require('../study/reference');
+const Acm=require('../study/acm'),Cpp=require('../study/cpp');
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
 test('学习联网：账号隔离、真实状态分支、私有草稿/源码、持久化、服务故障不误记AC',async t=>{
@@ -12,7 +13,7 @@ test('学习联网：账号隔离、真实状态分支、私有草稿/源码、�
   let raw='';for await(const chunk of req)raw+=chunk;const data=JSON.parse(raw);requests++;lastPayload=data;
   if(runnerDelay)await delay(runnerDelay);
   if(mode==='UNAVAILABLE'){res.writeHead(503,{'content-type':'application/json'});res.end(JSON.stringify({error:'测试中的worker故障'}));return;}
-  const runs=data.inputs.map(input=>({status:mode==='RE'?'RE':'OK',stdout:mode==='WA'?'null\n':JSON.parse(input.trim()).length===2?JSON.stringify(R.solve(1,JSON.parse(input.trim())))+'\n':'null\n',stderr:mode==='RE'?'bad runtime':'',timeMs:9}));
+  const runs=data.inputs.map(input=>{const tokens=input.trim().split(/\s+/).map(Number),args=data.ioFormat==='TEXT'?[tokens.slice(2),tokens[1]]:JSON.parse(input.trim());const answer=args.length===2?R.solve(1,args):null;return{status:mode==='RE'?'RE':'OK',stdout:mode==='WA'?'null\n':data.ioFormat==='TEXT'?Acm.output(1,answer):JSON.stringify(answer)+'\n',stderr:mode==='RE'?'bad runtime':'',timeMs:9};});
   res.setHeader('content-type','application/json');res.end(JSON.stringify(mode==='CE'?{status:'CE',compileError:'compiler diagnostic',runs:[]}:{status:'OK',runs:mode==='INCOMPLETE'?[]:runs}));
  });
  await new Promise(r=>runner.listen(0,'127.0.0.1',r));
@@ -27,6 +28,8 @@ test('学习联网：账号隔离、真实状态分支、私有草稿/源码、�
  assert.equal((await api(0,'/study.css')).status,200);assert.equal((await api(0,'/study/reference.js')).status,404);assert.equal((await api(0,'/study-runner.js')).status,404);assert.equal((await api(0,'/api/study/status')).data.ready,true);
  assert.deepEqual(a.data.languages.map(x=>x.id),['cpp']);assert.deepEqual(a.data.modes.map(x=>x.id),['LEETCODE','ACM_TEMPLATE','ACM_BLANK']);
  assert.equal(a.data.languages[0].name,'C++11');
+ const dashboard=(await api(0,'/api/study/dashboard')).data;assert.equal(dashboard.schedule,null);assert.equal((await api(0,'/api/study/checkin',{})).status,400);
+ assert.equal((await api(0,'/api/study/schedule',{collection:'HOT100',dailyGoal:3,startDate:dashboard.today})).status,200);assert.equal((await api(1,'/api/study/dashboard')).data.schedule,null);
  assert.equal((await api(0,'/api/study/problems/1/draft',{language:'cpp',code:'// mine'})).status,200);
  assert.equal((await api(1,'/api/study/problems/1')).data.drafts['cpp:ACM_TEMPLATE'],undefined);
  assert.equal((await api(0,'/api/study/problems/1')).data.drafts['cpp:ACM_TEMPLATE'].code,'// mine');
@@ -55,7 +58,13 @@ test('学习联网：账号隔离、真实状态分支、私有草稿/源码、�
  for(const verdict of['WA','RE','CE']){mode=verdict;const result=await api(0,'/api/study/problems/1/submit',payload);assert.equal(result.data.submission.verdict,verdict);assert.ok(result.data.progress.acceptedAt,'后续失败不能清除已通过');}
  const attempts=(await api(0,'/api/study/problems/1')).data.progress.attempts;
  for(const failure of['UNAVAILABLE','INCOMPLETE']){mode=failure;assert.equal((await api(0,'/api/study/problems/1/submit',payload)).status,503);assert.equal((await api(0,'/api/study/problems/1')).data.progress.attempts,attempts);}
+ mode='OK';const text={...payload,mode:'ACM_TEMPLATE',ioFormat:'TEXT',code:Cpp.acmReference(1),stdin:Acm.encode(1,[[4,8,2,11],10])};
+ const textRun=await api(0,'/api/study/problems/1/run',text);assert.equal(textRun.status,200);assert.equal(textRun.data.runs[0].stdout,'1 2\n');
+ const textAC=await api(0,'/api/study/problems/1/submit',text);assert.equal(textAC.data.submission.verdict,'AC');assert.equal(textAC.data.submission.ioFormat,'TEXT');assert.equal(lastPayload.inputs[0],'4 10\n4 8 2 11\n');
+ const mixedDrafts=(await api(0,'/api/study/problems/1')).data.drafts;assert.equal(mixedDrafts['cpp:ACM_TEMPLATE'].code,'// mine');assert.equal(mixedDrafts['cpp:ACM_TEMPLATE:TEXT'].code,text.code);
+ assert.equal((await api(0,'/api/study/checkin',{})).data.totalCheckins,1);assert.equal((await api(0,'/api/study/checkin',{})).data.totalCheckins,1);assert.equal((await api(1,'/api/study/dashboard')).data.totalCheckins,0);
  await stop();await start();for(let i=0;i<2;i++)await api(i,'/api/auth/login',{username:'learner'+i,password:'123456'});
  assert.ok((await api(0,'/api/study/problems/1')).data.progress.acceptedAt);assert.equal((await api(1,'/api/study/catalog')).data.plans[0].solved,0);
+ assert.equal((await api(0,'/api/study/dashboard')).data.schedule.dailyGoal,3);assert.equal((await api(0,'/api/study/dashboard')).data.checked,true);
  assert.equal((await api(0,'/api/bootstrap')).status,200,'旧游戏接口仍可用');assert.ok(requests>=7);
 });

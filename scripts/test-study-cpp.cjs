@@ -17,7 +17,7 @@ async function main(){
  let total=0,primary=0;
  for(let start=Number(process.env.CPP_START_BATCH)||0;start<P.catalog.problems.length;start+=24){
   const problems=P.catalog.problems.slice(start,start+24),source=path.join(dir,'batch-'+start+'.cpp'),binary=path.join(dir,'batch-'+start+(msvc?'.exe':''));
-  const entries=problems.flatMap(p=>[{id:p.id,key:Number(p.id),source:Cpp.acmReference(p.id)},...Cpp.alternatives(p.id).map((v,i)=>({id:p.id,key:Number(p.id)+10000*(i+1),source:v.acmCode}))]);
+  const entries=problems.flatMap(p=>[{id:p.id,key:Number(p.id),source:Cpp.legacyAcmReference(p.id)},...Cpp.alternatives(p.id).map((v,i)=>({id:p.id,key:Number(p.id)+10000*(i+1),source:v.legacyAcmCode}))]);
   let text=Cpp.includes+'#include <nlohmann/json.hpp>\n';
   for(const p of entries)text+=`namespace P${p.key} {\n`+p.source+'\n}\n';
   text+='int main(){string line;while(getline(cin,line)){auto input=nlohmann::json::parse(line);int id=input[0].get<int>();auto args=input[1];cerr<<"#"<<id<<" "<<args.dump()<<endl;nlohmann::json out;switch(id){'+entries.map(p=>`case ${p.key}:out=P${p.key}::studyInvoke(args);break;`).join('')+'default:return 2;}cout<<out.dump()<<endl;}}';

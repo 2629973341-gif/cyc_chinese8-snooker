@@ -1,6 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http'),crypto=require('node:crypto'),{spawn}=require('node:child_process');
 const R=require('../study/reference');
 const Cpp=require('../study/cpp');
+const Acm=require('../study/acm');
 const browser=process.env.BROWSER_PATH||['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe','/usr/bin/chromium','/usr/bin/google-chrome'].find(p=>fs.existsSync(p));
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿、源码、手机竖屏和账号切换',{skip:process.env.STUDY_BROWSER_TEST!=='1'||!browser||typeof WebSocket==='undefined',timeout:40000},async t=>{
@@ -40,6 +41,14 @@ test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿�
  await evaluate('document.querySelector("#run").click()');await until('!working');assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("未判定答案")'));
  await evaluate('document.querySelector("#submit").click()');await until('!working && document.querySelector("#totalSolved").textContent==="1"');assert.ok(await evaluate('document.querySelector("#result").textContent.includes("通过本地测试")'));
  assert.equal(posts,2);assert.ok(await evaluate('catalog.plans.every(p=>p.solved===1)'));
+ await evaluate('document.querySelector("#mode").value="ACM_TEMPLATE";document.querySelector("#mode").dispatchEvent(new Event("change"))');await until('mode==="ACM_TEMPLATE"&&!changing');
+ assert.equal(await evaluate('currentFormat()'),'TEXT');assert.equal(await evaluate('document.querySelector("#exampleInput").textContent'),'4 10\n4 8 2 11\n');assert.ok(await evaluate('!document.querySelector("#code").value.includes("nlohmann")'));
+ await evaluate('document.querySelector("#ioFormat").value="JSON";document.querySelector("#ioFormat").dispatchEvent(new Event("change"))');await until('currentFormat()==="JSON"&&!changing');assert.ok(await evaluate('document.querySelector("#code").value.includes("nlohmann")'));
+ await evaluate('document.querySelector("#ioFormat").value="TEXT";document.querySelector("#ioFormat").dispatchEvent(new Event("change"))');await until('currentFormat()==="TEXT"&&!changing');
+ await evaluate('document.querySelector("#mode").value="LEETCODE";document.querySelector("#mode").dispatchEvent(new Event("change"))');await until('mode==="LEETCODE"&&!changing');
+ await evaluate('document.querySelector("#plannerButton").click()');await until('document.querySelector("#plannerDialog").open');
+ await evaluate('document.querySelector("#scheduleGoal").value="2";document.querySelector("#scheduleForm").requestSubmit()');await until('dashboard?.schedule?.dailyGoal===2');assert.ok(await evaluate('!dashboard.suggested.some(p=>p.id==="1")'));
+ await evaluate('document.querySelector("#checkin").click()');await until('dashboard.checked');assert.equal(await evaluate('document.querySelectorAll("#calendar .checked").length'),1);await evaluate('document.querySelector("#closePlanner").click()');
  await evaluate('setTab("history")');await until('document.querySelector(".history-row")!==null');await evaluate('document.querySelector(".history-row").click()');await until('document.querySelector("#submissionDialog").open');assert.ok((await evaluate('document.querySelector("#submissionCode").textContent')).includes('class Solution'));
  await evaluate('document.querySelector("#closeSubmission").click()');
  await evaluate('setTab("solutions");document.querySelector("#readFocus").click()');assert.ok(await evaluate('getComputedStyle(document.querySelector("#editorPane")).display==="none"'),'可放大题目区专注阅读');await evaluate('document.querySelector("#readFocus").click()');
@@ -58,5 +67,6 @@ test('学习真实浏览器：筛选、双题单进度、自测/提交、草稿�
  await evaluate('fetch("/api/auth/logout",{method:"POST"}).then(()=>fetch("/api/auth/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({username:"studyui1",password:"123456"})})).then(r=>r.json())');
  await command('Page.navigate',{url:`http://127.0.0.1:${port}/study.html`});await until('typeof current!=="undefined" && current?.id==="1" && catalog?.me.username==="studyui1"');
  assert.equal(await evaluate('document.querySelector("#totalSolved").textContent'),'0');assert.ok(await evaluate('document.querySelector("#code").value===current.templates[mode]'));
+ await until('dashboard!==null');assert.equal(await evaluate('dashboard.schedule'),null);assert.equal(await evaluate('dashboard.totalCheckins'),0);
  assert.deepEqual(errors,[]);
 });

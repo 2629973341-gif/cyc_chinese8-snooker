@@ -5,7 +5,7 @@ test('183题统一C++11题解，函数模式与完整ACM代码均齐全，空白
  let alternatives=0;
  for(const p of P.catalog.problems){
   const templates=Cpp.templates(p.id);assert.match(templates.LEETCODE,/TODO/);assert.match(templates.ACM_TEMPLATE,/int main\(\)/);assert.equal(templates.ACM_BLANK,'');
-  const detail=P.detail(p.id);for(const s of detail.solutions){assert.equal(s.language,'cpp');assert.match(s.code,/class /);assert.doesNotMatch(s.code,/int main\(/);assert.match(s.acmCode,/int main\(\)/);assert.match(s.acmCode,/nlohmann\/json.hpp/);assert.ok(!s.code.includes('const fs=require'));
+  const detail=P.detail(p.id);for(const s of detail.solutions){assert.equal(s.language,'cpp');assert.match(s.code,/class /);assert.doesNotMatch(s.code,/int main\(/);assert.match(s.acmCode,/int main\(\)/);assert.doesNotMatch(s.acmCode,/nlohmann\/json.hpp/);assert.ok(!s.code.includes('const fs=require'));
   }alternatives+=detail.solutions.length-1;
  }
  assert.equal(alternatives,10);

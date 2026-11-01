@@ -54,7 +54,7 @@ function typeNotes(id){const definition=structure(id);return definition?'/* 平�
 function rename(source,params){return source.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\n]*|\/\*[\s\S]*?\*\/)|\b([abcd])\b/g,(all,literal,key)=>literal||params[key.charCodeAt(0)-97]?.name||all);}
 function reference(id,bodyOverride){
  id=String(id);if(classes[id]&&!bodyOverride)return '// C++11；标准头文件由平台提供。\n'+typeNotes(id)+classes[id]+'\n';
- const method=parse(signatures[id]),params=method.params.map(p=>({...p,name:'arg_'+p.name})),body=rename(bodyOverride||bodies[id],params);if(!body)throw Error('缺少C++解答 '+id);
+ const method=parse(signatures[id]),params=method.params.map(p=>({...p,name:String(id)==='1'?p.name:'arg_'+p.name})),body=rename(bodyOverride||bodies[id],params);if(!body)throw Error('缺少C++解答 '+id);
  let source=body,changed=true;const needed=new Set();while(changed){changed=false;for(const [name,code]of Object.entries(helpers))if(!needed.has(name)&&new RegExp('\\b'+name+'\\b').test(source)){needed.add(name);source+='\n'+code;changed=true;}}
  const definitions=[...needed].map(name=>helpers[name]).join('\n\n');
  const signature=method.returns+' '+method.name+'('+params.map(p=>p.type+' '+p.name).join(', ')+')';
@@ -64,7 +64,7 @@ function leetcodeTemplate(id){
  if(designs[id]){const d=designs[id];return `// 平台已提供节点结构与标准头文件；此模式不需要 main。\n`+typeNotes(id)+`class ${d.name} {\npublic:\n    ${d.name}(${d.constructor}) {\n        // TODO: 初始化数据结构\n    }\n`+d.methods.map(m=>`\n    ${m} {\n        // TODO: 实现操作\n        throw logic_error("TODO");\n    }\n`).join('')+'};\n';}
  return '// 平台已提供标准头文件和本题节点结构；只实现函数，不要写 main。\n'+typeNotes(id)+'class Solution {\npublic:\n    '+signatures[id]+' {\n        // TODO: 在这里实现算法\n        throw logic_error("TODO");\n    }\n};\n';
 }
-function templates(id){return{LEETCODE:leetcodeTemplate(id),ACM_TEMPLATE:'#include <iostream>\n#include <string>\n#include <vector>\n#include <algorithm>\n#include <nlohmann/json.hpp>\nusing namespace std;\nusing json=nlohmann::json;\n\nint main() {\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    string line;\n    while (getline(cin, line)) {\n        if (line.empty()) continue;\n        json args = json::parse(line);\n        // 按左侧参数说明读取数据，例如：\n        // vector<int> nums = args[0].get<vector<int>>();\n        // TODO: 编写算法，并将结果保存到 answer。\n        json answer = nullptr;\n        cout << answer.dump() << "\\n";\n    }\n}\n',ACM_BLANK:''};}
+function legacyTemplates(id){return{LEETCODE:leetcodeTemplate(id),ACM_TEMPLATE:'#include <iostream>\n#include <string>\n#include <vector>\n#include <algorithm>\n#include <nlohmann/json.hpp>\nusing namespace std;\nusing json=nlohmann::json;\n\nint main() {\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    string line;\n    while (getline(cin, line)) {\n        if (line.empty()) continue;\n        json args = json::parse(line);\n        // 按左侧参数说明读取数据，例如：\n        // vector<int> nums = args[0].get<vector<int>>();\n        // TODO: 编写算法，并将结果保存到 answer。\n        json answer = nullptr;\n        cout << answer.dump() << "\\n";\n    }\n}\n',ACM_BLANK:''};}
 function convert(type,expression){type=type.replace(/&/g,'').trim();if(type==='TreeNode*')return`readTree<TreeNode>(${expression})`;if(type==='ListNode*')return`readList(${expression})`;if(type==='vector<ListNode*>')return`readLists(${expression})`;if(type==='vector<vector<char>>')return`readChars(${expression})`;return`${expression}.get<${type}>()`;}
 function driver(id){
  id=String(id);
@@ -117,11 +117,13 @@ function wrap(id,code,mode='LEETCODE'){
  const runtime='using json=nlohmann::json;\n'+Object.keys(adapter).filter(name=>needed.has(name)).map(name=>adapter[name]).join('\n');
  return includes+'#include <nlohmann/json.hpp>\n'+structure(id)+'\n'+runtime+'\n'+code+'\njson studyInvoke(json args) {\n'+invoke+'\n}\nint main() {\n    ios::sync_with_stdio(false); cin.tie(nullptr);\n    string line;\n    try { while(getline(cin,line)) { if(line.empty()) continue; cout<<studyInvoke(json::parse(line)).dump()<<"\\n"; } }\n    catch(const exception& e) { cerr<<e.what()<<"\\n"; return 1; }\n}\n';
 }
-function acmReference(id){
+function legacyAcmReference(id){
  // 完整ACM程序包含节点结构、JSON适配和main；力扣参考代码不包含这些包装。
  return wrap(id,reference(id),'LEETCODE');
 }
 for(const p of require('./catalog.json').problems)if(!signatures[p.id]&&!designs[p.id]||!bodies[p.id]&&!classes[p.id])throw Error('C++接口或解答缺少题目 '+p.id);
-module.exports={MODES,templates,reference,acmReference,wrap,driver,structure,includes};
-module.exports.alternatives=id=>(variants[id]||[]).map(v=>({title:v.title,idea:v.idea,language:'cpp',code:reference(id,v.body),acmCode:wrap(id,reference(id,v.body))}));
+function templates(id){return {...legacyTemplates(id),ACM_TEMPLATE:require("./acm").program(id,leetcodeTemplate(id),module.exports)};}
+function acmReference(id){return require("./acm").program(id,reference(id),module.exports);}
+module.exports={MODES,templates,legacyTemplates,reference,acmReference,legacyAcmReference,wrap,driver,structure,includes};
+module.exports.alternatives=id=>(variants[id]||[]).map(v=>({title:v.title,idea:v.idea,language:'cpp',code:reference(id,v.body),acmCode:require("./acm").program(id,reference(id,v.body),module.exports),legacyAcmCode:wrap(id,reference(id,v.body))}));
 module.exports.idea=(id,fallback)=>require('./cpp-solutions').explanations[id]||fallback;

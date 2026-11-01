@@ -106,7 +106,10 @@ sudo -u www-data git pull --ff-only origin main && sudo systemctl restart study-
 - Hot100与面试经典150，去重183题；本地1007组主解测试，10份第二解法合计1079次参考执行验证。
 - 全部练习、参考代码均为C++11；力扣函数/设计类模式、ACM有模板、ACM空白三种入口。
 - 编译参数为 `-std=c++11 -pedantic-errors`，不依赖结构化绑定、泛型lambda、`make_unique`或C++17的`gcd`。旧草稿/历史不会自动重写；旧代码若用了高版本语法，需自行调整后提交。
-- 每行JSON参数数组、每行JSON答案；ACM由自己写main解析，力扣模式由平台补齐。
+- ACM有模板默认使用普通文本：cin读数据 → 调用Solution → cout输出。183题与10份第二解法均有完整普通ACM程序，不需要JSON库。例：两数之和输入 `4 10` 换行 `4 8 2 11`，输出 `1 2`。字符串、嵌套数组、树等按题目面板的独立输入约定读取，可连续多组直到EOF。
+- 力扣模式仍由平台负责JSON适配；ACM提供「普通文本 / 旧版JSON」切换。旧JSON草稿与新普通文本草稿分开存储，历史恢复时自动选择其原输入格式，不覆盖旧代码。旧API客户端未提供ioFormat时继续按JSON处理。
+- 顶栏「计划 / 打卡」可设置Hot100或面试150、每日1至30题和开始日期；自动推荐未通过题目、显示今日进度和预计完成日期。按账号保存在原数据库，不增加依赖或后台调度服务。
+- 日期统一北京时间：当日至少提交一道题（不限是否AC）后可手动打卡，自测不计入。每日提交/AC按题目去重，AC含复习；打卡不改变题目的通过状态。显示连续天数、累计天数和35天日历。计划可以修改，但不能补签或伪造历史日期。
 - 每个账号、每种模式独立草稿；共享单题已通过状态，记录各模式尝试与通过。运行不增加进度，提交全部本地测试通过才算AC。
 - 原有账号、草稿、历史与进度保存在原DB_FILE的user.study字段，备份原数据库即可，不需要导入或迁移。
 - 本站原创说明和C++解法，附力扣题解入口，不冒充官方原文；有限本地测试不等于力扣官方判题，也不保证验证内部指针身份、原地操作或随机分布。
@@ -115,9 +118,40 @@ sudo -u www-data git pull --ff-only origin main && sudo systemctl restart study-
 ## 本地开发检查
 
 ```bash
-node --test tests/study.test.cjs tests/study-api.test.cjs tests/study-cpp.test.cjs tests/study-native.test.cjs
+node --test tests/study.test.cjs tests/study-api.test.cjs tests/study-cpp.test.cjs tests/study-acm.test.cjs tests/study-native.test.cjs
 ```
 
 Windows不能启动原生沙箱。以上单元/接口测试使用可检查的可信替身和固定可信子进程，**不能替代Linux实际隔离验证**。`node scripts/test-study-cpp.cjs`可使用本机C++工具链编译并运行仓库内的可信参考解答，不用于运行用户提交。
 
 参考解答检查脚本在Linux使用严格C++11；Windows的MSVC最低提供C++14开关，因此Windows的执行结果只属于兼容性回归，不冒充严格C++11编译验证。服务器冒烟脚本会校验实际编译标准确为C++11。
+
+`node scripts/test-study-acm.cjs` 编译并执行全部普通文本ACM解答的1079组用例；设置 `ACM_HEADERS_TEST=1` 还会逐份检查完整程序的独立头文件。`node scripts/test-study-cpp.cjs` 独立回归旧JSON/力扣包装。这些脚本只执行仓库可信参考程序，不是用户提交入口。
+
+## 本次更新文件与离线Git部署
+
+本次新增 `study/acm.js`、`study/planner.js`，必须与页面和 `study-service.js` 一起上传，不能只替换HTML。保留已有数据库及AppArmor配置，更新成功后重启study-runner和billiards，浏览器Ctrl+F5。
+
+若服务器仍无法访问GitHub，可在本地完成提交后制作Git离线包（无需安装新依赖）：
+
+```powershell
+git bundle create ../billiards-update.bundle main
+scp ../billiards-update.bundle admin@47.122.116.6:/home/admin/billiards-update.bundle
+```
+
+在服务器只读校验后拉取该包（不改远程地址，不覆盖未提交改动）：
+
+```bash
+cd /opt/billiards-club
+sudo -u www-data git bundle verify /home/admin/billiards-update.bundle
+```
+
+如果www-data无法穿过/home/admin目录，先把这个单独的包安装到可读位置：
+
+```bash
+sudo install -m 0644 /home/admin/billiards-update.bundle /var/tmp/billiards-update.bundle
+sudo -u www-data git bundle verify /var/tmp/billiards-update.bundle &&
+sudo -u www-data git pull --ff-only /var/tmp/billiards-update.bundle main &&
+sudo systemctl restart study-runner billiards
+```
+
+遇到分支分叉或未提交改动时停下来检查 `sudo -u www-data git status`，不要使用reset --hard。离线包只传Git提交，不包含未提交的数据库、密钥或草稿；但若曾误将密钥提交到Git历史，请先处理泄漏，勿传整个历史包。
